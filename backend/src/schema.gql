@@ -1,0 +1,163 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: Int!
+  email: String!
+  password: String!
+}
+
+type Coordinate {
+  id: Int!
+  longitude: Float!
+  latitude: Float!
+  markerId: Int!
+  marker: Marker!
+  category: Marker!
+}
+
+type Marker {
+  id: Int!
+  popUp: String!
+  type: String!
+  attribution: String
+  draggable: Boolean
+  icon: String
+  layerId: Int!
+  layer: Layer!
+  coordinates: [Coordinate!]
+  category: Layer!
+}
+
+type Layer {
+  id: Int!
+  name: String!
+  template: String!
+  private: Boolean!
+  markers: [Marker!]
+}
+
+type Timestamp {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UserInput {
+  id: Int!
+  email: String!
+  password: String!
+}
+
+input CoordinateInput {
+  id: Int!
+  longitude: Float!
+  latitude: Float!
+  markerId: Int!
+  marker: MarkerInput!
+}
+
+input MarkerInput {
+  id: Int!
+  popUp: String!
+  type: String!
+  attribution: String
+  draggable: Boolean
+  icon: String
+  layerId: Int!
+  layer: LayerInput!
+  coordinates: [CoordinateInput!]
+}
+
+input LayerInput {
+  id: Int!
+  name: String!
+  template: String!
+  private: Boolean!
+  markers: [MarkerInput!]
+}
+
+type Query {
+  users: [User!]!
+  user(id: Int!): User!
+  layers: [Layer!]!
+  layer(id: Int!): Layer!
+  marker(id: Int!): Marker!
+  coordinate(id: Int!): Coordinate!
+  timestamp(id: Int!): Timestamp!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
+  createLayer(createLayerInput: CreateLayerInput!): Layer!
+  removeLayer(id: Int!): Layer!
+  createMarker(createMarkerInput: CreateMarkerInput!): Marker!
+  updateMarker(updateMarkerInput: UpdateMarkerInput!): Marker!
+  removeMarker(id: Int!): Marker!
+  createCoordinate(createCoordinateInput: CreateCoordinateInput!): Coordinate!
+  updateCoordinate(updateCoordinateInput: UpdateCoordinateInput!): Coordinate!
+  removeCoordinate(id: Int!): Coordinate!
+  createTimestamp(createTimestampInput: CreateTimestampInput!): Timestamp!
+  updateTimestamp(updateTimestampInput: UpdateTimestampInput!): Timestamp!
+  removeTimestamp(id: Int!): Timestamp!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  email: String
+  password: String
+  id: Int!
+}
+
+input CreateLayerInput {
+  name: String!
+  template: String!
+  private: Boolean!
+}
+
+input CreateMarkerInput {
+  type: String!
+  attribution: String
+  draggable: Boolean
+  icon: String
+  layerId: Int!
+}
+
+input UpdateMarkerInput {
+  type: String
+  attribution: String
+  draggable: Boolean
+  icon: String
+  layerId: Int
+  id: Int!
+}
+
+input CreateCoordinateInput {
+  longitude: Float!
+  latitude: Float!
+  markerId: Int!
+}
+
+input UpdateCoordinateInput {
+  longitude: Float
+  latitude: Float
+  markerId: Int
+  id: Int!
+}
+
+input CreateTimestampInput {
+  type: String!
+  layerId: Int!
+}
+
+input UpdateTimestampInput {
+  type: String
+  layerId: Int
+  id: Int!
+}
