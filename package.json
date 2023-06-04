@@ -1,0 +1,22 @@
+{
+  "name": "royal_markt",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "license": "MIT",
+  "workspaces": [
+    "frontend",
+    "backoffice",
+    "backend"
+  ],
+  "scripts": {
+    "start:dev": "concurrently \"yarn workspace backend start:dev\"",
+    "heroku-postbuild": "yarn workspaces run build"
+  },
+  "devDependencies": {
+    "concurrently": "^7.4.0"
+  },
+  "dependencies": {
+    "@nestjs/platform-express": "^9.1.4"
+  }
+}
