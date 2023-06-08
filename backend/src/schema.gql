@@ -14,20 +14,27 @@ type Coordinate {
   latitude: Float!
   markerId: Int!
   marker: Marker!
-  category: Marker!
+}
+
+type Timestamp {
+  id: Int!
+  type: String!
+  image: String
+  fileName: String
+  markerId: Int!
+  marker: Marker!
 }
 
 type Marker {
   id: Int!
   popUp: String!
-  type: String!
   attribution: String
   draggable: Boolean
   icon: String
   layerId: Int!
   layer: Layer!
   coordinates: [Coordinate!]
-  category: Layer!
+  timestamps: [Timestamp!]
 }
 
 type Layer {
@@ -36,11 +43,6 @@ type Layer {
   template: String!
   private: Boolean!
   markers: [Marker!]
-}
-
-type Timestamp {
-  """Example field (placeholder)"""
-  exampleField: Int!
 }
 
 input UserInput {
@@ -57,16 +59,25 @@ input CoordinateInput {
   marker: MarkerInput!
 }
 
+input TimestampInput {
+  id: Int!
+  type: String!
+  image: String
+  fileName: String
+  markerId: Int!
+  marker: MarkerInput!
+}
+
 input MarkerInput {
   id: Int!
   popUp: String!
-  type: String!
   attribution: String
   draggable: Boolean
   icon: String
   layerId: Int!
   layer: LayerInput!
   coordinates: [CoordinateInput!]
+  timestamps: [TimestampInput!]
 }
 
 input LayerInput {
@@ -83,8 +94,8 @@ type Query {
   layers: [Layer!]!
   layer(id: Int!): Layer!
   marker(id: Int!): Marker!
-  coordinate(id: Int!): Coordinate!
   timestamp(id: Int!): Timestamp!
+  coordinate(id: Int!): Coordinate!
 }
 
 type Mutation {
@@ -96,12 +107,12 @@ type Mutation {
   createMarker(createMarkerInput: CreateMarkerInput!): Marker!
   updateMarker(updateMarkerInput: UpdateMarkerInput!): Marker!
   removeMarker(id: Int!): Marker!
-  createCoordinate(createCoordinateInput: CreateCoordinateInput!): Coordinate!
-  updateCoordinate(updateCoordinateInput: UpdateCoordinateInput!): Coordinate!
-  removeCoordinate(id: Int!): Coordinate!
   createTimestamp(createTimestampInput: CreateTimestampInput!): Timestamp!
   updateTimestamp(updateTimestampInput: UpdateTimestampInput!): Timestamp!
   removeTimestamp(id: Int!): Timestamp!
+  createCoordinate(createCoordinateInput: CreateCoordinateInput!): Coordinate!
+  updateCoordinate(updateCoordinateInput: UpdateCoordinateInput!): Coordinate!
+  removeCoordinate(id: Int!): Coordinate!
 }
 
 input CreateUserInput {
@@ -138,6 +149,21 @@ input UpdateMarkerInput {
   id: Int!
 }
 
+input CreateTimestampInput {
+  type: String!
+  image: String
+  fileName: String
+  markerId: Int!
+}
+
+input UpdateTimestampInput {
+  type: String
+  image: String
+  fileName: String
+  markerId: Int
+  id: Int!
+}
+
 input CreateCoordinateInput {
   longitude: Float!
   latitude: Float!
@@ -148,16 +174,5 @@ input UpdateCoordinateInput {
   longitude: Float
   latitude: Float
   markerId: Int
-  id: Int!
-}
-
-input CreateTimestampInput {
-  type: String!
-  layerId: Int!
-}
-
-input UpdateTimestampInput {
-  type: String
-  layerId: Int
   id: Int!
 }

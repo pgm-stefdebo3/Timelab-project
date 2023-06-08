@@ -1,8 +1,9 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { TimestampService } from './timestamp.service';
 import { Timestamp } from './entities/timestamp.entity';
 import { CreateTimestampInput } from './dto/create-timestamp.input';
 import { UpdateTimestampInput } from './dto/update-timestamp.input';
+import { Marker } from 'src/marker/entities/marker.entity';
 
 @Resolver(() => Timestamp)
 export class TimestampResolver {
@@ -21,6 +22,11 @@ export class TimestampResolver {
   @Query(() => Timestamp, { name: 'timestamp' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.timestampService.findOne(id);
+  }
+
+  @ResolveField(() => Marker)
+  marker(@Parent() timestamp: Timestamp): Promise<Marker> {
+    return this.timestampService.getMarker(timestamp.markerId);
   }
 
   @Mutation(() => Timestamp)

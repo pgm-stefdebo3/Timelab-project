@@ -7,6 +7,7 @@ import {
 } from '@nestjs/graphql';
 import { Coordinate } from 'src/coordinate/entities/coordinate.entity';
 import { Layer } from 'src/layer/entities/layer.entity';
+import { Timestamp } from 'src/timestamp/entities/timestamp.entity';
 import {
   Column,
   Entity,
@@ -28,10 +29,6 @@ export class Marker {
   @Field()
   popUp: string;
 
-  @Column()
-  @Field()
-  type: string;
-
   // Properties
 
   @Column({ nullable: true })
@@ -46,7 +43,7 @@ export class Marker {
   @Field({ nullable: true })
   icon?: string;
 
-  // //   Layer M-1
+ //   Layer M-1
 
   @Column()
   @Field(() => Int)
@@ -56,8 +53,14 @@ export class Marker {
   @Field(() => Layer)
   layer: Layer;
 
-  // //   Coordinates 1-M
+ //   Coordinates 1-M
   @OneToMany(() => Coordinate, (coordinate) => coordinate.marker)
   @Field(() => [Coordinate], { nullable: true })
   coordinates?: Coordinate[];
+
+  //   Articles 1-M
+
+  @OneToMany(() => Timestamp, (timestamp) => timestamp.marker)
+  @Field(() => [Timestamp], { nullable: true })
+  timestamps?: Timestamp[];
 }
