@@ -10,7 +10,7 @@ import './sass/main.scss'
 import { AuthProvider } from './context/authContext';
 
 const client = new ApolloClient({
-  uri: import.meta.env.DEV ? 'http://localhost:3000/graphql' : 'https://royalmarkt-api.herokuapp.com/graphql',
+  uri: 'http://localhost:3000/graphql',
   cache: new InMemoryCache(),
 });
 

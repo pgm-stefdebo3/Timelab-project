@@ -1,5 +1,3 @@
-import { useAuth } from "../context/authContext";
-
 const Home = () => {
     return (
     <div>
