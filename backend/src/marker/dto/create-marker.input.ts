@@ -22,6 +22,7 @@ export class CreateMarkerInput {
 
   // //   Layer M-1
 
+  @Column()
   @Field(() => Int)
   layerId: number;
 }

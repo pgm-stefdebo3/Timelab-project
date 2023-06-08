@@ -25,7 +25,7 @@ export class MarkerResolver {
   }
 
   @ResolveField(() => Layer)
-  category(@Parent() marker: Marker): Promise<Layer> {
+  layer(@Parent() marker: Marker): Promise<Layer> {
     return this.markerService.getLayer(marker.layerId);
   }
 

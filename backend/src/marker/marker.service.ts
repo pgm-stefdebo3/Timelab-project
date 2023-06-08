@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { LayerService } from 'src/layer/layer.service';
 import { Layer } from 'src/layer/entities/layer.entity';
 import { Coordinate } from 'src/coordinate/entities/coordinate.entity';
+import { TimestampService } from 'src/timestamp/timestamp.service';
 
 @Injectable()
 export class MarkerService {
@@ -16,6 +17,8 @@ export class MarkerService {
     private markerRepository: Repository<Marker>,
     @Inject(forwardRef(() => LayerService))
     private layerService: LayerService,
+    @Inject(forwardRef(() => TimestampService))
+    private timestampService: TimestampService,
   ) {}
 
   //   CREATE

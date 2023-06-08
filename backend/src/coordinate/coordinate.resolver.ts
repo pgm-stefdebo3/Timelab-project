@@ -25,7 +25,7 @@ export class CoordinateResolver {
   }
 
   @ResolveField(() => Marker)
-  category(@Parent() coordinate: Coordinate): Promise<Marker> {
+  marker(@Parent() coordinate: Coordinate): Promise<Marker> {
     return this.coordinateService.getMarker(coordinate.markerId);
   }
 
