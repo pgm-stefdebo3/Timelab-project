@@ -11,19 +11,18 @@ import {
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { join } from 'path';
-import { Observable } from 'rxjs';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
 import { v4 as uuidv4 } from 'uuid';
 
 // Learned how to upload images to API from youtube video (https://www.youtube.com/watch?v=f-URVd2OKYc)
-@Controller('product')
-export class ProductController {
+@Controller('timestamp')
+export class TimestampController {
   @Post('upload')
   @UseInterceptors(
     AnyFilesInterceptor({
       storage: diskStorage({
-        destination: './upload/productImages',
+        destination: './upload/timestampFiles',
         filename: (req, file, cb) => {
           const filename: string =
             path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();

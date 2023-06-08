@@ -1,0 +1,46 @@
+@import '../base/typography.scss';
+
+.button {
+    padding: 0.5rem 1rem;
+    font-size: $text-sm;
+    border: none;
+    border-radius: 0.25rem;
+    text-transform: uppercase;
+    font-weight: 600;
+
+    &-l {
+        padding: 1.188rem 1.938rem;
+    }
+
+    &--svg {
+        background-color: #6D8295;
+        border: none;
+        height: 3rem;
+        width: 3rem;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 3.5rem;
+        right: 0.5rem;
+        svg {
+            margin: auto;
+            width: 60%;
+            height: 60%;
+            fill: #ffffff;
+        }
+        &--small {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #444F5A;
+            svg {
+                width: 50%;
+                height: 50%;
+            }
+        }
+    }
+}
