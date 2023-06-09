@@ -12,6 +12,8 @@
   "dependencies": {
     "@apollo/client": "^3.7.0",
     "@nestjs/passport": "^9.0.0",
+    "@types/leaflet": "^1.9.3",
+    "@types/react-leaflet": "^3.0.0",
     "axios": "^1.2.0",
     "bcrypt": "^5.1.0",
     "formik": "^2.2.9",
@@ -19,17 +21,21 @@
     "intro.js": "^6.0.0",
     "intro.js-react": "^0.7.0",
     "jwt-decode": "^3.1.2",
+    "leaflet": "^1.9.4",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.12.1",
     "sass": "^1.63.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@types/leaflet": "^1.9.3",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@types/react-leaflet": "^3.0.0",
     "@vitejs/plugin-react": "^2.1.0",
     "typescript": "^4.6.4",
     "vite": "^3.1.0"
