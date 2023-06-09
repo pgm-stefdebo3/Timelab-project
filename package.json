@@ -1,5 +1,5 @@
 {
-  "name": "royal_markt",
+  "name": "timelab_project",
   "version": "1.0.0",
   "private": true,
   "main": "index.js",
@@ -10,7 +10,7 @@
     "backend"
   ],
   "scripts": {
-    "start:dev": "concurrently \"yarn workspace backend start:dev\"",
+    "start:dev": "concurrently \"yarn workspace backend start:dev\" \"yarn workspace frontend dev\"",
     "heroku-postbuild": "yarn workspaces run build"
   },
   "devDependencies": {

@@ -19,7 +19,7 @@ type Coordinate {
 type Timestamp {
   id: Int!
   type: String!
-  image: String
+  description: String
   fileName: String
   markerId: Int!
   marker: Marker!
@@ -62,7 +62,7 @@ input CoordinateInput {
 input TimestampInput {
   id: Int!
   type: String!
-  image: String
+  description: String
   fileName: String
   markerId: Int!
   marker: MarkerInput!
@@ -151,14 +151,14 @@ input UpdateMarkerInput {
 
 input CreateTimestampInput {
   type: String!
-  image: String
+  description: String
   fileName: String
   markerId: Int!
 }
 
 input UpdateTimestampInput {
   type: String
-  image: String
+  description: String
   fileName: String
   markerId: Int
   id: Int!
