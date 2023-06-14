@@ -5,7 +5,7 @@ import {
   Route } from 'react-router-dom'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import App from './App'
-import { Home } from './pages';
+import { Dashboard, Home, Login } from './pages';
 import './sass/main.scss'
 import { AuthProvider } from './context/authContext';
 
@@ -21,6 +21,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Routes>
             <Route element={<App />}>
               <Route path="/" element={<Home />} />
+              <Route path='/login' element={<Login/>} />
+              <Route path='/dashboard' element={<Dashboard/>} />
+              <Route path='*' element={<Home/>} />
             </Route>
         </Routes>
         </BrowserRouter>
