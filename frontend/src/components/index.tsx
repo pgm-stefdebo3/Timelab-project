@@ -4,6 +4,7 @@ import CloseButton from "./CloseButton";
 import { ConditionalLoader } from "./ConditionalLoader";
 import { Bounds } from "./Bounds";
 import MassModal from "./MassModal";
+import Header from "./Header";
 
 
 export {
@@ -12,5 +13,6 @@ export {
     CloseButton,
     ConditionalLoader,
     Bounds,
-    MassModal
+    MassModal,
+    Header
 }

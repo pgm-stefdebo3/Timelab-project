@@ -1,4 +1,3 @@
-import React from 'react'
 import SVGButton from './SVGButton'
 
 type CloseButtonProps = {

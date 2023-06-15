@@ -28,14 +28,12 @@ export class UserService {
   findOne(id: number): Promise<User> {
     return this.usersRepository.findOne({
       where: { id },
-      relations: ['cart', 'reviews', 'wishlist', 'pastPurchases'],
     });
   }
 
   async findOneByEmail(email: string): Promise<User> {
     return this.usersRepository.findOne({
       where: { email },
-      relations: ['cart', 'reviews', 'wishlist', 'pastPurchases'],
     });
   }
 
