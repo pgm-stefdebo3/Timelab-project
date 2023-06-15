@@ -20,7 +20,7 @@ const Login = () => {
     }
 
     if (authenticated) {
-        return <Navigate to="/" replace/>;
+        return <Navigate to="/dashboard" replace/>;
     }
     
     const validationSchema = yup.object({
@@ -32,7 +32,7 @@ const Login = () => {
         <div className='main-content'>
             <div className='main-container'>
                 <div className='form-container'>
-                <h2 className='text--bold'>Log in</h2>
+                <h2  >Timelab</h2>
                 <Formik
                     initialValues={{
                         email: "",
@@ -61,7 +61,7 @@ const Login = () => {
                                 <label htmlFor="password">Password</label>
                                 <Field name="password" required type="password" />
                             </div>
-                            <div className='form_buttons'>
+                            <div className='form_buttons'> 
                                 <div  className="login__button">
                                     <Button type={"submit"} disabled={isSubmitting}>
                                         Log In

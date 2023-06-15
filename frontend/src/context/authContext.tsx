@@ -8,22 +8,28 @@ export type LoginProps = {
     password: string;
 };
 
+interface User {
+    email: string
+}
+
 export interface AuthContextData {
     authenticated: boolean;
-    user: object | null;
+    user: User | null;
     authLoading: boolean;
     Login: ({}: LoginProps) => Promise<number | undefined>;
+    clearUser: () => void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider = ({ children }: any) => {
+    
     const [authLoading, setAuthLoading] = useState<boolean>(true);
-    const [user, setUser] = useState<object | null>(null);
+    const [user, setUser] = useState<User | null>(null);
     useEffect(() => {
         async function getLocalToken() {
         const jwtToken = localStorage.getItem("jwt-token"); // name needs to be put into env file
-        const user = (jwtToken? jwtDecode(jwtToken): null)
+        const user: User | null = (jwtToken? jwtDecode(jwtToken): null)
         if (user && jwtToken) {
             setUser(user);
         }
@@ -40,7 +46,7 @@ export const AuthProvider = ({ children }: any) => {
         if (token) {
             localStorage.setItem('jwt-token', JSON.stringify(token?.data?.access_token)) // name needs to go into env
             const jwtToken = localStorage.getItem("jwt-token"); // name needs to be put into env file
-            const user = (jwtToken? jwtDecode(jwtToken): null)
+            const user: User | null = (jwtToken? jwtDecode(jwtToken): null)
             if (user && jwtToken) {
                 setUser(user);
             }
@@ -49,8 +55,12 @@ export const AuthProvider = ({ children }: any) => {
         }
     }
 
+    const clearUser = () => {
+        setUser(null);
+    }
+
     return (
-        <AuthContext.Provider value={{ authenticated: !!user, authLoading, user, Login }}>
+        <AuthContext.Provider value={{ authenticated: !!user, authLoading, user, Login, clearUser }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,3 +1,4 @@
+import { Header } from '../components';
 import { useAuth } from '../context/authContext';
 import { Navigate } from 'react-router-dom';
 
@@ -20,7 +21,8 @@ const Dashboard = () => {
     
   return (
     <>
-    You are logged in!
+        <Header/>
+
     </>
   )
 }
