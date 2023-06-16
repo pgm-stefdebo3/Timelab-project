@@ -14,7 +14,7 @@ export class TimestampResolver {
     return this.timestampService.create(createTimestampInput);
   }
 
-  @Query(() => [Timestamp], { name: 'timestamp' })
+  @Query(() => [Timestamp], { name: 'timestamps' })
   findAll() {
     return this.timestampService.findAll();
   }

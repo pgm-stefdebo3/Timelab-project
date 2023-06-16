@@ -14,7 +14,7 @@ export class MarkerResolver {
     return this.markerService.create(createMarkerInput);
   }
 
-  @Query(() => [Marker], { name: 'marker' })
+  @Query(() => [Marker], { name: 'markers' })
   findAll() {
     return this.markerService.findAll();
   }

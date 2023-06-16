@@ -93,8 +93,11 @@ type Query {
   user(id: Int!): User!
   layers: [Layer!]!
   layer(id: Int!): Layer!
+  markers: [Marker!]!
   marker(id: Int!): Marker!
+  timestamps: [Timestamp!]!
   timestamp(id: Int!): Timestamp!
+  coordinates: [Coordinate!]!
   coordinate(id: Int!): Coordinate!
 }
 

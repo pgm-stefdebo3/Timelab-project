@@ -67,12 +67,19 @@ const Header = () => {
                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 >
-                            
-                    <MenuItem onClick={onLogoutClick}>
-                        <ListItemIcon>
+                    <MenuItem onClick={onLogoutClick}
+                        sx={{
+                            height: 'max-content'
+                        }}
+                    >
+                        <ListItemIcon
+                            sx={{
+                                height: 'max-content'
+                            }}
+                        >
                             <LogoutIcon fontSize="small" />
                         </ListItemIcon>
-                        Logout
+                        <p style={{height: 'max-content'}}>Logout</p>
                     </MenuItem>
                 </Menu>
             </div>

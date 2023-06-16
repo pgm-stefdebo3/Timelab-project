@@ -14,7 +14,7 @@ export class CoordinateResolver {
     return this.coordinateService.create(createCoordinateInput);
   }
 
-  @Query(() => [Coordinate], { name: 'coordinate' })
+  @Query(() => [Coordinate], { name: 'coordinates' })
   findAll() {
     return this.coordinateService.findAll();
   }

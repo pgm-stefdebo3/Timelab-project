@@ -5,6 +5,7 @@ import { ConditionalLoader } from "./ConditionalLoader";
 import { Bounds } from "./Bounds";
 import MassModal from "./MassModal";
 import Header from "./Header";
+import { DashboardMain } from "./DashboardMain";
 
 
 export {
@@ -14,5 +15,6 @@ export {
     ConditionalLoader,
     Bounds,
     MassModal,
-    Header
+    Header,
+    DashboardMain
 }
