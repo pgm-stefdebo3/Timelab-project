@@ -27,13 +27,13 @@ export class CoordinateService {
   //   READ
 
   findAll(): Promise<Coordinate[]> {
-    return this.coordinateRepository.find({ relations: ['layer'] });
+    return this.coordinateRepository.find({ relations: ['marker'] });
   }
 
   findOne(id: number): Promise<Coordinate> {
     return this.coordinateRepository.findOne({
       where: { id },
-      relations: ['layer'],
+      relations: ['marker'],
     });
   }
 

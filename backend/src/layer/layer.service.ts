@@ -21,18 +21,14 @@ export class LayerService {
   //   READ
 
   findAll(): Promise<Layer[]> {
-    return this.layerRepository.find({ relations: ['mainLayer'] });
+    return this.layerRepository.find({ relations: ['markers'] });
   }
 
   findOne(id: number): Promise<Layer> {
     return this.layerRepository.findOne({
       where: { id },
-      relations: ['products', 'subCategories', 'mainLayer'],
+      relations: ['products', 'subCategories', 'markers'],
     });
-  }
-
-  getMainLayer(mainLayerId: number): Promise<Layer> {
-    return this.findOne(mainLayerId);
   }
 
   //   UPDATE

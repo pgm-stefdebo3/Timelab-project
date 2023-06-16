@@ -31,13 +31,13 @@ export class MarkerService {
   //   READ
 
   findAll(): Promise<Marker[]> {
-    return this.markerRepository.find({ relations: ['layer', 'markers'] });
+    return this.markerRepository.find({ relations: ['layer'] });
   }
 
   findOne(id: number): Promise<Marker> {
     return this.markerRepository.findOne({
       where: { id },
-      relations: ['layer', 'markers'],
+      relations: ['layer',],
     });
   }
 

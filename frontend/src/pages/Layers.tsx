@@ -5,7 +5,7 @@ import { Navigate } from 'react-router-dom';
 import '../sass/pages/dashboard.scss'
 
 
-const Dashboard = () => {
+const Layers = () => {
 
     const { authenticated, authLoading, user } = useAuth();
 
@@ -24,11 +24,11 @@ const Dashboard = () => {
   return (
     <div className='dashboard-container'>
         <Header/>
-        <DashboardMain active='dashboard'>
-            home
+        <DashboardMain active='layers'>
+            yo
         </DashboardMain>
     </div>
   )
 }
 
-export default Dashboard;
+export default Layers;
