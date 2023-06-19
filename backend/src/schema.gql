@@ -40,7 +40,6 @@ type Marker {
 type Layer {
   id: Int!
   name: String!
-  template: String!
   private: Boolean!
   markers: [Marker!]
 }
@@ -83,7 +82,6 @@ input MarkerInput {
 input LayerInput {
   id: Int!
   name: String!
-  template: String!
   private: Boolean!
   markers: [MarkerInput!]
 }
@@ -131,7 +129,6 @@ input UpdateUserInput {
 
 input CreateLayerInput {
   name: String!
-  template: String!
   private: Boolean!
 }
 

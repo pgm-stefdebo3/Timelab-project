@@ -1,0 +1,12 @@
+.card {
+    justify-content: space-evenly;
+    align-items: center;
+
+    &-fourth {
+        width: 23%;
+    }
+
+    &-third {
+        width: 30%;
+    }
+}

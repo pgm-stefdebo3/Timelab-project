@@ -5,9 +5,11 @@ import {
   Route } from 'react-router-dom'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import App from './App'
-import { Dashboard, Home, Layers, Login, Markers } from './pages';
-import './sass/main.scss'
+import { Dashboard, Home, Layers, Login, Markers, Timestamps } from './pages';
 import { AuthProvider } from './context/authContext';
+
+import './sass/main.scss'
+import 'react-toastify/dist/ReactToastify.css';
 
 const client = new ApolloClient({
   uri: 'http://localhost:3000/graphql',
@@ -25,6 +27,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               <Route path='/dashboard' element={<Dashboard/>} />
               <Route path='/layers' element={<Layers/>} />
               <Route path='/markers' element={<Markers/>} />
+              <Route path='/timestamps' element={<Timestamps/>} />
               <Route path='*' element={<Home/>} />
             </Route>
         </Routes>

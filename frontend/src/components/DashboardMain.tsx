@@ -3,6 +3,7 @@ import React from "react";
 import LayersIcon from '@mui/icons-material/Layers';
 import HomeIcon from '@mui/icons-material/Home';
 import MarkerIcon from '@mui/icons-material/Room';
+import TimestampIcon from '@mui/icons-material/AccessTimeFilled';
 import { ConditionalLoader } from "./ConditionalLoader";
 
 export interface DashboardMainProps {
@@ -12,7 +13,7 @@ export interface DashboardMainProps {
 
 export const DashboardMain = ({ children, active }: DashboardMainProps) => {
     
-    const pages = ['dashboard', 'layers', 'markers']
+    const pages = ['dashboard', 'layers', 'markers', 'timestamps']
 
   return (
     <div className="dashboard-main-container">
@@ -26,51 +27,58 @@ export const DashboardMain = ({ children, active }: DashboardMainProps) => {
                 >
                 {pages.map((name) => (
                     <ListItem key={name} disablePadding sx={{ display: 'block' }}>
-                    <ListItemButton
-                        href={`/${name}`}
-                        sx={{
-                        minHeight: 48,
-                        maxHeight: 48,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: active === name? '#1976d2': '',
-                        px: 2.5,
-                        py: 5,
-                        "&:hover": {
-                            backgroundColor: active === name? '#1976d2': '',
-                        }
-                        }}
-                    >
-                        <ListItemIcon
-                        sx={{
-                            minWidth: 0,
-                            mr: 'auto',
+                        <ListItemButton
+                            href={`/${name}`}
+                            sx={{
+                            minHeight: 48,
+                            maxHeight: 48,
                             justifyContent: 'center',
-                        }}
+                            alignItems: 'center',
+                            backgroundColor: active === name? '#1976d2': '',
+                            px: 2.5,
+                            py: 5,
+                            "&:hover": {
+                                backgroundColor: active === name? '#1976d2': '',
+                            }
+                            }}
                         >
-                        <ConditionalLoader condition={'dashboard' === name} >
-                            <HomeIcon 
-                                sx={{
-                                    fill: active === name? '#000000': '',
-                                }}
-                            />
-                        </ConditionalLoader>
-                        <ConditionalLoader condition={'layers' === name} >
-                            <LayersIcon 
-                                sx={{
-                                    fill: active === name? '#000000': '',
-                                }}
-                            />
-                        </ConditionalLoader>
-                        <ConditionalLoader condition={'markers' === name} >
-                            <MarkerIcon 
-                                sx={{
-                                    fill: active === name? '#000000': '',
-                                }}
-                            />
-                        </ConditionalLoader>
-                        </ListItemIcon>
-                    </ListItemButton>
+                            <ListItemIcon
+                            sx={{
+                                minWidth: 0,
+                                mr: 'auto',
+                                justifyContent: 'center',
+                            }}
+                            >
+                                <ConditionalLoader condition={'dashboard' === name} >
+                                    <HomeIcon 
+                                        sx={{
+                                            fill: active === name? '#000000': '',
+                                        }}
+                                    />
+                                </ConditionalLoader>
+                                <ConditionalLoader condition={'layers' === name} >
+                                    <LayersIcon 
+                                        sx={{
+                                            fill: active === name? '#000000': '',
+                                        }}
+                                    />
+                                </ConditionalLoader>
+                                <ConditionalLoader condition={'markers' === name} >
+                                    <MarkerIcon 
+                                        sx={{
+                                            fill: active === name? '#000000': '',
+                                        }}
+                                    />
+                                </ConditionalLoader>
+                                <ConditionalLoader condition={'timestamps' === name} >
+                                    <TimestampIcon 
+                                        sx={{
+                                            fill: active === name? '#000000': '',
+                                        }}
+                                    />
+                                </ConditionalLoader>
+                            </ListItemIcon>
+                        </ListItemButton>
                     </ListItem>
                 ))}
                 </List>
