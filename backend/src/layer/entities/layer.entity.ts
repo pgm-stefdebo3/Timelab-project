@@ -26,10 +26,6 @@ export class Layer {
 
   @Column()
   @Field()
-  template: string;
-
-  @Column()
-  @Field()
   private: boolean;
 
   // //   Markers 1-M

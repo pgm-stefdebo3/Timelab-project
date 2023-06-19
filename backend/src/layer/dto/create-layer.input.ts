@@ -8,9 +8,5 @@ export class CreateLayerInput {
 
   @Column()
   @Field()
-  template: string;
-
-  @Column()
-  @Field()
   private: boolean;
 }

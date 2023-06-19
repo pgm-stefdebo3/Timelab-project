@@ -3,11 +3,11 @@
 .button {
     padding: 0.5rem 1rem;
     font-size: 1rem;
-    border: 2px solid #d5212a;
+    border: none;
     border-radius: 0.25rem;
     text-transform: uppercase;
     font-weight: 600;
-    background-color: #ffffff;
+    background-color: #d5212a;
 
     &:active {
         background-color: #e2646a;
