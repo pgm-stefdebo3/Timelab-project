@@ -60,7 +60,6 @@ const Dashboard = () => {
                                 margin: '2.5rem 1rem 0 auto',
                                 width: 'max-content'
                             }}
-                        
                         >
                             Go to Layers
                         </Button>

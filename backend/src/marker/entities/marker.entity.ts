@@ -25,10 +25,6 @@ export class Marker {
   @Field(() => Int)
   id: number;
 
-  @Column()
-  @Field()
-  popUp: string;
-
   // Properties
 
   @Column({ nullable: true })
