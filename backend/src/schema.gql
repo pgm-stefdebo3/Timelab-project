@@ -27,7 +27,6 @@ type Timestamp {
 
 type Marker {
   id: Int!
-  popUp: String!
   attribution: String
   draggable: Boolean
   icon: String
@@ -69,7 +68,6 @@ input TimestampInput {
 
 input MarkerInput {
   id: Int!
-  popUp: String!
   attribution: String
   draggable: Boolean
   icon: String
