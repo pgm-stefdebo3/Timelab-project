@@ -21,11 +21,11 @@ export class Coordinate {
   @Field(() => Int)
   id: number;
 
-  @Column()
+  @Column('decimal')
   @Field(() => Float)
   longitude: number;
 
-  @Column()
+  @Column('decimal')
   @Field(() => Float)
   latitude: number;
 

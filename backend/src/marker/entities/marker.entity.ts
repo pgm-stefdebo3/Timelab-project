@@ -27,6 +27,14 @@ export class Marker {
 
   // Properties
 
+  @Column()
+  @Field()
+  name?: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  description?: string;
+
   @Column({ nullable: true })
   @Field({ nullable: true })
   attribution?: string;

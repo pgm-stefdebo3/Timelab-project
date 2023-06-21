@@ -5,8 +5,9 @@ import { Button, Card, Checkbox, FormControlLabel, FormLabel, Grid, Input, MenuI
 import { Field, Form, Formik } from 'formik';
 import CountUp from 'react-countup';
 import MarkerIcon from '@mui/icons-material/Room';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { mutationCreateLayer } from '../gql/mutations';
+import { GET_LAYERS_DATA } from '../gql/queries';
 import * as yup from 'yup';
 
 import '../sass/pages/dashboard.scss'
@@ -15,10 +16,11 @@ import { DetailedHTMLProps, InputHTMLAttributes, useRef, useState } from 'react'
 const Markers = () => {
     const [ jsonLoaded , setJsonLoaded ] = useState(false);
     const [ jsonKeys , setJsonKeys ] = useState<string[] | null>(null); 
-    const [ jsonData , setJsonData ]  = useState(null); 
+    const [ jsonData , setJsonData ]  = useState([]); 
     const { authenticated, authLoading, user } = useAuth();
     const [createLayer] = useMutation(mutationCreateLayer);
     const fileRef = useRef<HTMLInputElement | null>(null);
+    const { loading, error, data } = useQuery(GET_LAYERS_DATA);
 
     if (authLoading) {
         return (
@@ -30,6 +32,12 @@ const Markers = () => {
     
     if (!authenticated) {
         return <Navigate to="/login" replace/>;
+    }
+
+    if (loading) return <p>Loading...</p>;
+
+    if (error) {
+        return <p>Error...</p>;
     }
 
 const validationSchema = yup.object({
@@ -110,18 +118,73 @@ const validationSchema = yup.object({
                             initialValues={{
                                 file: null,
                                 private: false,
-                                titleField: null
+                                layerId: undefined,
+                                titleField: undefined,
+                                descriptionField: undefined,
                             }}
                             validationSchema={validationSchema}
                             onSubmit={async (values, { setSubmitting }) => {
                                 setSubmitting(true);
-                                let keyName: string = '';
+                                let titleKeyName: string = '';
+                                let descriptionKeyName: string = '';
+
+                                // check if titleField is filled
                                 if (
                                     values.titleField && jsonKeys
                                 ) {
-                                    keyName = jsonKeys[values.titleField];
-                                    console.log(jsonData?.[0][keyName]);
+                                    titleKeyName = jsonKeys[values.titleField];
+                                    console.log(jsonData?.[0][titleKeyName]);
                                 }
+
+                                // Check if descriptionField is filled
+                                if (
+                                    values.descriptionField && jsonKeys
+                                ) {
+                                    descriptionKeyName = jsonKeys[values.descriptionField];
+                                    console.log(jsonData?.[0][descriptionKeyName]);
+                                }
+
+                                let markerInputs = [];
+                                
+                                jsonData.forEach((markerData: any[any]) => {
+                                    let type = markerData.geometry.geometry.type;
+                                    let name = markerData[titleKeyName]
+                                    if (descriptionKeyName !== '') {
+                                        let description = markerData[descriptionKeyName]
+                                    }
+
+                                    
+//   @Field()
+//   type: string;
+
+//   // Properties
+
+//   @Column()
+//   @Field()
+//   name?: string;
+
+//   @Column({ nullable: true })
+//   @Field({ nullable: true })
+//   description?: string;
+
+//   @Column({ nullable: true })
+//   @Field({ nullable: true })
+//   attribution?: string;
+
+//   @Column({ nullable: true })
+//   @Field(() => Boolean, { nullable: true })
+//   draggable?: Boolean;
+
+//   @Column({ nullable: true })
+//   @Field({ nullable: true })
+//   icon?: string;
+
+//   // //   Layer M-1
+
+//   @Column()
+//   @Field(() => Int)
+//   layerId: number;
+                                });
 
                                 setTimeout(() => {
                                     alert(JSON.stringify(values, null, 2));
@@ -131,6 +194,32 @@ const validationSchema = yup.object({
                             >
                             {({ values, handleChange, setFieldValue, isSubmitting, errors }) => (
                                 <Form className='card-form'>
+
+
+                                    <FormLabel sx={{px: '1rem'}} htmlFor='titleField'>Select Layer to import to</FormLabel>
+                                    <TextField
+                                        variant="outlined"
+                                        name="layerId"
+                                        id="layerId"
+                                        sx={{
+                                            width: '100%',
+                                            px: '1rem'
+                                        }}
+                                        select
+                                        value={values.layerId}
+                                        onChange={handleChange}
+                                        >
+                                            
+                                        <MenuItem key={-1} value={undefined}>
+                                            ---
+                                        </MenuItem>
+                                        {data.layers?.map((layer: {name: string, id: number}) => (
+                                            <MenuItem key={layer.id} value={layer.id}>
+                                                {layer.name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+
                                     <input id="file" ref={fileRef} name="file" type="file" className='card-form-file' onChange={(event) => {
                                         setFieldValue("file", event.currentTarget.files?.[0]);
                                         checkJson(event);
@@ -151,6 +240,33 @@ const validationSchema = yup.object({
                                         value={values.titleField}
                                         onChange={handleChange}
                                         >
+                                        <MenuItem key={-1} value={undefined}>
+                                            ---
+                                        </MenuItem>
+                                        {jsonKeys?.map((jsonKey, key) => (
+                                            <MenuItem key={key} value={key}>
+                                                {jsonKey}
+                                            </MenuItem>
+                                        ))}
+                                        </TextField>
+
+                                        
+                                        <FormLabel sx={{px: '1rem'}} htmlFor='titleField'>Choose what field represents the description (optional)</FormLabel>
+                                        <TextField
+                                        variant="outlined"
+                                        name="descriptionField"
+                                        id="descriptionField"
+                                        sx={{
+                                            width: '100%',
+                                            px: '1rem'
+                                        }}
+                                        select
+                                        value={values.descriptionField}
+                                        onChange={handleChange}
+                                        >
+                                        <MenuItem key={-1} value={undefined}>
+                                            ---
+                                        </MenuItem>
                                         {jsonKeys?.map((jsonKey, key) => (
                                             <MenuItem key={key} value={key}>
                                                 {jsonKey}
@@ -196,7 +312,7 @@ const validationSchema = yup.object({
                         }}
                     >
                         <div className='countup-container'>
-                            <CountUp end={243} duration={3} className='countup-number'/>
+                            <CountUp end={data.markers.length} duration={3} className='countup-number'/>
                             <div className='flex countup-suffix'>
                                 <p className='countup-string'>Markers</p>
                                 <MarkerIcon 
