@@ -1,36 +1,33 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Int, Field, Float } from '@nestjs/graphql';
 import { Column } from 'typeorm';
 
 @InputType()
-export class CreateMarkerInput {
+export class CreateMarkerWithCoordsInput {
   @Field()
   type: string;
 
   // Properties
 
-  @Column()
-  @Field()
-  name?: string;
+  @Field(() => [[Float, Float]])
+  coords: [number, number][];
 
-  @Column({ nullable: true })
+  @Field()
+  name: string;
+
   @Field({ nullable: true })
   description?: string;
 
-  @Column({ nullable: true })
   @Field({ nullable: true })
   attribution?: string;
 
-  @Column({ nullable: true })
   @Field(() => Boolean, { nullable: true })
   draggable?: Boolean;
 
-  @Column({ nullable: true })
   @Field({ nullable: true })
   icon?: string;
 
   // //   Layer M-1
 
-  @Column()
   @Field(() => Int)
   layerId: number;
 }

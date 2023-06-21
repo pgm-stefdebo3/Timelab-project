@@ -27,6 +27,8 @@ type Timestamp {
 
 type Marker {
   id: Int!
+  name: String!
+  description: String
   attribution: String
   draggable: Boolean
   icon: String
@@ -68,6 +70,8 @@ input TimestampInput {
 
 input MarkerInput {
   id: Int!
+  name: String!
+  description: String
   attribution: String
   draggable: Boolean
   icon: String
@@ -104,6 +108,8 @@ type Mutation {
   createLayer(createLayerInput: CreateLayerInput!): Layer!
   removeLayer(id: Int!): Layer!
   createMarker(createMarkerInput: CreateMarkerInput!): Marker!
+  createMarkers(createMarkerInputs: [CreateMarkerInput!]!): [Marker!]!
+  createMarkersWithCoords(createMarkerWithCoordsInputs: [CreateMarkerWithCoordsInput!]!): [Marker!]!
   updateMarker(updateMarkerInput: UpdateMarkerInput!): Marker!
   removeMarker(id: Int!): Marker!
   createTimestamp(createTimestampInput: CreateTimestampInput!): Timestamp!
@@ -132,6 +138,19 @@ input CreateLayerInput {
 
 input CreateMarkerInput {
   type: String!
+  name: String!
+  description: String
+  attribution: String
+  draggable: Boolean
+  icon: String
+  layerId: Int!
+}
+
+input CreateMarkerWithCoordsInput {
+  type: String!
+  coords: [[Float!]!]!
+  name: String!
+  description: String
   attribution: String
   draggable: Boolean
   icon: String
@@ -140,6 +159,8 @@ input CreateMarkerInput {
 
 input UpdateMarkerInput {
   type: String
+  name: String
+  description: String
   attribution: String
   draggable: Boolean
   icon: String

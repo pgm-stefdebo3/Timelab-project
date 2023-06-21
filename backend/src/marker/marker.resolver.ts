@@ -4,6 +4,7 @@ import { Marker } from './entities/marker.entity';
 import { CreateMarkerInput } from './dto/create-marker.input';
 import { UpdateMarkerInput } from './dto/update-marker.input';
 import { Layer } from 'src/layer/entities/layer.entity';
+import { CreateMarkerWithCoordsInput } from './dto/create-marker-with-coords';
 
 @Resolver(() => Marker)
 export class MarkerResolver {
@@ -12,6 +13,16 @@ export class MarkerResolver {
   @Mutation(() => Marker)
   createMarker(@Args('createMarkerInput') createMarkerInput: CreateMarkerInput) {
     return this.markerService.create(createMarkerInput);
+  }
+
+  @Mutation(() => [Marker] )
+  createMarkers(@Args('createMarkerInputs', { type: () => [CreateMarkerInput] }) createMarkerInputs: CreateMarkerInput[]): Promise<Marker[]> {
+    return this.markerService.createMany(createMarkerInputs);
+  }
+
+  @Mutation(() => [Marker] )
+  createMarkersWithCoords(@Args('createMarkerWithCoordsInputs', { type: () => [CreateMarkerWithCoordsInput] }) createMarkerWithCoordsInputs: CreateMarkerWithCoordsInput[]): Promise<Marker[]> {
+    return this.markerService.createManyWithCoords(createMarkerWithCoordsInputs);
   }
 
   @Query(() => [Marker], { name: 'markers' })
