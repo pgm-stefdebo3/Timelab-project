@@ -27,7 +27,7 @@ export class LayerService {
   findOne(id: number): Promise<Layer> {
     return this.layerRepository.findOne({
       where: { id },
-      relations: ['markers'],
+      relations: ['markers', 'markers.coordinates', 'markers.timestamps'],
     });
   }
 
