@@ -35,7 +35,9 @@ export class Coordinate {
   @Field(() => Int)
   markerId: number;
 
-  @ManyToOne(() => Marker, (marker) => marker.coordinates)
+  @ManyToOne(() => Marker, (marker) => marker.coordinates, {
+    onDelete: 'CASCADE',
+  })
   @Field(() => Marker)
   marker: Marker;
 }

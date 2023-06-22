@@ -30,7 +30,9 @@ export class Timestamp {
   @Field(() => Int)
   markerId: number;
 
-  @ManyToOne(() => Marker, (marker) => marker.timestamps)
+  @ManyToOne(() => Marker, (marker) => marker.timestamps, {
+    onDelete: 'CASCADE',
+  })
   @Field(() => Marker)
   marker: Marker;
 }

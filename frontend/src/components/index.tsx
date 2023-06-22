@@ -6,10 +6,12 @@ import { Bounds } from "./Bounds";
 import MassModal from "./MassModal";
 import Header from "./Header";
 import { DashboardMain } from "./DashboardMain";
+import { CustomCheckbox } from "./CustomCheckbox";
 
 
 export {
     Button,
+    CustomCheckbox,
     SVGButton,
     CloseButton,
     ConditionalLoader,

@@ -6,19 +6,19 @@ import { Field, Form, Formik } from 'formik';
 import CountUp from 'react-countup';
 import MarkerIcon from '@mui/icons-material/Room';
 import { useMutation, useQuery } from '@apollo/client';
-import { mutationCreateLayer } from '../gql/mutations';
 import { GET_LAYERS_DATA } from '../gql/queries';
 import * as yup from 'yup';
 
 import '../sass/pages/dashboard.scss'
 import { DetailedHTMLProps, InputHTMLAttributes, useRef, useState } from 'react';
+import { mutationImportMarkers } from '../gql/mutations';
 
 const Markers = () => {
     const [ jsonLoaded , setJsonLoaded ] = useState(false);
     const [ jsonKeys , setJsonKeys ] = useState<string[] | null>(null); 
     const [ jsonData , setJsonData ]  = useState([]); 
     const { authenticated, authLoading, user } = useAuth();
-    const [createLayer] = useMutation(mutationCreateLayer);
+    const [importMarkers] = useMutation(mutationImportMarkers);
     const fileRef = useRef<HTMLInputElement | null>(null);
     const { loading, error, data } = useQuery(GET_LAYERS_DATA);
 
@@ -86,12 +86,12 @@ const validationSchema = yup.object({
     reader.readAsText(event.target.files[0])
   }
 
-  function readerLoad(event: any) {
-    console.log(event.target.result);
+  async function readerLoad(event: any) {
     let obj = JSON.parse(event.target.result);
     setJsonLoaded(true);
     setJsonData(obj);
-    setJsonKeys(Object.keys(obj[0]));
+    let jsonKeysTemp = Object.keys(obj[1]);
+    setJsonKeys(jsonKeysTemp.filter((key: any) => typeof obj[0][key] === 'string' || typeof obj[0][key] === 'number'));
   }
 
   function checkJson(event: any) {
@@ -99,6 +99,12 @@ const validationSchema = yup.object({
         return;
     }
     setJsonLoaded(false);
+  }
+
+  function filterJsonKeys(): void {
+    if (jsonKeys && jsonData) {
+        setJsonKeys(jsonKeys.filter((key: any) => typeof jsonData[0][key] === 'string' || typeof jsonData[0][key] === 'number'))
+    }
   }
     
   return (
@@ -125,66 +131,61 @@ const validationSchema = yup.object({
                             validationSchema={validationSchema}
                             onSubmit={async (values, { setSubmitting }) => {
                                 setSubmitting(true);
-                                let titleKeyName: string = '';
-                                let descriptionKeyName: string = '';
+                                let titleKeyName: string | undefined = '';
+                                let descriptionKeyName: string | undefined = '';
 
                                 // check if titleField is filled
                                 if (
-                                    values.titleField && jsonKeys
+                                    values.titleField !==  undefined
                                 ) {
-                                    titleKeyName = jsonKeys[values.titleField];
-                                    console.log(jsonData?.[0][titleKeyName]);
+                                    console.log( values.titleField);
+                                    titleKeyName = jsonKeys?.[values.titleField];
                                 }
 
                                 // Check if descriptionField is filled
                                 if (
-                                    values.descriptionField && jsonKeys
+                                    values.descriptionField !==  undefined
                                 ) {
-                                    descriptionKeyName = jsonKeys[values.descriptionField];
-                                    console.log(jsonData?.[0][descriptionKeyName]);
+                                    descriptionKeyName = jsonKeys?.[values.descriptionField];
                                 }
 
-                                let markerInputs = [];
                                 
-                                jsonData.forEach((markerData: any[any]) => {
+                                let inputs = jsonData.map((markerData: any[any]) => {
                                     let type = markerData.geometry.geometry.type;
-                                    let name = markerData[titleKeyName]
-                                    if (descriptionKeyName !== '') {
-                                        let description = markerData[descriptionKeyName]
+                                    let name = titleKeyName? markerData[titleKeyName] : undefined;
+                                    let coords = markerData.geometry.geometry.coordinates;
+                                    let layerId = values.layerId;
+
+                                    if (type === 'Point') {
+                                        coords = [coords]
                                     }
-
                                     
-//   @Field()
-//   type: string;
-
-//   // Properties
-
-//   @Column()
-//   @Field()
-//   name?: string;
-
-//   @Column({ nullable: true })
-//   @Field({ nullable: true })
-//   description?: string;
-
-//   @Column({ nullable: true })
-//   @Field({ nullable: true })
-//   attribution?: string;
-
-//   @Column({ nullable: true })
-//   @Field(() => Boolean, { nullable: true })
-//   draggable?: Boolean;
-
-//   @Column({ nullable: true })
-//   @Field({ nullable: true })
-//   icon?: string;
-
-//   // //   Layer M-1
-
-//   @Column()
-//   @Field(() => Int)
-//   layerId: number;
+                                    if (descriptionKeyName) {
+                                        let description = markerData[descriptionKeyName]
+                                        return {
+                                            name: name,
+                                            description: description,
+                                            type: type,
+                                            coords: coords,
+                                            layerId: layerId
+                                        }
+                                    };
+                                    return {
+                                        name: name,
+                                        type: type,
+                                        coords: coords,
+                                        layerId: layerId
+                                    }
                                 });
+                                
+                                const { data } = await importMarkers({
+                                    variables: {
+                                        createMarkerWithCoordsInputs: inputs,
+                                    }
+                                })
+                                if (data) {
+                                    console.log(data);
+                                };
 
                                 setTimeout(() => {
                                     alert(JSON.stringify(values, null, 2));
@@ -196,7 +197,7 @@ const validationSchema = yup.object({
                                 <Form className='card-form'>
 
 
-                                    <FormLabel sx={{px: '1rem'}} htmlFor='titleField'>Select Layer to import to</FormLabel>
+                                    <FormLabel sx={{px: '1rem'}} htmlFor='layerId'>Select Layer to import to</FormLabel>
                                     <TextField
                                         variant="outlined"
                                         name="layerId"
@@ -251,7 +252,7 @@ const validationSchema = yup.object({
                                         </TextField>
 
                                         
-                                        <FormLabel sx={{px: '1rem'}} htmlFor='titleField'>Choose what field represents the description (optional)</FormLabel>
+                                        <FormLabel sx={{px: '1rem'}} htmlFor='descriptionField'>Choose what field represents the description (optional)</FormLabel>
                                         <TextField
                                         variant="outlined"
                                         name="descriptionField"
@@ -308,7 +309,7 @@ const validationSchema = yup.object({
                     <Card 
                         sx={{
                             pt: '4.5rem',
-                            pb: '1rem'
+                            pb: '4.5rem'
                         }}
                     >
                         <div className='countup-container'>
@@ -325,18 +326,6 @@ const validationSchema = yup.object({
                                 />
                             </div>
                         </div>
-                        <Button 
-                            href='/markers'
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'end',
-                                margin: '2.5rem 1rem 0 auto',
-                                width: 'max-content'
-                            }}
-                        
-                        >
-                            Go to markers
-                        </Button>
                     </Card>
                 </Grid>
             </Grid>

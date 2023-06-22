@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer, Popup, Marker, useMapEvent, useMap } from 'react-leaflet';
 import { useState, useEffect, useRef } from 'react';
 import { Icon, LatLng, latLng } from 'leaflet';
-import { Bounds, Button, ConditionalLoader, MassModal } from '../components';
+import { Bounds, Button, ConditionalLoader, CustomCheckbox, MassModal } from '../components';
 import FilterIcon from '@mui/icons-material/FilterList';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 
@@ -9,15 +9,20 @@ import UserIconImage from '../assets/images/user-marker.png';
 
 import "leaflet/dist/leaflet.css";
 import { toast, ToastContainer } from 'react-toastify';
+import { GET_MAPS_DATA } from '../gql/queries';
+import { useQuery } from '@apollo/client';
+import { Checkbox, FormControl, FormControlLabel, FormLabel, StepLabel } from '@mui/material';
 
 
 const Home = () => {
   const [location, setLocation] = useState<null | [number, number]>(null);
   const [isLocationSet, setIsLocationSet] = useState(false);
   const [modal, setModal] = useState('');
+  const [layers, setLayers] = useState<string[]>([]);
   const [formVisible, setFormVisible] = useState(false);
   const [refresh, setRefresh] = useState(new Date());
   const [center, setCenter] = useState<[number, number]>([51.0591448, 3.7418415]);
+  const { loading, error, data } = useQuery(GET_MAPS_DATA);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -44,6 +49,12 @@ const Home = () => {
       enableHighAccuracy: true,
     });
   }, [refresh]);
+
+  if (loading) return <p>Loading...</p>;
+
+  if (error) {
+      return <p>Error...</p>;
+  }
   
   const onRefreshClick = () => {
     setRefresh(new Date());
@@ -51,6 +62,18 @@ const Home = () => {
       setCenter(location);
     }
   };
+
+  const toggleLayer = (name: string) => {
+    let index = layers.indexOf(name);
+    let newLayers = layers;
+    if (index > -1) {
+      newLayers.splice(index, 1);
+      setLayers(newLayers)
+    } else {
+      newLayers.push(name);
+      setLayers(newLayers)
+    }
+  }
 
   const userIcon = new Icon({
     iconUrl: UserIconImage,
@@ -84,6 +107,17 @@ const Home = () => {
               </Popup>
             </Marker>
           </ConditionalLoader>
+          
+          <ConditionalLoader condition={data}>
+            {data.layers?.filter((layer: {name: string}) => layers.indexOf(layer.name) > -1).map((layer) => {
+            return (layer.markers.map((marker: {id: number, name: string, coordinates: [{latitude: number, longitude: number}]}) => (
+              <Marker position={[marker.coordinates[0].longitude , marker.coordinates[0].latitude]}>
+                <Popup>
+                  {marker.name}
+                </Popup>
+              </Marker>
+            )))})}
+          </ConditionalLoader>
           <Bounds />
         </MapContainer>
       
@@ -99,7 +133,10 @@ const Home = () => {
       </div>
       
       <MassModal visible={modal === 'filters'} setVisible={(e : string) => setModal(e)}>
-
+        <h2>Filters</h2>
+          {data.layers.map((layer: {id: number, name: string}) => (
+              <CustomCheckbox initialChecked={layers.indexOf(layer.name) > -1} onClick={() => toggleLayer(layer.name)} name={layer.name} />
+          ))}
       </MassModal>
     </div>
     <ConditionalLoader condition={formVisible}>

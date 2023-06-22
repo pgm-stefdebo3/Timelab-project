@@ -53,7 +53,9 @@ export class Marker {
   @Field(() => Int)
   layerId: number;
 
-  @ManyToOne(() => Layer, (layer) => layer.markers)
+  @ManyToOne(() => Layer, (layer) => layer.markers, {
+    onDelete: 'CASCADE',
+  })
   @Field(() => Layer)
   layer: Layer;
 
