@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer, Popup, Marker, useMapEvent, useMap } from 'react-leaflet';
 import { useState, useEffect, useRef } from 'react';
 import { Icon, LatLng, latLng } from 'leaflet';
-import { Bounds, Button, ConditionalLoader, MassModal } from '../components';
+import { Bounds, Button, ConditionalLoader, CustomCheckbox, MassModal } from '../components';
 import FilterIcon from '@mui/icons-material/FilterList';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 
@@ -109,13 +109,14 @@ const Home = () => {
           </ConditionalLoader>
           
           <ConditionalLoader condition={data}>
-            {data.layers?.filter((layer: {name: string}) => layers.indexOf(layer.name) > -1)[0]?.markers.map((marker: {id: number, name: string, coordinates: [{latitude: number, longitude: number}]}) => (
+            {data.layers?.filter((layer: {name: string}) => layers.indexOf(layer.name) > -1).map((layer) => {
+            return (layer.markers.map((marker: {id: number, name: string, coordinates: [{latitude: number, longitude: number}]}) => (
               <Marker position={[marker.coordinates[0].longitude , marker.coordinates[0].latitude]}>
                 <Popup>
                   {marker.name}
                 </Popup>
               </Marker>
-            ))}
+            )))})}
           </ConditionalLoader>
           <Bounds />
         </MapContainer>
@@ -134,10 +135,7 @@ const Home = () => {
       <MassModal visible={modal === 'filters'} setVisible={(e : string) => setModal(e)}>
         <h2>Filters</h2>
           {data.layers.map((layer: {id: number, name: string}) => (
-            <>
-              <Checkbox onClick={() => toggleLayer(layer.name)} checked={layers.indexOf(layer.name) > -1}/>
-              <FormLabel>{layer.name}</FormLabel>
-            </>
+              <CustomCheckbox initialChecked={layers.indexOf(layer.name) > -1} onClick={() => toggleLayer(layer.name)} name={layer.name} />
           ))}
       </MassModal>
     </div>
