@@ -16,9 +16,9 @@ export const CustomCheckbox = ({ disabled, onClick, initialChecked, name}: Custo
   };
 
   return (
-    <>
+    <div>
       <Checkbox disabled={disabled} onChange={handleChange} checked={checked} onClick={onClick} />
       <FormLabel>{name}</FormLabel>
-    </>
+    </div>
   );
 };

@@ -4,14 +4,17 @@ import { Icon, LatLng, latLng } from 'leaflet';
 import { Bounds, Button, ConditionalLoader, CustomCheckbox, MassModal } from '../components';
 import FilterIcon from '@mui/icons-material/FilterList';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
-
-import UserIconImage from '../assets/images/user-marker.png';
-
-import "leaflet/dist/leaflet.css";
 import { toast, ToastContainer } from 'react-toastify';
 import { GET_MAPS_DATA } from '../gql/queries';
 import { useQuery } from '@apollo/client';
-import { Checkbox, FormControl, FormControlLabel, FormLabel, StepLabel } from '@mui/material';
+import MarkerClusterGroup from 'react-leaflet-cluster';
+
+import UserIconImage from '../assets/images/user-marker.png';
+import TreeIconImage from '../assets/images/tree-marker.png';
+import MarkerIconImage from '../assets/images/normal-marker.png';
+import LogoImage from '../assets/images/logo.png';
+
+import "leaflet/dist/leaflet.css";
 
 
 const Home = () => {
@@ -79,6 +82,17 @@ const Home = () => {
     iconUrl: UserIconImage,
     iconSize: [32, 32]
   })
+
+  const treeIcon = new Icon({
+    iconUrl: TreeIconImage,
+    iconSize: [32, 32]
+  })
+
+  const markerIcon = new Icon({
+    iconUrl: MarkerIconImage,
+    iconSize: [32, 32]
+  })
+
     return (
     <div className='app-container'>
       <ToastContainer
@@ -94,7 +108,7 @@ const Home = () => {
         theme="colored"
       />
       <div className={formVisible? 'app-container-map--small': 'app-container-map'}>
-        <MapContainer center={center} zoom={16} scrollWheelZoom={true}>
+        <MapContainer center={center} zoom={20} scrollWheelZoom={true}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -109,20 +123,19 @@ const Home = () => {
           </ConditionalLoader>
           
           <ConditionalLoader condition={data}>
-            {data.layers?.filter((layer: {name: string}) => layers.indexOf(layer.name) > -1).map((layer) => {
-            return (layer.markers.map((marker: {id: number, name: string, coordinates: [{latitude: number, longitude: number}]}) => (
-              <Marker position={[marker.coordinates[0].longitude , marker.coordinates[0].latitude]}>
-                <Popup>
-                  {marker.name}
-                </Popup>
-              </Marker>
-            )))})}
+              {data.layers?.filter((layer: {name: string}) => layers.indexOf(layer.name) > -1).map((layer: {markers: {id: number, name: string, layerId: number, coordinates: [{latitude: number, longitude: number}]}[]}) => {
+              return (layer.markers.map((marker: {id: number, name: string, layerId: number, coordinates: [{latitude: number, longitude: number}]}) => (
+                <Marker  icon={marker.layerId === 1? treeIcon : markerIcon} position={[marker.coordinates[0].longitude , marker.coordinates[0].latitude]}>
+                  <Popup>
+                    {marker.name}
+                  </Popup>
+                </Marker>
+              )))})}
           </ConditionalLoader>
           <Bounds />
         </MapContainer>
-      
       {/* UI COMPONENTS */}
-      <h2 className='title'><span className='sub'>powered by</span><br/>Timelab</h2>
+      <img className='title' src={LogoImage}/>
       <div className='button-container button-container--bottom-left'>
         <Button className='button button--filters' disabled={modal !== ''} type='button' onClick={() => setModal('filters')}>
           <FilterIcon/>
@@ -134,9 +147,11 @@ const Home = () => {
       
       <MassModal visible={modal === 'filters'} setVisible={(e : string) => setModal(e)}>
         <h2>Filters</h2>
+        <div className='flex flex-col'>
           {data.layers.map((layer: {id: number, name: string}) => (
               <CustomCheckbox initialChecked={layers.indexOf(layer.name) > -1} onClick={() => toggleLayer(layer.name)} name={layer.name} />
           ))}
+        </div>
       </MassModal>
     </div>
     <ConditionalLoader condition={formVisible}>
