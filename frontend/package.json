@@ -17,6 +17,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.5",
+    "@mui/x-data-grid": "^6.10.1",
     "@nestjs/passport": "^9.0.0",
     "@types/leaflet": "^1.9.3",
     "@types/react-leaflet": "^3.0.0",

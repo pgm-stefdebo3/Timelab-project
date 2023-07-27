@@ -56,7 +56,7 @@ const bounds: [number, number][] = [
   [51.058153775277304,3.7419041991233826]
 ];
 
-export const Bounds = () => {
+const Bounds = () => {
 return (
     <Polygon
         positions={bounds}
@@ -64,3 +64,5 @@ return (
     />
 );
 };
+
+export default Bounds;

@@ -1,12 +1,13 @@
-import { Button } from "./Button";
+import Button from "./Button";
 import SVGButton from "./SVGButton";
 import CloseButton from "./CloseButton";
-import { ConditionalLoader } from "./ConditionalLoader";
-import { Bounds } from "./Bounds";
+import ConditionalLoader from "./ConditionalLoader";
+import Bounds from "./Bounds";
 import MassModal from "./MassModal";
 import Header from "./Header";
-import { DashboardMain } from "./DashboardMain";
-import { CustomCheckbox } from "./CustomCheckbox";
+import DashboardMain from "./DashboardMain";
+import CustomCheckbox from "./CustomCheckbox";
+import MarkerDataGrid from "./MarkerDataGrid";
 
 
 export {
@@ -18,5 +19,6 @@ export {
     Bounds,
     MassModal,
     Header,
-    DashboardMain
+    DashboardMain,
+    MarkerDataGrid
 }

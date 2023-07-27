@@ -5,7 +5,7 @@ type ConditionalLoaderProps = {
     children: React.ReactNode,
 }
 
-export const ConditionalLoader = (props: ConditionalLoaderProps) => {
+const ConditionalLoader = (props: ConditionalLoaderProps) => {
     if (props.condition) {
         return (
             <>{props.children}</>
@@ -15,3 +15,5 @@ export const ConditionalLoader = (props: ConditionalLoaderProps) => {
         <></>
     )
 }
+
+export default ConditionalLoader;
