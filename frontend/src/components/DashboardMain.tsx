@@ -4,14 +4,14 @@ import LayersIcon from '@mui/icons-material/Layers';
 import HomeIcon from '@mui/icons-material/Home';
 import MarkerIcon from '@mui/icons-material/Room';
 import TimestampIcon from '@mui/icons-material/AccessTimeFilled';
-import { ConditionalLoader } from "./ConditionalLoader";
+import ConditionalLoader from "./ConditionalLoader";
 
 export interface DashboardMainProps {
   children: React.ReactNode;
   active: string;
 }
 
-export const DashboardMain = ({ children, active }: DashboardMainProps) => {
+const DashboardMain = ({ children, active }: DashboardMainProps) => {
     
     const pages = ['dashboard', 'layers', 'markers', 'timestamps']
 
@@ -90,3 +90,5 @@ export const DashboardMain = ({ children, active }: DashboardMainProps) => {
     </div>
   );
 };
+
+export default DashboardMain;

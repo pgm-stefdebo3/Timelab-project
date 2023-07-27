@@ -8,7 +8,7 @@ export interface CustomCheckboxProps {
   name: string;
 }
 
-export const CustomCheckbox = ({ disabled, onClick, initialChecked, name}: CustomCheckboxProps) => {
+const CustomCheckbox = ({ disabled, onClick, initialChecked, name}: CustomCheckboxProps) => {
   const [checked, setChecked] = useState(initialChecked); 
 
   const handleChange = () => {
@@ -22,3 +22,5 @@ export const CustomCheckbox = ({ disabled, onClick, initialChecked, name}: Custo
     </div>
   );
 };
+
+export default CustomCheckbox;

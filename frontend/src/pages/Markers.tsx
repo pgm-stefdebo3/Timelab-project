@@ -1,7 +1,8 @@
-import { ConditionalLoader, DashboardMain, Header } from '../components';
+import { ConditionalLoader, DashboardMain, Header, MarkerDataGrid } from '../components';
 import { useAuth } from '../context/authContext';
 import { Navigate } from 'react-router-dom';
 import { Button, Card, Checkbox, FormControlLabel, FormLabel, Grid, Input, MenuItem, Select, TextField } from '@mui/material';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { Field, Form, Formik } from 'formik';
 import CountUp from 'react-countup';
 import MarkerIcon from '@mui/icons-material/Room';
@@ -78,7 +79,6 @@ const validationSchema = yup.object({
         }
       )
   })
-
 //   file reader functions
   function readerRead(event: any) {
     let reader = new FileReader();
@@ -112,12 +112,12 @@ const validationSchema = yup.object({
         <Header/>
         <DashboardMain active='markers'>
             
-        <Grid container gap={1} style={{padding: '1rem'}}>
+        <Grid container gap={1.16} style={{padding: '1rem', maxWidth: 'calc(100vw - 4rem)'}}>
                 <Grid xs={3.95}>
                     <Card 
                         sx={{
-                            pt: '2rem',
-                            pb: '1rem'
+                            pt: '4rem',
+                            pb: '3rem',
                         }}
                     >
                         <Formik
@@ -197,8 +197,8 @@ const validationSchema = yup.object({
                                 <Form className='card-form'>
 
 
-                                    <FormLabel sx={{px: '1rem'}} htmlFor='layerId'>Select Layer to import to</FormLabel>
-                                    <TextField
+                                    <FormLabel sx={{px: '1rem'}} htmlFor='file'>Upload json file to import</FormLabel>
+                                    {/* <TextField
                                         variant="outlined"
                                         name="layerId"
                                         id="layerId"
@@ -219,7 +219,7 @@ const validationSchema = yup.object({
                                                 {layer.name}
                                             </MenuItem>
                                         ))}
-                                    </TextField>
+                                    </TextField> */}
 
                                     <input id="file" ref={fileRef} name="file" type="file" className='card-form-file' onChange={(event) => {
                                         setFieldValue("file", event.currentTarget.files?.[0]);
@@ -227,7 +227,7 @@ const validationSchema = yup.object({
                                         readerRead(event);
                                     }} />
                                     
-                                    <ConditionalLoader condition={jsonLoaded && jsonKeys !== null}>
+                                    {/* <ConditionalLoader condition={jsonLoaded && jsonKeys !== null}>
                                         <FormLabel sx={{px: '1rem'}} htmlFor='titleField'>Choose what field represents the title</FormLabel>
                                         <TextField
                                         variant="outlined"
@@ -275,8 +275,8 @@ const validationSchema = yup.object({
                                         ))}
                                         </TextField>
 
-                                    </ConditionalLoader>
-
+                                    </ConditionalLoader> */}
+{/* 
                                     <Button
                                         className='card-form-button'
                                         type='submit'
@@ -289,7 +289,7 @@ const validationSchema = yup.object({
                                         }}
                                     >
                                         Import markers
-                                    </Button>
+                                    </Button> */}
                                 </Form>
                             )}
                         </Formik>
@@ -308,8 +308,8 @@ const validationSchema = yup.object({
                 <Grid xs={3.95}>
                     <Card 
                         sx={{
-                            pt: '4.5rem',
-                            pb: '4.5rem'
+                            pt: '3.9rem',
+                            pb: '3.9rem'
                         }}
                     >
                         <div className='countup-container'>
@@ -326,6 +326,24 @@ const validationSchema = yup.object({
                                 />
                             </div>
                         </div>
+                    </Card>
+                </Grid>
+                <Grid xs={11.95}>
+                    <Card 
+                        sx={{
+                            pt: '1rem',
+                            pb: '1rem',
+                            px: '1rem',
+                            minHeight: '25rem',
+                            maxWidth: '100%',
+                        }}
+                    >
+                        <ConditionalLoader condition={jsonLoaded && jsonKeys !== null}>
+                            <MarkerDataGrid json={jsonData}/>
+                        </ConditionalLoader>
+                        <ConditionalLoader condition={!jsonLoaded || jsonKeys == null}>
+                            <p className='datagrid-placeholder'>Upload a JSON file to see the data</p>
+                        </ConditionalLoader>
                     </Card>
                 </Grid>
             </Grid>

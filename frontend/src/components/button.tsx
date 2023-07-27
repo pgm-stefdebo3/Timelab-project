@@ -8,10 +8,12 @@ export interface ButtonProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-export const Button = ({ type, disabled, children, onClick, className }: ButtonProps) => {
+const Button = ({ type, disabled, children, onClick, className }: ButtonProps) => {
   return (
     <button type={type} disabled={disabled} onClick={onClick} className={className}>
       {children}
     </button>
   );
 };
+
+export default Button;
