@@ -1,19 +1,14 @@
 import { Button } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridCellParams } from '@mui/x-data-grid';
 import React from 'react';
+import { CrudDataGridProps } from '../interfaces';
 
-
-interface CrudDataGridProps {
-    deleteRow: (id: number) => void;
-    rows: any[];
-    columns: any[];
-}
-
-const CrudDataGrid = ({deleteRow, rows, columns}: CrudDataGridProps) => {
+const CrudDataGrid = ({rows, columns}: CrudDataGridProps) => {
   return (
     <DataGrid
         rows={rows}
         columns={columns}
+        disableRowSelectionOnClick
         sx={{
           width: '100%',
         }}
