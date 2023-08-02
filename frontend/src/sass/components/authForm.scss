@@ -1,0 +1,95 @@
+.form-container {
+    margin: auto;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    padding: 3rem;
+    width: 80%;
+    max-width: 30rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        font-weight: 100;
+        text-transform: uppercase;
+        font-family: 'Baskerville';
+    }
+
+    
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .errorfield {
+        color: red;
+    }
+
+    .form__input-container {
+        label {
+            font-size: 1.5rem;
+            line-height: 1.5;
+        }
+        input,
+        select,
+        textarea {
+            height: 2.5rem;
+            border: solid 1px #00000038 ;
+            padding: 0 0.5rem;
+            border-radius: 0.3rem;
+            width: 100%;
+            font-size: medium;
+        }
+        textarea {
+            height: 5rem;
+        }
+    }
+    
+        
+    .form_buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        align-items: center;
+
+        .login__button {
+            button {
+                text-decoration: none;
+                font-size: 1.5rem;
+                color: black;
+                text-decoration: underline;
+                background-color: white;
+                border: none;
+                margin-top: 1rem;
+            }
+        }
+    }
+
+    .quadruple__input-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .double__input-container {
+            display: flex;
+            flex-direction: row;
+            .form__input-container {
+                display: flex;
+                flex-direction: column;
+                select {
+                    width: 100%;
+                }
+                &--noLabel {
+                    label {
+                        color: #FFFFFF;
+                    }
+                }
+            }
+        }
+    }
+    
+}

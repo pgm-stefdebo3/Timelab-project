@@ -1,0 +1,27 @@
+$modal-container-background: rgba(0, 0, 0, 0.6);
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: $modal-container-background;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: #fff;
+  position: relative;
+  padding: 20px;
+  width: 80%;
+  height: max-content;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  .submit__button {
+    margin-left: auto;
+    width: max-content;
+  }
+}

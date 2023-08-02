@@ -1,0 +1,29 @@
+.countup{
+    &-container {
+        display: flex;
+        flex-direction: row;
+        gap: 1.5rem;
+        width: 80%;
+        margin: 0 auto;
+        justify-content: center;
+    }
+
+    &-suffix {
+        display: flex;
+        align-items: end;
+    }
+
+    &-number {
+        font-size: 3rem;
+        padding-bottom: 0.1rem;
+    }
+
+    &-string {
+        font-size: 2rem;
+        padding-bottom: 0.1rem;
+    }
+
+    &-icon {
+        margin-left: auto;
+    }
+}

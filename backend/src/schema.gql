@@ -1,0 +1,197 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: Int!
+  email: String!
+  password: String!
+}
+
+type Coordinate {
+  id: Int!
+  longitude: Float!
+  latitude: Float!
+  markerId: Int!
+  marker: Marker!
+}
+
+type Timestamp {
+  id: Int!
+  type: String!
+  description: String
+  fileName: String
+  markerId: Int!
+  marker: Marker!
+}
+
+type Marker {
+  id: Int!
+  name: String!
+  description: String
+  attribution: String
+  draggable: Boolean
+  icon: String
+  layerId: Int!
+  layer: Layer!
+  coordinates: [Coordinate!]
+  timestamps: [Timestamp!]
+}
+
+type Layer {
+  id: Int!
+  name: String!
+  private: Boolean!
+  markers: [Marker!]
+}
+
+input UserInput {
+  id: Int!
+  email: String!
+  password: String!
+}
+
+input CoordinateInput {
+  id: Int!
+  longitude: Float!
+  latitude: Float!
+  markerId: Int!
+  marker: MarkerInput!
+}
+
+input TimestampInput {
+  id: Int!
+  type: String!
+  description: String
+  fileName: String
+  markerId: Int!
+  marker: MarkerInput!
+}
+
+input MarkerInput {
+  id: Int!
+  name: String!
+  description: String
+  attribution: String
+  draggable: Boolean
+  icon: String
+  layerId: Int!
+  layer: LayerInput!
+  coordinates: [CoordinateInput!]
+  timestamps: [TimestampInput!]
+}
+
+input LayerInput {
+  id: Int!
+  name: String!
+  private: Boolean!
+  markers: [MarkerInput!]
+}
+
+type Query {
+  users: [User!]!
+  user(id: Int!): User!
+  layers: [Layer!]!
+  layer(id: Int!): Layer!
+  markers: [Marker!]!
+  marker(id: Int!): Marker!
+  timestamps: [Timestamp!]!
+  timestamp(id: Int!): Timestamp!
+  coordinates: [Coordinate!]!
+  coordinate(id: Int!): Coordinate!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
+  createLayer(createLayerInput: CreateLayerInput!): Layer!
+  removeLayer(id: Int!): Layer!
+  createMarker(createMarkerInput: CreateMarkerInput!): Marker!
+  createMarkers(createMarkerInputs: [CreateMarkerInput!]!): [Marker!]!
+  createMarkersWithCoords(createMarkerWithCoordsInputs: [CreateMarkerWithCoordsInput!]!): [Marker!]!
+  updateMarker(updateMarkerInput: UpdateMarkerInput!): Marker!
+  removeMarker(id: Int!): Marker!
+  createTimestamp(createTimestampInput: CreateTimestampInput!): Timestamp!
+  updateTimestamp(updateTimestampInput: UpdateTimestampInput!): Timestamp!
+  removeTimestamp(id: Int!): Timestamp!
+  createCoordinate(createCoordinateInput: CreateCoordinateInput!): Coordinate!
+  updateCoordinate(updateCoordinateInput: UpdateCoordinateInput!): Coordinate!
+  removeCoordinate(id: Int!): Coordinate!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  email: String
+  password: String
+  id: Int!
+}
+
+input CreateLayerInput {
+  name: String!
+  private: Boolean!
+}
+
+input CreateMarkerInput {
+  type: String!
+  name: String!
+  description: String
+  attribution: String
+  draggable: Boolean
+  icon: String
+  layerId: Int!
+}
+
+input CreateMarkerWithCoordsInput {
+  type: String!
+  coords: [[Float!]!]!
+  name: String!
+  description: String
+  attribution: String
+  draggable: Boolean
+  icon: String
+  layerId: Int!
+}
+
+input UpdateMarkerInput {
+  type: String
+  name: String
+  description: String
+  attribution: String
+  draggable: Boolean
+  icon: String
+  layerId: Int
+  id: Int!
+}
+
+input CreateTimestampInput {
+  type: String!
+  description: String
+  fileName: String
+  markerId: Int!
+}
+
+input UpdateTimestampInput {
+  type: String
+  description: String
+  fileName: String
+  markerId: Int
+  id: Int!
+}
+
+input CreateCoordinateInput {
+  longitude: Float!
+  latitude: Float!
+  markerId: Int!
+}
+
+input UpdateCoordinateInput {
+  longitude: Float
+  latitude: Float
+  markerId: Int
+  id: Int!
+}
