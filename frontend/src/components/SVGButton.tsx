@@ -1,11 +1,5 @@
 import React from 'react';
-
-
-type SVGButtonProps = {
-    small?: boolean,
-    onClick: () => void,
-    children: React.ReactNode,
-}
+import { SVGButtonProps } from '../interfaces';
 
 // Children can contain anything but this component is made for it to contain a SVG
 const SVGButton: React.FC<SVGButtonProps> = (props: SVGButtonProps) => {

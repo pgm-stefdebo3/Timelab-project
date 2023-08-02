@@ -5,9 +5,10 @@ query GetLayersData {
     layers {
         id
         name
-    }
-    markers {
-        id
+        private
+        markers {
+            id
+        }
     }
 }
 `;

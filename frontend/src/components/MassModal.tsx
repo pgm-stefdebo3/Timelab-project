@@ -1,12 +1,6 @@
 import React from 'react'
 import CloseButton from './CloseButton';
-
-type MassModalProps = {
-    visible: boolean,
-    setVisible: (e:  string) => void,
-    children: React.ReactNode,
-    removeCloseButton?: boolean | undefined,
-}
+import { MassModalProps } from '../interfaces';
 
 const MassModal = (props: MassModalProps) => {
 

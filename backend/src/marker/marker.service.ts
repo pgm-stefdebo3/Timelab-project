@@ -49,7 +49,7 @@ export class MarkerService {
   //   READ
 
   findAll(): Promise<Marker[]> {
-    return this.markerRepository.find({ relations: ['layer'] });
+    return this.markerRepository.find({ relations: ['layer', 'coordinates'] });
   }
 
   findAllWithLayerId(layerId: number): Promise<Marker[]> {
@@ -59,7 +59,7 @@ export class MarkerService {
   findOne(id: number): Promise<Marker> {
     return this.markerRepository.findOne({
       where: { id },
-      relations: ['layer',],
+      relations: ['layer', 'coordinates'],
     });
   }
 

@@ -2,18 +2,15 @@ import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } fr
 import React from "react";
 import LayersIcon from '@mui/icons-material/Layers';
 import HomeIcon from '@mui/icons-material/Home';
+import ImportExportIcon from '@mui/icons-material/ImportExport';
 import MarkerIcon from '@mui/icons-material/Room';
 import TimestampIcon from '@mui/icons-material/AccessTimeFilled';
 import ConditionalLoader from "./ConditionalLoader";
-
-export interface DashboardMainProps {
-  children: React.ReactNode;
-  active: string;
-}
+import { DashboardMainProps } from "../interfaces";
 
 const DashboardMain = ({ children, active }: DashboardMainProps) => {
     
-    const pages = ['dashboard', 'layers', 'markers', 'timestamps']
+    const pages = ['dashboard', 'layers', 'markers', 'timestamps', 'import-export']
 
   return (
     <div className="dashboard-main-container">
@@ -65,6 +62,13 @@ const DashboardMain = ({ children, active }: DashboardMainProps) => {
                                 </ConditionalLoader>
                                 <ConditionalLoader condition={'markers' === name} >
                                     <MarkerIcon 
+                                        sx={{
+                                            fill: active === name? '#000000': '',
+                                        }}
+                                    />
+                                </ConditionalLoader>
+                                <ConditionalLoader condition={'import-export' === name} >
+                                    <ImportExportIcon 
                                         sx={{
                                             fill: active === name? '#000000': '',
                                         }}

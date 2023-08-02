@@ -5,7 +5,7 @@ import {
   Route } from 'react-router-dom'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import App from './App'
-import { Dashboard, Home, Layers, Login, Markers, Timestamps } from './pages';
+import { Dashboard, Home, ImportExport, Layers, Login, Markers, Timestamps } from './pages';
 import { AuthProvider } from './context/authContext';
 
 import './sass/main.scss'
@@ -27,6 +27,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
               <Route path='/dashboard' element={<Dashboard/>} />
               <Route path='/layers' element={<Layers/>} />
               <Route path='/markers' element={<Markers/>} />
+              <Route path='/import-export' element={<ImportExport/>} />
               <Route path='/timestamps' element={<Timestamps/>} />
               <Route path='*' element={<Home/>} />
             </Route>

@@ -1,12 +1,6 @@
 import { Checkbox, FormLabel } from "@mui/material";
 import React, { useState } from "react";
-
-export interface CustomCheckboxProps {
-  disabled?: boolean;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  initialChecked: boolean;
-  name: string;
-}
+import { CustomCheckboxProps } from "../interfaces";
 
 const CustomCheckbox = ({ disabled, onClick, initialChecked, name}: CustomCheckboxProps) => {
   const [checked, setChecked] = useState(initialChecked); 

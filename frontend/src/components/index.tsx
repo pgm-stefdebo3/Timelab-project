@@ -7,8 +7,8 @@ import MassModal from "./MassModal";
 import Header from "./Header";
 import DashboardMain from "./DashboardMain";
 import CustomCheckbox from "./CustomCheckbox";
-import MarkerDataGrid from "./MarkerDataGrid";
-
+import MarkerDataGrid from "./MarkerDataGrid/MarkerDataGrid";
+import CrudDataGrid from "./CrudDataGrid";
 
 export {
     Button,
@@ -20,5 +20,6 @@ export {
     MassModal,
     Header,
     DashboardMain,
-    MarkerDataGrid
+    MarkerDataGrid,
+    CrudDataGrid,
 }
