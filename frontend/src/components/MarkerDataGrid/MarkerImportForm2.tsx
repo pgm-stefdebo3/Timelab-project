@@ -18,6 +18,7 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
     const titleField = useRef<HTMLInputElement>(null);
     const descriptionField = useRef<HTMLInputElement>(null);
 
+    // Asked on ChatGPT for a function that would replace {key} with the value of key in the object, out of my league because i have no idea how .replace() regexxes works.
     function templateString(template: string, object: Record<string, number>): string {
         return template.replace(/{([^}]+)}/g, (match: string, key: string) => {
             const value = object[key.trim()];

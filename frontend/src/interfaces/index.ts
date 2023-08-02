@@ -82,6 +82,11 @@ interface SVGButtonProps {
     children: React.ReactNode,
 }
 
+interface CrudDataGridProps {
+    rows: any[];
+    columns: any[];
+}
+
 export type {
     DeconstructedObject,
     MarkerDataGridProps,
@@ -96,4 +101,5 @@ export type {
     DashboardMainProps,
     MassModalProps,
     SVGButtonProps,
+    CrudDataGridProps,
 }

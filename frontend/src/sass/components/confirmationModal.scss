@@ -1,0 +1,19 @@
+.confirmation-container {
+    width: 30rem;
+    padding-top: 1rem;
+
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        padding-left: 1rem;
+    }
+
+    .confirmation-buttons {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 2rem;
+        button {
+            margin-left: 2rem;
+        }
+    }
+}
