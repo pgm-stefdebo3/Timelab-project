@@ -9,10 +9,12 @@ import CountUp from 'react-countup';
 
 import '../sass/pages/dashboard.scss'
 import { mutationCreateLayer } from '../gql/mutations';
+import { GET_LAYERS_DATA } from '../gql/queries';
 
 const Layers = () => {
     const { authenticated, authLoading, user } = useAuth();
     const [createLayer] = useMutation(mutationCreateLayer);
+    const { loading, error, data } = useQuery(GET_LAYERS_DATA);
 
     if (authLoading) {
         return (
@@ -24,6 +26,12 @@ const Layers = () => {
     
     if (!authenticated) {
         return <Navigate to="/login" replace/>;
+    }
+
+    if (loading) return <p>Loading...</p>;
+
+    if (error) {
+        return <p>Error...</p>;
     }
     
   return (
