@@ -1,9 +1,5 @@
 import React from 'react'
-
-type ConditionalLoaderProps = {
-    condition: boolean,
-    children: React.ReactNode,
-}
+import { ConditionalLoaderProps } from '../interfaces';
 
 const ConditionalLoader = (props: ConditionalLoaderProps) => {
     if (props.condition) {

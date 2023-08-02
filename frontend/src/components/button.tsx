@@ -1,12 +1,5 @@
 import React from "react";
-
-export interface ButtonProps {
-  type: "submit" | "button" | "reset" | undefined;
-  disabled?: boolean;
-  children: React.ReactNode;
-  className?: string;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-}
+import { ButtonProps } from "../interfaces";
 
 const Button = ({ type, disabled, children, onClick, className }: ButtonProps) => {
   return (

@@ -10,7 +10,6 @@ import CountUp from 'react-countup';
 import '../sass/pages/dashboard.scss'
 import { mutationCreateLayer } from '../gql/mutations';
 
-
 const Layers = () => {
     const { authenticated, authLoading, user } = useAuth();
     const [createLayer] = useMutation(mutationCreateLayer);
