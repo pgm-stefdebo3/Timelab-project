@@ -29,8 +29,7 @@ type Marker {
   id: Int!
   name: String!
   description: String
-  attribution: String
-  draggable: Boolean
+  type: String
   icon: String
   layerId: Int!
   layer: Layer!
@@ -72,8 +71,7 @@ input MarkerInput {
   id: Int!
   name: String!
   description: String
-  attribution: String
-  draggable: Boolean
+  type: String
   icon: String
   layerId: Int!
   layer: LayerInput!
@@ -137,7 +135,7 @@ input CreateLayerInput {
 }
 
 input CreateMarkerInput {
-  type: String!
+  type: String
   name: String!
   description: String
   attribution: String
@@ -147,7 +145,7 @@ input CreateMarkerInput {
 }
 
 input CreateMarkerWithCoordsInput {
-  type: String!
+  type: String
   coords: [[Float!]!]!
   name: String!
   description: String
