@@ -73,7 +73,7 @@ const Layers = () => {
         <Header/>
         <DashboardMain active='layers'>
             <Grid container gap={1} style={{padding: '1rem'}}>
-                <Grid xs={7.90}>
+                <Grid xs={7.95}>
                     <Card 
                         sx={{
                             pt: '2rem',

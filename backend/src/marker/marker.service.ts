@@ -1,6 +1,6 @@
 
 import { CoordinateService } from './../coordinate/coordinate.service';
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { CreateMarkerInput } from './dto/create-marker.input';
 import { UpdateMarkerInput } from './dto/update-marker.input';
 import { CreateMarkerWithCoordsInput } from './dto/create-marker-with-coords';
@@ -37,7 +37,7 @@ export class MarkerService {
 
   createManyWithCoords(createMarkerWithCoordsInputs: CreateMarkerWithCoordsInput[]): Promise<Marker[]> {
     createMarkerWithCoordsInputs.map(async (createMarkerWithCoordsInput) => {
-      const newMarker = await this.create(createMarkerWithCoordsInput);
+      const newMarker = await this.create(createMarkerWithCoordsInput)
       const marker = await this.findOne(newMarker.id);
       createMarkerWithCoordsInput.coords.forEach((coord) => {
         this.coordinateService.create({latitude: coord[0], longitude: coord[1], markerId: marker.id })

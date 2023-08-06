@@ -37,11 +37,7 @@ export class Marker {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  attribution?: string;
-
-  @Column({ nullable: true })
-  @Field(() => Boolean, { nullable: true })
-  draggable?: Boolean;
+  type?: string;
 
   @Column({ nullable: true })
   @Field({ nullable: true })

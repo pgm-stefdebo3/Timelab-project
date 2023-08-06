@@ -2,8 +2,9 @@ import { InputType, Int, Field, Float } from '@nestjs/graphql';
 
 @InputType()
 export class CreateMarkerWithCoordsInput {
-  @Field()
-  type: string;
+
+  @Field({ nullable: true })
+  type?: string;
 
   // Properties
 
