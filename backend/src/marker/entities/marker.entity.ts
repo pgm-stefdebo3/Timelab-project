@@ -34,6 +34,10 @@ export class Marker {
   @Column()
   @Field()
   createdAt: Date;
+  
+  @Column({nullable: true})
+  @Field({nullable: true})
+  author?: string;
 
   @Column({ nullable: true })
   @Field({ nullable: true })

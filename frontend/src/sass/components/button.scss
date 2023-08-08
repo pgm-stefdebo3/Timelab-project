@@ -65,3 +65,11 @@
         left: 1rem;
     }
 }
+
+.button--form {
+    position: absolute;
+    z-index: 2;
+    width: max-content;
+    bottom: 1rem;
+    right: 1rem;
+}

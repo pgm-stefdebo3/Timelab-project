@@ -2,13 +2,17 @@ import { MapContainer, TileLayer, Popup, Marker, useMapEvent, useMap } from 'rea
 import { useState, useEffect, useRef } from 'react';
 import { Icon, LatLng, latLng } from 'leaflet';
 import { Bounds, Button, ConditionalLoader, CustomCheckbox, MassModal } from '../components';
-import FilterIcon from '@mui/icons-material/FilterList';
-import MyLocationIcon from '@mui/icons-material/MyLocation';
 import { toast, ToastContainer } from 'react-toastify';
 import { GET_MAPS_DATA } from '../gql/queries';
 import { useQuery } from '@apollo/client';
-import MarkerClusterGroup from 'react-leaflet-cluster';
+import MarkerForm from '../components/MarkerForm';
+import bounds from "../utils/bounds"
+import classifyPoint from 'robust-point-in-polygon';
 
+import FilterIcon from '@mui/icons-material/FilterList';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import MyLocationIcon from '@mui/icons-material/MyLocation';
 import UserIconImage from '../assets/images/user-marker.png';
 import TreeIconImage from '../assets/images/tree-marker.png';
 import MarkerIconImage from '../assets/images/normal-marker.png';
@@ -21,11 +25,12 @@ const Home = () => {
   const [location, setLocation] = useState<null | [number, number]>(null);
   const [isLocationSet, setIsLocationSet] = useState(false);
   const [modal, setModal] = useState('');
+  const [inBounds, setInBounds] = useState(false);
   const [layers, setLayers] = useState<string[]>([]);
-  const [formVisible, setFormVisible] = useState(false);
+  const [formVisible, setFormVisible] = useState('');
   const [refresh, setRefresh] = useState(new Date());
   const [center, setCenter] = useState<[number, number]>([51.0591448, 3.7418415]);
-  const { loading, error, data } = useQuery(GET_MAPS_DATA);
+  const { loading, error, data, refetch } = useQuery(GET_MAPS_DATA);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -44,6 +49,11 @@ const Home = () => {
         let tempLoc: [number, number] = [crds.latitude, crds.longitude];
         setLocation(tempLoc);
         setIsLocationSet(true);
+        if (classifyPoint(bounds, [crds.latitude, crds.longitude]) === 1) {
+          setInBounds(false)
+        } else {
+          setInBounds(true)
+        }
       }
     }, (err) => {
       console.warn(`ERROR(${err.code}): ${err.message}`);
@@ -51,7 +61,7 @@ const Home = () => {
     , {
       enableHighAccuracy: true,
     });
-  }, [refresh]);
+  }, [refresh, formVisible]);
 
   if (loading) return <p>Loading...</p>;
 
@@ -134,32 +144,43 @@ const Home = () => {
           </ConditionalLoader>
           <Bounds />
         </MapContainer>
-      {/* UI COMPONENTS */}
+          <div className='map-form-container'>
+            <div className='map-form-container__close' onClick={() => setFormVisible('')}>
+              <ArrowForwardIosIcon  color='secondary' sx={{
+                visibility: formVisible? 'visible': 'hidden',
+                width: formVisible? '2rem': '0',
+              }}/>
+            </div>
+            <MarkerForm refetch={refetch} setFormVisible={setFormVisible} visible={formVisible === 'create-marker'} layers={data.layers} coordinate={location? location : [0, 0]}/>
+          </div>
+      </div>
+      {/* UI COMPONENTS */} 
+      
       <img className='title' src={LogoImage}/>
       <div className='button-container button-container--bottom-left'>
         <Button className='button button--filters' disabled={modal !== ''} type='button' onClick={() => setModal('filters')}>
-          <FilterIcon/>
+          <FilterIcon color='secondary'/>
         </Button>
         <Button className='button button--refresh' disabled={modal !== ''} type='button' onClick={onRefreshClick}>
-          <MyLocationIcon/>
+          <MyLocationIcon color='secondary'/>
         </Button>
+        <MassModal visible={modal === 'filters'} setVisible={(e : string) => setModal(e)}>
+          <h2>Filters</h2>
+          <div className='flex flex-col'>
+            {data.layers.map((layer: {id: number, name: string}) => (
+                <CustomCheckbox initialChecked={layers.indexOf(layer.name) > -1} onClick={() => toggleLayer(layer.name)} name={layer.name} />
+            ))}
+          </div>
+        </MassModal>
       </div>
-      
-      <MassModal visible={modal === 'filters'} setVisible={(e : string) => setModal(e)}>
-        <h2>Filters</h2>
-        <div className='flex flex-col'>
-          {data.layers.map((layer: {id: number, name: string}) => (
-              <CustomCheckbox initialChecked={layers.indexOf(layer.name) > -1} onClick={() => toggleLayer(layer.name)} name={layer.name} />
-          ))}
+      <ConditionalLoader condition={inBounds && !formVisible}>
+        <div className=''>
+          <Button className='button button--form' disabled={modal !== ''} type='button' onClick={() => setFormVisible('create-marker')}>
+            <AddBoxIcon color='secondary'/>
+          </Button>
         </div>
-      </MassModal>
+      </ConditionalLoader>
     </div>
-    <ConditionalLoader condition={formVisible}>
-      <div className='form-container'>
-
-      </div>
-    </ConditionalLoader>
-  </div>
   )
 }
 

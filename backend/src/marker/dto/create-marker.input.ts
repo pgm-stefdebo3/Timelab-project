@@ -12,6 +12,12 @@ export class CreateMarkerInput {
   @Field()
   name?: string;
 
+  @Field()
+  createdAt: Date;
+  
+  @Field({nullable: true})
+  author?: string;
+
   @Field({ nullable: true })
   description?: string;
 

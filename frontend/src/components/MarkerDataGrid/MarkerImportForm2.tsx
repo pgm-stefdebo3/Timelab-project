@@ -52,6 +52,8 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
                     name: templateString(values.title, markerData),
                     coords: markerData['geometry.geometry.type'] === 'Point' ? [markerData['geometry.geometry.coordinates']] : markerData['geometry.geometry.coordinates'],
                     layerId: formData.layerId,
+                    author: 'ImportedByTimelab',
+                    createdAt: new Date(),
                 };
 
                 if (values.description) {
@@ -60,19 +62,14 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
 
                 return input;
             });
-            
-            
+
             const { data } = await importMarkers({
                 variables: {
                     createMarkerWithCoordsInputs: inputs,
                 }
             })
-            if (data) {
-                console.log(data);
-            };
 
             setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
                 setSubmitting(false);
             }, 1000);
         }}
@@ -118,13 +115,13 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
                             setFocus('title');
                         }}
                         value={values.title}
-                        defaultValue={values.description}
+                        defaultValue={values.title}
                         onChange={handleChange}
                         multiline
                         rows={2}
                         sx={{width: '100%', px: '1rem', mt: '1rem', mb: '2rem'}}
                     />
-                    <FormLabel sx={{px: '1rem'}} htmlFor='description'>Enter the desired title for the markers</FormLabel>
+                    <FormLabel sx={{px: '1rem'}} htmlFor='description'>Enter the desired description for the markers</FormLabel>
                     <ErrorMessage name="description" component="div" className='errorfield' />
                     <TextField
                         name="description"
