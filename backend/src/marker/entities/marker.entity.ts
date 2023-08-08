@@ -29,7 +29,11 @@ export class Marker {
 
   @Column()
   @Field()
-  name?: string;
+  name: string;
+
+  @Column()
+  @Field()
+  createdAt: Date;
 
   @Column({ nullable: true })
   @Field({ nullable: true })

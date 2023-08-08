@@ -57,6 +57,7 @@ const Layers = () => {
         },
         { field: "id", headerName: "ID", width: 150 },
         { field: "name", headerName: "Name", width: 150 },
+        { field: "createdAt", headerName: "Created at", width: 250 },
         { field: "private", headerName: "Private", width: 150 },
         { field: "markers", headerName: "Markers", width: 150 },
     ]
@@ -65,15 +66,19 @@ const Layers = () => {
     let rows = data.layers.map((obj: any, index: number) => ({
         ...obj,
         markers: obj.markers.length,
-      }));
+        createdAt: `${new Date(obj.createdAt).toLocaleDateString()}\n ${new Date(obj.createdAt).toLocaleTimeString()}`,
+    }));
+
+    console.log(data.layers);
+    
       
     
   return (
-    <div className='dashboard-container'>
+    <div className='dashboard-container dashboard-container--layers'>
         <Header/>
         <DashboardMain active='layers'>
             <Grid container gap={1} style={{padding: '1rem'}}>
-                <Grid xs={7.95}>
+                <Grid xs={7.95} item>
                     <Card 
                         sx={{
                             pt: '2rem',
@@ -141,7 +146,7 @@ const Layers = () => {
                         </Formik>
                     </Card>
                 </Grid>
-                <Grid xs={3.95}>
+                <Grid xs={3.95} item>
                     <Card 
                         sx={{
                             pt: '4.5rem',
@@ -175,7 +180,7 @@ const Layers = () => {
                         </Button>
                     </Card>
                 </Grid>
-                <Grid xs={11.95}>
+                <Grid xs={11.95} item>
                     <Card 
                         sx={{
                             pt: '1rem',
@@ -185,7 +190,7 @@ const Layers = () => {
                             maxWidth: '100%',
                         }}
                     >
-                        <CrudDataGrid rows={rows} columns={columns}
+                        <CrudDataGrid rows={rows} columns={columns} pageSize={5} pageSizeOptions={[5, 10, 20]}
                         />
                     </Card>
                 </Grid>

@@ -15,6 +15,10 @@ export class Timestamp {
   @Field()
   type: string;
 
+  @Column()
+  @Field()
+  createdAt: Date;
+
   // variables per type (all nullable)
   @Column({nullable: true})
   @Field({nullable: true})

@@ -54,6 +54,7 @@ const Markers = () => {
         { field: "id", headerName: "ID", width: 150 },
         { field: "name", headerName: "Name", width: 150 },
         { field: "type", headerName: "Type", width: 150 },
+        { field: "createdAt", headerName: "Created at", width: 250 },
         { field: "layer", headerName: "Layer", width: 150 },
         { field: "timestamps", headerName: "Timestamps", width: 150 },
         { field: "coordinates", headerName: "Coordinates", width: 150 },
@@ -66,13 +67,14 @@ const Markers = () => {
             name: marker.name,
             type: marker.type,
             layer: marker.layer.name,
+            createdAt: `${new Date(marker.createdAt).toLocaleDateString()}\n ${new Date(marker.createdAt).toLocaleTimeString()}`,
             timestamps: timestamps,
             coordinates: marker.coordinates.length,
         }
     });
     
   return (
-    <div className='dashboard-container'>
+    <div className='dashboard-container dashboard-container--markers'>
         <Header/>
         <DashboardMain active='markers'>
         <Grid container gap={1} style={{padding: '1rem'}}>
@@ -86,7 +88,7 @@ const Markers = () => {
                             maxWidth: '100%',
                         }}
                     >
-                        <CrudDataGrid rows={rows} columns={columns}
+                        <CrudDataGrid rows={rows} columns={columns} pageSize={15} pageSizeOptions={[15]}
                         />
                     </Card>
                 </Grid>
