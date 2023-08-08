@@ -7,9 +7,11 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import App from './App'
 import { Dashboard, Home, ImportExport, Layers, Login, Markers, Timestamps } from './pages';
 import { AuthProvider } from './context/authContext';
+import { ThemeProvider } from '@mui/material/styles';
 
 import './sass/main.scss'
 import 'react-toastify/dist/ReactToastify.css';
+import theme from './utils/theme';
 
 const client = new ApolloClient({
   uri: 'http://localhost:3000/graphql',
@@ -19,6 +21,7 @@ const client = new ApolloClient({
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <ApolloProvider client={client}>
     <AuthProvider>
+      <ThemeProvider theme={theme}>
         <BrowserRouter>
         <Routes>
             <Route element={<App />}>
@@ -33,6 +36,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             </Route>
         </Routes>
         </BrowserRouter>
+      </ThemeProvider>
     </AuthProvider>
   </ApolloProvider>
 );

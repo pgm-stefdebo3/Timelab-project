@@ -3,13 +3,13 @@ interface DeconstructedObject {
 }
 
 interface layer {
-id: number,
-name: string,
+    id: number,
+    name: string,
 }
 
 interface MarkerDataGridProps {
-json: any[],
-layers: layer[],
+    json: any[],
+    layers: layer[],
 }
 
 interface FormData {
@@ -19,12 +19,22 @@ interface FormData {
     description?: string,
 }
 
+interface MarkerFormProps {
+    layers: layer[],
+    coordinate: [number, number],
+    visible: boolean,
+    refetch: () => void,
+    setFormVisible: (value: string) => void,
+}
+
 interface MarkerInput {
     type: string,
     name: string,
-    coords: Coordinate[],
+    coords: Coordinate[] | [number, number][],
     layerId?: number | null,
     description?: string,
+    author?: string,
+    createdAt: Date,
 }
 
 interface ButtonProps {
@@ -104,4 +114,5 @@ export type {
     MassModalProps,
     SVGButtonProps,
     CrudDataGridProps,
+    MarkerFormProps,
 }

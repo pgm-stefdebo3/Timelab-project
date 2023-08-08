@@ -1,5 +1,44 @@
-.leaflet-container {
-    height: 100vh;
-    width: 100vw;
-    z-index: 0;
+.app-container-map {
+    display: flex;
+    flex-direction: row;
+    .leaflet-container {
+        height: 100vh;
+        width: 100vw;
+        z-index: 0;
+        transition: all 1s ease-in-out;
+    }
+    .map-form-container {
+        width: 0vw;
+        transition: all 1s ease-in-out;
+        background-color: #fdfdfd;
+    }
+
+    &--small {
+        display: flex;
+        flex-direction: row;
+        .leaflet-container {
+            height: 100vh;
+            width: 60vw;
+            z-index: 0;
+            transition: all 1s ease-in-out;
+        }
+        .map-form-container {
+            width: 40vw;
+            height: 100vh;
+            background-color: #fdfdfd;
+            overflow-y: scroll;
+            overflow-x: auto;
+            transition: all 1s ease-in-out;
+            .map-form-container__close {
+                padding: 1rem 2rem;
+                background-color: #d5212a;
+                width: max-content;
+                border-radius: 1rem;
+                margin-left: 1rem;
+                margin-right: auto;
+                margin-top: 1rem;
+                z-index: 4 !important;
+            }
+        }
+    }
 }

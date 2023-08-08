@@ -20,6 +20,7 @@ type Timestamp {
   id: Int!
   type: String!
   createdAt: Date!
+  author: String
   description: String
   fileName: String
   markerId: Int!
@@ -30,6 +31,7 @@ type Marker {
   id: Int!
   name: String!
   createdAt: Date!
+  author: String
   description: String
   type: String
   icon: String
@@ -65,6 +67,7 @@ input TimestampInput {
   id: Int!
   type: String!
   createdAt: Date!
+  author: String
   description: String
   fileName: String
   markerId: Int!
@@ -75,6 +78,7 @@ input MarkerInput {
   id: Int!
   name: String!
   createdAt: Date!
+  author: String
   description: String
   type: String
   icon: String
@@ -146,6 +150,8 @@ input CreateLayerInput {
 input CreateMarkerInput {
   type: String
   name: String!
+  createdAt: Date!
+  author: String
   description: String
   attribution: String
   draggable: Boolean
@@ -157,6 +163,8 @@ input CreateMarkerWithCoordsInput {
   type: String
   coords: [[Float!]!]!
   name: String!
+  createdAt: Date!
+  author: String
   description: String
   attribution: String
   draggable: Boolean
@@ -167,6 +175,8 @@ input CreateMarkerWithCoordsInput {
 input UpdateMarkerInput {
   type: String
   name: String
+  createdAt: Date
+  author: String
   description: String
   attribution: String
   draggable: Boolean
@@ -178,6 +188,7 @@ input UpdateMarkerInput {
 input CreateTimestampInput {
   type: String!
   description: String
+  author: String
   fileName: String
   markerId: Int!
 }
@@ -185,6 +196,7 @@ input CreateTimestampInput {
 input UpdateTimestampInput {
   type: String
   description: String
+  author: String
   fileName: String
   markerId: Int
   id: Int!

@@ -19,7 +19,7 @@ export class TimestampService {
   //   CREATE
 
   create(createTimestampInput: CreateTimestampInput): Promise<Timestamp> {
-    const newTimestamp = this.timestampRepository.create(createTimestampInput);
+    const newTimestamp = this.timestampRepository.create({...createTimestampInput, createdAt: new Date()});
     return this.timestampRepository.save(newTimestamp);
   }
 

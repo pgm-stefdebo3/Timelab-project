@@ -18,8 +18,11 @@ export class Timestamp {
   @Column()
   @Field()
   createdAt: Date;
+  
+  @Column({nullable: true})
+  @Field({nullable: true})
+  author?: string;
 
-  // variables per type (all nullable)
   @Column({nullable: true})
   @Field({nullable: true})
   description?: string;
