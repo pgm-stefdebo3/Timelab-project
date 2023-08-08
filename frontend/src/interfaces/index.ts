@@ -85,6 +85,8 @@ interface SVGButtonProps {
 interface CrudDataGridProps {
     rows: any[];
     columns: any[];
+    pageSize: number;
+    pageSizeOptions: number[];
 }
 
 export type {

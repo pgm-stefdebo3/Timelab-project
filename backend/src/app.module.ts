@@ -12,6 +12,7 @@ import { LayerModule } from './layer/layer.module';
 import { MarkerModule } from './marker/marker.module';
 import { CoordinateModule } from './coordinate/coordinate.module';
 import { TimestampModule } from './timestamp/timestamp.module';
+import { DateScalar } from './scalar-date/scalar-date';
 
 @Module({
   imports: [
@@ -61,6 +62,6 @@ import { TimestampModule } from './timestamp/timestamp.module';
     TimestampModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, DateScalar],
 })
 export class AppModule {}

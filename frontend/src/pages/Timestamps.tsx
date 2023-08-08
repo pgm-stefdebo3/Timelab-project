@@ -22,7 +22,7 @@ const Timestamps = () => {
     }
     
   return (
-    <div className='dashboard-container'>
+    <div className='dashboard-container dashboard-container--timestamps'>
         <Header/>
         <DashboardMain active='timestamps'>
             timestamps

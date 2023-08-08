@@ -11,6 +11,8 @@ import { LayerService } from 'src/layer/layer.service';
 import { Layer } from 'src/layer/entities/layer.entity';
 import { Coordinate } from 'src/coordinate/entities/coordinate.entity';
 import { TimestampService } from 'src/timestamp/timestamp.service';
+var classifyPoint = require("robust-point-in-polygon")
+import bounds from './bounds';
 
 @Injectable()
 export class MarkerService {
@@ -26,22 +28,31 @@ export class MarkerService {
   //   CREATE
 
   create(createMarkerInput: CreateMarkerInput): Promise<Marker> {
-    const newMarker = this.markerRepository.create(createMarkerInput);
+    const newMarker = this.markerRepository.create({...createMarkerInput, createdAt: new Date()});
     return this.markerRepository.save(newMarker);
   }
 
   createMany(createMarkerInputs: CreateMarkerInput[]): Promise<Marker[]> {
-    let markers = this.markerRepository.create(createMarkerInputs);
+    let markers = this.markerRepository.create(createMarkerInputs.map((createMarkerInput) => ({...createMarkerInput, createdAt: new Date()})));
     return this.markerRepository.save(markers);
-  }
+  } 
 
   createManyWithCoords(createMarkerWithCoordsInputs: CreateMarkerWithCoordsInput[]): Promise<Marker[]> {
     createMarkerWithCoordsInputs.map(async (createMarkerWithCoordsInput) => {
-      const newMarker = await this.create(createMarkerWithCoordsInput)
-      const marker = await this.findOne(newMarker.id);
-      createMarkerWithCoordsInput.coords.forEach((coord) => {
-        this.coordinateService.create({latitude: coord[0], longitude: coord[1], markerId: marker.id })
-      })
+      let valid = true;
+      // check if marker is within map bounds
+      createMarkerWithCoordsInput.coords.forEach(coord => {
+        if (classifyPoint(bounds, coord) === 1) {
+          valid = false;
+        }
+      });
+      if (valid) {
+        const newMarker = await this.create(createMarkerWithCoordsInput)
+        const marker = await this.findOne(newMarker.id);
+        createMarkerWithCoordsInput.coords.forEach((coord) => {
+          this.coordinateService.create({latitude: coord[0], longitude: coord[1], markerId: marker.id })
+        })
+      }
     })
     return this.findAllWithLayerId(createMarkerWithCoordsInputs[0].layerId);
   }

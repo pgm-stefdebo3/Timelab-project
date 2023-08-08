@@ -20,3 +20,15 @@
         }
     }
 }
+
+.dashboard-container {
+    &--markers .MuiDataGrid-autoHeight {
+        height: 53rem !important;
+    }
+    &--layers .MuiDataGrid-autoHeight {
+        height: 37.5rem !important;
+    }
+    &--timestamps .MuiDataGrid-autoHeight {
+        height: 100%;
+    }
+}

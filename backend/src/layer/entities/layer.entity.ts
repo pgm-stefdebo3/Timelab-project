@@ -26,6 +26,10 @@ export class Layer {
 
   @Column()
   @Field()
+  createdAt: Date;
+
+  @Column()
+  @Field()
   private: boolean;
 
   // //   Markers 1-M

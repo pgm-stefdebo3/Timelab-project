@@ -14,7 +14,7 @@ export class LayerService {
   //   CREATE
 
   create(createLayerInput: CreateLayerInput): Promise<Layer> {
-    const newLayer = this.layerRepository.create(createLayerInput);
+    const newLayer = this.layerRepository.create({...createLayerInput, createdAt: new Date()});
     return this.layerRepository.save(newLayer);
   }
 

@@ -19,6 +19,7 @@ type Coordinate {
 type Timestamp {
   id: Int!
   type: String!
+  createdAt: Date!
   description: String
   fileName: String
   markerId: Int!
@@ -28,6 +29,7 @@ type Timestamp {
 type Marker {
   id: Int!
   name: String!
+  createdAt: Date!
   description: String
   type: String
   icon: String
@@ -40,6 +42,7 @@ type Marker {
 type Layer {
   id: Int!
   name: String!
+  createdAt: Date!
   private: Boolean!
   markers: [Marker!]
 }
@@ -61,6 +64,7 @@ input CoordinateInput {
 input TimestampInput {
   id: Int!
   type: String!
+  createdAt: Date!
   description: String
   fileName: String
   markerId: Int!
@@ -70,6 +74,7 @@ input TimestampInput {
 input MarkerInput {
   id: Int!
   name: String!
+  createdAt: Date!
   description: String
   type: String
   icon: String
@@ -82,9 +87,13 @@ input MarkerInput {
 input LayerInput {
   id: Int!
   name: String!
+  createdAt: Date!
   private: Boolean!
   markers: [MarkerInput!]
 }
+
+"""Date custom scalar type"""
+scalar Date
 
 type Query {
   users: [User!]!

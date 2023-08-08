@@ -108,7 +108,7 @@ const validationSchema = yup.object({
   }
     
   return (
-    <div className='dashboard-container'>
+    <div className='dashboard-container dashboard-container--import'>
         <Header/>
         <DashboardMain active='import-export'>
         <Grid container gap={1.16} style={{padding: '1rem', maxWidth: 'calc(100vw - 4rem)'}}>
