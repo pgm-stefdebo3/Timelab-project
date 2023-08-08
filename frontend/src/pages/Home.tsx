@@ -1,5 +1,5 @@
 import { MapContainer, TileLayer, Popup, Marker, useMapEvent, useMap } from 'react-leaflet';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Icon, LatLng, latLng } from 'leaflet';
 import { Bounds, Button, ConditionalLoader, CustomCheckbox, MassModal } from '../components';
 import { toast, ToastContainer } from 'react-toastify';
@@ -10,6 +10,7 @@ import bounds from "../utils/bounds"
 import classifyPoint from 'robust-point-in-polygon';
 
 import FilterIcon from '@mui/icons-material/FilterList';
+import InfoIcon from '@mui/icons-material/Info';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
@@ -19,6 +20,7 @@ import MarkerIconImage from '../assets/images/normal-marker.png';
 import LogoImage from '../assets/images/logo.png';
 
 import "leaflet/dist/leaflet.css";
+import TimestampList from '../components/TimestampList';
 
 
 const Home = () => {
@@ -28,6 +30,7 @@ const Home = () => {
   const [inBounds, setInBounds] = useState(false);
   const [layers, setLayers] = useState<string[]>([]);
   const [formVisible, setFormVisible] = useState('');
+  const [activeMarker, setActiveMarker] = useState<number>();
   const [refresh, setRefresh] = useState(new Date());
   const [center, setCenter] = useState<[number, number]>([51.0591448, 3.7418415]);
   const { loading, error, data, refetch } = useQuery(GET_MAPS_DATA);
@@ -117,7 +120,7 @@ const Home = () => {
         pauseOnHover
         theme="colored"
       />
-      <div className={formVisible? 'app-container-map--small': 'app-container-map'}>
+      <div className={formVisible !== ''? 'app-container-map--small': 'app-container-map'}>
         <MapContainer center={center} zoom={20} scrollWheelZoom={true}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -135,9 +138,19 @@ const Home = () => {
           <ConditionalLoader condition={data}>
               {data.layers?.filter((layer: {name: string}) => layers.indexOf(layer.name) > -1).map((layer: {markers: {id: number, name: string, layerId: number, coordinates: [{latitude: number, longitude: number}]}[]}) => {
               return (layer.markers.map((marker: {id: number, name: string, layerId: number, coordinates: [{latitude: number, longitude: number}]}) => (
-                <Marker  icon={marker.layerId === 1? treeIcon : markerIcon} position={[marker.coordinates[0].longitude , marker.coordinates[0].latitude]}>
+                <Marker  icon={marker.layerId === 1? treeIcon : markerIcon} position={[marker.coordinates[0].latitude , marker.coordinates[0].longitude]}>
                   <Popup>
-                    {marker.name}
+                    <Button 
+                      className='button button--form' 
+                      disabled={modal !== ''} 
+                      type='button' 
+                      onClick={() => {
+                        setActiveMarker(marker.id)
+                        setFormVisible('timestamp-list')
+                      }}
+                    >
+                      <InfoIcon color='secondary'/>
+                    </Button>
                   </Popup>
                 </Marker>
               )))})}
@@ -152,9 +165,11 @@ const Home = () => {
               }}/>
             </div>
             <MarkerForm refetch={refetch} setFormVisible={setFormVisible} visible={formVisible === 'create-marker'} layers={data.layers} coordinate={location? location : [0, 0]}/>
+            <TimestampList refetch={refetch} setFormVisible={setFormVisible} visible={formVisible === 'timestamp-list'} marker={activeMarker? activeMarker : 0} coordinate={location? location : [0, 0]}/>
           </div>
       </div>
-      {/* UI COMPONENTS */} 
+
+      {/* UI COMPONENTS */}
       
       <img className='title' src={LogoImage}/>
       <div className='button-container button-container--bottom-left'>
@@ -173,7 +188,7 @@ const Home = () => {
           </div>
         </MassModal>
       </div>
-      <ConditionalLoader condition={inBounds && !formVisible}>
+      <ConditionalLoader condition={inBounds && formVisible === ''}>
         <div className=''>
           <Button className='button button--form' disabled={modal !== ''} type='button' onClick={() => setFormVisible('create-marker')}>
             <AddBoxIcon color='secondary'/>

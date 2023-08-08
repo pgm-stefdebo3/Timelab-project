@@ -11,8 +11,8 @@ import { LayerService } from 'src/layer/layer.service';
 import { Layer } from 'src/layer/entities/layer.entity';
 import { Coordinate } from 'src/coordinate/entities/coordinate.entity';
 import { TimestampService } from 'src/timestamp/timestamp.service';
-var classifyPoint = require('robust-point-in-polygon')
 import bounds from './bounds';
+var classifyPoint = require("robust-point-in-polygon");
 
 @Injectable()
 export class MarkerService {
@@ -70,7 +70,7 @@ export class MarkerService {
   findOne(id: number): Promise<Marker> {
     return this.markerRepository.findOne({
       where: { id },
-      relations: ['layer', 'coordinates'],
+      relations: ['layer', 'coordinates', 'timestamps'],
     });
   }
 

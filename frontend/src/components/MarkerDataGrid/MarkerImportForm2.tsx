@@ -47,21 +47,25 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
             setSubmitting(true);
             
             let inputs = selectedRows.map((markerData: any[any]) => {
-                let input: MarkerInput = {
-                    type: markerData['geometry.geometry.type'],
-                    name: templateString(values.title, markerData),
-                    coords: markerData['geometry.geometry.type'] === 'Point' ? [markerData['geometry.geometry.coordinates']] : markerData['geometry.geometry.coordinates'],
-                    layerId: formData.layerId,
-                    author: 'ImportedByTimelab',
-                    createdAt: new Date(),
-                };
-
-                if (values.description) {
-                    input.description = templateString(values.description, markerData);
+                if (formData.coordinateField) {
+                    let input: MarkerInput = {
+                        type: markerData['geometry.geometry.type'],
+                        name: templateString(values.title, markerData),
+                        coords: markerData['geometry.geometry.type'] === 'Point' ? [markerData[formData.coordinateField].reverse()] : markerData[formData.coordinateField].map((coord: any) => coord.reverse()),
+                        layerId: formData.layerId,
+                        author: 'ImportedByTimelab',
+                        createdAt: new Date(),
+                    };
+    
+                    if (values.description) {
+                        input.description = templateString(values.description, markerData);
+                    }
+    
+                    return input;
                 }
-
-                return input;
             });
+
+            console.log(inputs);
 
             const { data } = await importMarkers({
                 variables: {
@@ -115,7 +119,6 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
                             setFocus('title');
                         }}
                         value={values.title}
-                        defaultValue={values.title}
                         onChange={handleChange}
                         multiline
                         rows={2}
@@ -130,7 +133,6 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
                         onFocus={() => {
                             setFocus('description');
                         }}
-                        defaultValue={values.description}
                         value={values.description}
                         onChange={handleChange}
                         multiline

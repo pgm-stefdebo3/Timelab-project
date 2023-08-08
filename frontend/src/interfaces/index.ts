@@ -45,6 +45,14 @@ interface ButtonProps {
     onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
+interface TimestampListProps {
+    marker: number,
+    coordinate: [number, number],
+    visible: boolean,
+    refetch: () => void,
+    setFormVisible: (value: string) => void,
+}
+
 interface Coordinate {
     lat: number,
     lng: number,
@@ -115,4 +123,5 @@ export type {
     SVGButtonProps,
     CrudDataGridProps,
     MarkerFormProps,
+    TimestampListProps,
 }

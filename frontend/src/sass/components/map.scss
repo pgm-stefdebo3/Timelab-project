@@ -42,3 +42,15 @@
         }
     }
 }
+
+.leaflet-popup-content-wrapper {
+    background-color: #fdfdfd;
+    border-radius: 1rem;
+    padding-top: 3rem;
+    width: max-content;
+    height: max-content;
+    .button {
+        margin: 0;
+        margin-right: 0.3rem;
+    }
+}
