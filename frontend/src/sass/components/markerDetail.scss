@@ -1,5 +1,6 @@
 .map-timestamp-list {
     padding: 1rem;
+    padding-bottom: 4rem;
 
     .marker-info__header {
         display: flex;
@@ -9,6 +10,7 @@
         align-items: baseline;
         margin-bottom: 1rem;
         line-height: 1.3;
+        overflow-wrap: break-word;
         h2 {
             font-size: 1.5rem;
             font-weight: 700;
@@ -36,5 +38,36 @@
         width: stretch;
         background-color: #3636363a;
         margin: 1rem 0;
+    }
+    .marker-info__no-timestamps{
+        width: 100%;
+        text-align: center;
+        height: stretch;
+        font-size: 2rem;
+        margin-top: 3rem;
+    }
+    .button {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        color: #ffffff;
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        align-items: center;
+        transition: all 0.3s ease-in-out;
+        & > * {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        &--not-loaded {
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+            & > * {
+                opacity: 0;
+                width: 0;
+                transition: opacity 0.3s ease-in-out;
+            }
+        }
     }
 }

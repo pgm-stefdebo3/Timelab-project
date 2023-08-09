@@ -5,11 +5,13 @@ interface DeconstructedObject {
 interface layer {
     id: number,
     name: string,
+    markers: MarkerInterface[],
 }
 
 interface MarkerDataGridProps {
     json: any[],
     layers: layer[],
+    refetch: () => void,
 }
 
 interface FormData {
@@ -27,6 +29,28 @@ interface MarkerFormProps {
     setFormVisible: (value: string) => void,
 }
 
+// named MarkerInterface to avoid confusion with Marker from react-leaflet
+interface MarkerInterface {
+    id: number, 
+    name: string, 
+    type: string,
+    layerId: number, 
+    coordinates: [{latitude: number, longitude: number}]
+}
+
+interface TimestampFormProps {
+    marker: number,
+    visible: boolean,
+    refetch: () => void,
+    setFormVisible: (value: boolean) => void,
+}
+
+interface MapElementProps {
+    marker: MarkerInterface,
+    onClick: () => void,
+    disabled?: boolean,
+}
+
 interface MarkerInput {
     type: string,
     name: string,
@@ -35,6 +59,13 @@ interface MarkerInput {
     description?: string,
     author?: string,
     createdAt: Date,
+}
+
+interface TimestampFormInput {
+    description: string,
+    author?: string,
+    fileName?: string,
+    markerId: number,
 }
 
 interface ButtonProps {
@@ -49,7 +80,6 @@ interface TimestampListProps {
     marker: number,
     coordinate: [number, number],
     visible: boolean,
-    refetch: () => void,
     setFormVisible: (value: string) => void,
 }
 
@@ -64,6 +94,7 @@ interface MarkerImportFormProps {
     setModal: (value: string) => void,
     formData: FormData,
     setFormData: (value: object) => void,
+    refetch: () => void,
 }
 
 interface CloseButtonProps {
@@ -112,7 +143,9 @@ export type {
     MarkerDataGridProps,
     MarkerImportFormProps,
     layer,
+    MarkerInterface,
     MarkerInput,
+    TimestampFormInput,
     Coordinate,
     ButtonProps,
     CloseButtonProps,
@@ -124,4 +157,6 @@ export type {
     CrudDataGridProps,
     MarkerFormProps,
     TimestampListProps,
+    TimestampFormProps,
+    MapElementProps,
 }

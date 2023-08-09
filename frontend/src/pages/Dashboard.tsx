@@ -6,13 +6,15 @@ import TimestampIcon from '@mui/icons-material/AccessTimeFilled';
 import LayersIcon from '@mui/icons-material/Layers';
 import { Button, Grid, Card } from "@mui/material";
 import CountUp from 'react-countup';
+import { GET_DASHBOARD_DATA } from '../gql/queries';
 
 import '../sass/pages/dashboard.scss'
+import { useQuery } from '@apollo/client';
 
 
 const Dashboard = () => {
-
     const { authenticated, authLoading, user } = useAuth();
+    const { loading, error, data, refetch } = useQuery(GET_DASHBOARD_DATA);
 
     if (authLoading) {
         return (
@@ -24,6 +26,13 @@ const Dashboard = () => {
     
     if (!authenticated) {
         return <Navigate to="/login" replace/>;
+    }
+    
+
+    if (loading) return <p>Loading...</p>;
+
+    if (error) {
+        return <p>Error...</p>;
     }
     
   return (
@@ -39,7 +48,7 @@ const Dashboard = () => {
                         }}
                     >
                         <div className='countup-container'>
-                            <CountUp end={9} duration={3} className='countup-number'/>
+                            <CountUp end={data.layers.length} duration={3} className='countup-number'/>
                             <div className='flex countup-suffix'>
                                 <p className='countup-string'>Layers</p>
                                 <LayersIcon 
@@ -73,7 +82,7 @@ const Dashboard = () => {
                         }}
                     >
                         <div className='countup-container'>
-                            <CountUp end={243} duration={3} className='countup-number'/>
+                            <CountUp end={data.markers.length} duration={3} className='countup-number'/>
                             <div className='flex countup-suffix'>
                                 <p className='countup-string'>Markers</p>
                                 <MarkerIcon 
@@ -100,7 +109,7 @@ const Dashboard = () => {
                         </Button>
                     </Card>
                 </Grid>
-                <Grid xs={8}>
+                <Grid xs={3.95}>
                     <Card 
                         sx={{
                             pt: '4.5rem',
@@ -108,7 +117,7 @@ const Dashboard = () => {
                         }}
                     >
                         <div className='countup-container'>
-                            <CountUp end={455489} duration={3} className='countup-number'/>
+                            <CountUp end={data.timestamps.length} duration={3} className='countup-number'/>
                             <div className='flex countup-suffix'>
                                 <p className='countup-string'>Timestamps</p>
                                 <TimestampIcon 

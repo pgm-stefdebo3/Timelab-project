@@ -16,6 +16,8 @@ const GET_MARKER_DETAIL = gql`
               id
               author
               description
+              fileName
+              createdAt
             }
         }
     }`

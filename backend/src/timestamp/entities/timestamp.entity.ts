@@ -13,10 +13,6 @@ export class Timestamp {
 
   @Column()
   @Field()
-  type: string;
-
-  @Column()
-  @Field()
   createdAt: Date;
   
   @Column({nullable: true})
