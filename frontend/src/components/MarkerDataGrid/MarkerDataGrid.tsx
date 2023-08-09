@@ -9,7 +9,7 @@ import MarkerImportForm1 from './MarkerImportForm1';
 import MarkerImportForm2 from './MarkerImportForm2';
 
 
-const MarkerDataGrid = ({json, layers}: MarkerDataGridProps) => {
+const MarkerDataGrid = ({json, layers, refetch}: MarkerDataGridProps) => {
   const [rowSelectionModel, setRowSelectionModel] = React.useState<any[]>([]);
   const [formData, setFormData] = React.useState<object>({});
   const [modal, setModal] = React.useState<string>('');
@@ -100,13 +100,13 @@ const rows = deconstructedJson.map((obj: any, index: number) => ({
           visible={modal === 'import-1'}
           setVisible={setModal}
       >
-        <MarkerImportForm1 selectedRows={rows.filter((row) => rowSelectionModel.includes(row.id))} layers={layers} setModal={setModal} formData={formData} setFormData={setFormData}/>
+        <MarkerImportForm1 refetch={() => refetch()} selectedRows={rows.filter((row) => rowSelectionModel.includes(row.id))} layers={layers} setModal={setModal} formData={formData} setFormData={setFormData}/>
       </MassModal>
       <MassModal
           visible={modal === 'import-2'}
           setVisible={setModal}
       >
-        <MarkerImportForm2 selectedRows={rows.filter((row) => rowSelectionModel.includes(row.id))} layers={layers} setModal={setModal} formData={formData} setFormData={setFormData}/>
+        <MarkerImportForm2 refetch={() => refetch()} selectedRows={rows.filter((row) => rowSelectionModel.includes(row.id))} layers={layers} setModal={setModal} formData={formData} setFormData={setFormData}/>
       </MassModal>
     </>
   )

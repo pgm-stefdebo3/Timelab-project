@@ -12,5 +12,6 @@ import { MarkerModule } from 'src/marker/marker.module';
   ],
   exports: [CoordinateService],
   providers: [CoordinateResolver, CoordinateService],
+  
 })
 export class CoordinateModule {}

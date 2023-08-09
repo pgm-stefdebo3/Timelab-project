@@ -9,6 +9,7 @@ query GetLayersData {
         markers {
             id
             name
+            type
             layerId
             coordinates {
                 latitude

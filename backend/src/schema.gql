@@ -18,7 +18,6 @@ type Coordinate {
 
 type Timestamp {
   id: Int!
-  type: String!
   createdAt: Date!
   author: String
   description: String
@@ -65,7 +64,6 @@ input CoordinateInput {
 
 input TimestampInput {
   id: Int!
-  type: String!
   createdAt: Date!
   author: String
   description: String
@@ -186,7 +184,6 @@ input UpdateMarkerInput {
 }
 
 input CreateTimestampInput {
-  type: String!
   description: String
   author: String
   fileName: String
@@ -194,7 +191,6 @@ input CreateTimestampInput {
 }
 
 input UpdateTimestampInput {
-  type: String
   description: String
   author: String
   fileName: String

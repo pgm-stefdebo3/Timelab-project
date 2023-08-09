@@ -26,13 +26,13 @@ export class TimestampService {
   //   READ
 
   findAll(): Promise<Timestamp[]> {
-    return this.timestampRepository.find({ relations: ['layer', 'markers'] });
+    return this.timestampRepository.find({ relations: ['marker', 'marker.layer'] });
   }
 
   findOne(id: number): Promise<Timestamp> {
     return this.timestampRepository.findOne({
       where: { id },
-      relations: ['layer', 'markers'],
+      relations: ['marker', 'marker.layer'],
     });
   }
 

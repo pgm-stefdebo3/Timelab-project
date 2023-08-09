@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer, Popup, Marker, useMapEvent, useMap } from 'react-leaflet';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Icon, LatLng, latLng } from 'leaflet';
-import { Bounds, Button, ConditionalLoader, CustomCheckbox, MassModal } from '../components';
+import { Bounds, Button, ConditionalLoader, CustomCheckbox, MassModal, TimestampForm } from '../components';
 import { toast, ToastContainer } from 'react-toastify';
 import { GET_MAPS_DATA } from '../gql/queries';
 import { useQuery } from '@apollo/client';
@@ -10,6 +10,7 @@ import bounds from "../utils/bounds"
 import classifyPoint from 'robust-point-in-polygon';
 
 import FilterIcon from '@mui/icons-material/FilterList';
+import InfoIcon from '@mui/icons-material/Info';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
@@ -19,15 +20,20 @@ import MarkerIconImage from '../assets/images/normal-marker.png';
 import LogoImage from '../assets/images/logo.png';
 
 import "leaflet/dist/leaflet.css";
+import TimestampList from '../components/TimestampList';
+import { MarkerInterface, layer } from '../interfaces';
+import MapElement from '../components/MapElement';
 
 
 const Home = () => {
   const [location, setLocation] = useState<null | [number, number]>(null);
   const [isLocationSet, setIsLocationSet] = useState(false);
   const [modal, setModal] = useState('');
+  const [refetchDetail, setRefetchDetail] = useState<() => void>(() => {});
   const [inBounds, setInBounds] = useState(false);
   const [layers, setLayers] = useState<string[]>([]);
   const [formVisible, setFormVisible] = useState('');
+  const [activeMarker, setActiveMarker] = useState<number>();
   const [refresh, setRefresh] = useState(new Date());
   const [center, setCenter] = useState<[number, number]>([51.0591448, 3.7418415]);
   const { loading, error, data, refetch } = useQuery(GET_MAPS_DATA);
@@ -61,7 +67,7 @@ const Home = () => {
     , {
       enableHighAccuracy: true,
     });
-  }, [refresh, formVisible]);
+  }, [refresh]);
 
   if (loading) return <p>Loading...</p>;
 
@@ -93,11 +99,6 @@ const Home = () => {
     iconSize: [32, 32]
   })
 
-  const treeIcon = new Icon({
-    iconUrl: TreeIconImage,
-    iconSize: [32, 32]
-  })
-
   const markerIcon = new Icon({
     iconUrl: MarkerIconImage,
     iconSize: [32, 32]
@@ -117,7 +118,7 @@ const Home = () => {
         pauseOnHover
         theme="colored"
       />
-      <div className={formVisible? 'app-container-map--small': 'app-container-map'}>
+      <div className={formVisible !== ''? 'app-container-map--small': 'app-container-map'}>
         <MapContainer center={center} zoom={20} scrollWheelZoom={true}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -133,28 +134,29 @@ const Home = () => {
           </ConditionalLoader>
           
           <ConditionalLoader condition={data}>
-              {data.layers?.filter((layer: {name: string}) => layers.indexOf(layer.name) > -1).map((layer: {markers: {id: number, name: string, layerId: number, coordinates: [{latitude: number, longitude: number}]}[]}) => {
-              return (layer.markers.map((marker: {id: number, name: string, layerId: number, coordinates: [{latitude: number, longitude: number}]}) => (
-                <Marker  icon={marker.layerId === 1? treeIcon : markerIcon} position={[marker.coordinates[0].longitude , marker.coordinates[0].latitude]}>
-                  <Popup>
-                    {marker.name}
-                  </Popup>
-                </Marker>
+              {data.layers?.filter((layer: {name: string}) => layers.indexOf(layer.name) > -1).map((layer: layer) => {
+              return (layer.markers.map((marker: MarkerInterface) => (
+                <MapElement 
+                  marker={marker} 
+                  onClick={() => {
+                    setActiveMarker(marker.id)
+                    setFormVisible('timestamp-list')
+                  }} 
+                  disabled={modal !== ''}
+                />
               )))})}
           </ConditionalLoader>
           <Bounds />
         </MapContainer>
           <div className='map-form-container'>
-            <div className='map-form-container__close' onClick={() => setFormVisible('')}>
-              <ArrowForwardIosIcon  color='secondary' sx={{
-                visibility: formVisible? 'visible': 'hidden',
-                width: formVisible? '2rem': '0',
-              }}/>
-            </div>
             <MarkerForm refetch={refetch} setFormVisible={setFormVisible} visible={formVisible === 'create-marker'} layers={data.layers} coordinate={location? location : [0, 0]}/>
+            <ConditionalLoader condition={formVisible === 'timestamp-list'}>
+              <TimestampList setFormVisible={setFormVisible} visible={formVisible === 'timestamp-list'} marker={activeMarker? activeMarker : 0} coordinate={location? location : [0, 0]}/>
+            </ConditionalLoader>
           </div>
       </div>
-      {/* UI COMPONENTS */} 
+
+      {/* UI COMPONENTS */}
       
       <img className='title' src={LogoImage}/>
       <div className='button-container button-container--bottom-left'>
@@ -173,12 +175,10 @@ const Home = () => {
           </div>
         </MassModal>
       </div>
-      <ConditionalLoader condition={inBounds && !formVisible}>
-        <div className=''>
-          <Button className='button button--form' disabled={modal !== ''} type='button' onClick={() => setFormVisible('create-marker')}>
-            <AddBoxIcon color='secondary'/>
-          </Button>
-        </div>
+      <ConditionalLoader condition={!inBounds && formVisible === ''}>
+        <Button className='button button--form' disabled={modal !== ''} type='button' onClick={() => setFormVisible('create-marker')}>
+          <AddBoxIcon color='secondary'/>
+        </Button>
       </ConditionalLoader>
     </div>
   )

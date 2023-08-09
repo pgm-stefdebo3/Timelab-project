@@ -12,7 +12,21 @@ const validationSchema = yup.object({
     description: yup.string().required(),
 });
 
-const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModal}: MarkerImportFormProps) => {
+function flattenCoordinates(coordinates: number[][] | number[][][]): number[][] {
+    if (!Array.isArray(coordinates[0])) {
+        // Input is already in the desired format
+        return coordinates as number[][];
+    }
+
+    // Input is an array of [[number, number]], flatten it
+    const flattenedCoordinates: number[][] = [];
+    (coordinates as number[][][]).forEach(coord => {
+        flattenedCoordinates.push(...coord);
+    });
+    return flattenedCoordinates;
+}
+
+const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModal, refetch}: MarkerImportFormProps) => {
     const [focus, setFocus] = React.useState<'' | 'title' | 'description'>('');
     const [importMarkers] = useMutation(mutationImportMarkers);
     const titleField = useRef<HTMLInputElement>(null);
@@ -45,29 +59,82 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
         
         onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
+
+            // Asked ChatGPT for a function to filter out faulty coordinates, hard problem to solve because of the different formats of coordinates.
+            function isValidCoordinate(coord: any): boolean {
+                return Array.isArray(coord) && coord.length === 2 && !isNaN(coord[0]) && !isNaN(coord[1]);
+            }
             
-            let inputs = selectedRows.map((markerData: any[any]) => {
-                let input: MarkerInput = {
-                    type: markerData['geometry.geometry.type'],
-                    name: templateString(values.title, markerData),
-                    coords: markerData['geometry.geometry.type'] === 'Point' ? [markerData['geometry.geometry.coordinates']] : markerData['geometry.geometry.coordinates'],
-                    layerId: formData.layerId,
-                    author: 'ImportedByTimelab',
-                    createdAt: new Date(),
-                };
-
-                if (values.description) {
-                    input.description = templateString(values.description, markerData);
+            function getCoordinatesArray(markerData: any, field: string): [number, number][] | null {
+                const coordinates = markerData[field];
+            
+                if (!Array.isArray(coordinates)) {
+                    return null;
                 }
+            
+                if (markerData['geometry.geometry.type'] === 'Point') {
+                    const coord = markerData['geo_point_2d'];
+                    if (isValidCoordinate(coord)) {
+                        return [[parseFloat(coord.lat), parseFloat(coord.lon)]];
+                    }
+                } else if (markerData['geometry.geometry.type'] === 'LineString') {
+                    const validCoords: [number, number][] = coordinates
+                    .filter(isValidCoordinate)
+                    .map((coord: any) => [parseFloat(coord[1]), parseFloat(coord[0])]); // Swap positions
+        
+                    if (validCoords.length > 0) {
+                        return validCoords;
+                    }
+                } else if (markerData['geometry.geometry.type'] === 'Polygon') {
+                    const polygonCoordinates = coordinates[0]; // Assuming it's an array of arrays
+                    if (polygonCoordinates && polygonCoordinates.length > 0) {
+                        return polygonCoordinates.map((coord: any) => {
+                            if (isValidCoordinate(coord)) {
+                                return [parseFloat(coord[1]), parseFloat(coord[0])];
+                            }
+                        }).filter(isValidCoordinate);
+                    }
+                }
+            
+                return null;
+            }
+            // End of ChatGPT function
 
-                return input;
+            
+            let validInputs: any[] = [];
+
+            selectedRows.forEach((markerData: any) => {
+                if (formData.coordinateField) {
+                    let coords = getCoordinatesArray(markerData, formData.coordinateField);;
+                    
+                    if (coords) {
+                        const input: MarkerInput = {
+                            type: markerData['geometry.geometry.type'],
+                            name: templateString(values.title, markerData),
+                            coords,
+                            layerId: formData.layerId,
+                            author: 'ImportedByTimelab',
+                            createdAt: new Date(),
+                        };
+            
+                        validInputs.push(input);
+                    }
+                }
             });
 
-            const { data } = await importMarkers({
+            const { data, errors } = await importMarkers({
                 variables: {
-                    createMarkerWithCoordsInputs: inputs,
+                    createMarkerWithCoordsInputs: validInputs,
                 }
             })
+            
+            if (data) {
+                setFormData({});
+                setModal('');
+                refetch();
+            }
+
+            
 
             setTimeout(() => {
                 setSubmitting(false);
@@ -115,7 +182,6 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
                             setFocus('title');
                         }}
                         value={values.title}
-                        defaultValue={values.title}
                         onChange={handleChange}
                         multiline
                         rows={2}
@@ -130,7 +196,6 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
                         onFocus={() => {
                             setFocus('description');
                         }}
-                        defaultValue={values.description}
                         value={values.description}
                         onChange={handleChange}
                         multiline

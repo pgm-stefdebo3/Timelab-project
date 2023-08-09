@@ -41,10 +41,10 @@ export class TimestampController {
     return imagesString;
   }
   //   GET FOR DISPLAYING IMAGE
-  @Get('product-image/:imagename')
+  @Get('timestamp-file/:imagename')
   findProductImage(@Param('imagename') imagename, @Res() res) {
     return res.sendFile(
-      join(process.cwd(), '/upload/productImages/' + imagename),
+      join(process.cwd(), '/upload/timestampFiles/' + imagename),
     );
   }
 }

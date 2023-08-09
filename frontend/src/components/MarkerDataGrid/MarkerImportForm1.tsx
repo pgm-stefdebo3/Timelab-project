@@ -31,7 +31,7 @@ const MarkerImportForm1 = ({selectedRows, layers, setModal, formData, setFormDat
                 console.log(typeof selectedRows[0][values.coordinateField][0]);
                 
                 
-                if (typeof selectedRows[0][values.coordinateField][0] !== 'number' && typeof selectedRows[0][values.coordinateField][0][0] !== 'number') {
+                if (typeof selectedRows[0][values.coordinateField][0] !== 'number' && typeof selectedRows[0][values.coordinateField][0][0] !== 'number' && typeof selectedRows[0][values.coordinateField][0][0][0] !== 'number') {
                     errors.coordinateField = 'The coordinates field must contain a number';
                 }
             }

@@ -21,7 +21,7 @@ const ImportExport = () => {
     const { authenticated, authLoading, user } = useAuth();
     const [importMarkers] = useMutation(mutationImportMarkers);
     const fileRef = useRef<HTMLInputElement | null>(null);
-    const { loading, error, data } = useQuery(GET_IMPORTEXPORT_DATA);
+    const { loading, error, data, refetch } = useQuery(GET_IMPORTEXPORT_DATA);
 
     if (authLoading) {
         return (
@@ -248,7 +248,7 @@ const validationSchema = yup.object({
                         }}
                     >
                         <ConditionalLoader condition={jsonLoaded && jsonKeys !== null}>
-                            <MarkerDataGrid json={jsonData} layers={data.layers}/>
+                            <MarkerDataGrid refetch={refetch} json={jsonData} layers={data.layers}/>
                         </ConditionalLoader>
                         <ConditionalLoader condition={!jsonLoaded || jsonKeys == null}>
                             <p className='datagrid-placeholder'>Upload a JSON file to see the data</p>
