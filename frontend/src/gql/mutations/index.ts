@@ -3,6 +3,7 @@ import mutationImportMarkers from "./ImportMarkers";
 import mutationRemoveLayer from "./RemoveLayer";
 import mutationRemoveMarker from "./RemoveMarker";
 import mutationCreateTimestamp from "./CreateTimestamp";
+import mutationRemoveTimestamp from "./RemoveTimestamp";
 
 export {
     mutationCreateLayer,
@@ -10,4 +11,5 @@ export {
     mutationRemoveLayer,
     mutationRemoveMarker,
     mutationCreateTimestamp,
+    mutationRemoveTimestamp,
 }

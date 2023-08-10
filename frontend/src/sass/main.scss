@@ -47,16 +47,19 @@
     position: absolute;
     top: 0.8rem;
     font-family: 'Baskerville', sans-serif;
-    left: 4rem;
+    right: 2rem;
     width: 6rem;
     height: 4rem;
     font-size: 2rem;
     .sub{
         font-size: 1rem;
     }
+  @media (min-width: 768px) {
+    right: 4rem;
+  }
 }
 
-.flex {
+.flex { 
   display: flex;
 }
 

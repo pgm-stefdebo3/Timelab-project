@@ -18,12 +18,12 @@
         flex-direction: row;
         .leaflet-container {
             height: 100vh;
-            width: 60vw;
+            width: 0vw;
             z-index: 0;
             transition: all 1s ease-in-out;
         }
         .map-form-container {
-            width: 40vw;
+            width: 100vw;
             height: 100vh;
             background-color: #fdfdfd;
             overflow-y: scroll;
@@ -41,7 +41,19 @@
             }
         }
     }
+    @media (min-width: 768px) {
+        &--small {
+            .leaflet-container {
+                width: 60vw;
+            }
+            
+            .map-form-container {
+                width: 40vw;
+            }
+        }
+    }
 }
+
 
 .leaflet-popup-content-wrapper {
     background-color: #fdfdfd;

@@ -12,6 +12,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import './sass/main.scss'
 import 'react-toastify/dist/ReactToastify.css';
 import theme from './utils/theme';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 const client = new ApolloClient({
   uri: 'http://localhost:3000/graphql',
@@ -21,22 +23,25 @@ const client = new ApolloClient({
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <ApolloProvider client={client}>
     <AuthProvider>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-        <Routes>
-            <Route element={<App />}>
-              <Route path="/" element={<Home />} />
-              <Route path='/login' element={<Login/>} />
-              <Route path='/dashboard' element={<Dashboard/>} />
-              <Route path='/layers' element={<Layers/>} />
-              <Route path='/markers' element={<Markers/>} />
-              <Route path='/import-export' element={<ImportExport/>} />
-              <Route path='/timestamps' element={<Timestamps/>} />
-              <Route path='*' element={<Home/>} />
-            </Route>
-        </Routes>
-        </BrowserRouter>
-      </ThemeProvider>
+      
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+          <Routes>
+              <Route element={<App />}>
+                <Route path="/" element={<Home />} />
+                <Route path='/login' element={<Login/>} />
+                <Route path='/dashboard' element={<Dashboard/>} />
+                <Route path='/layers' element={<Layers/>} />
+                <Route path='/markers' element={<Markers/>} />
+                <Route path='/import-export' element={<ImportExport/>} />
+                <Route path='/timestamps' element={<Timestamps/>} />
+                <Route path='*' element={<Home/>} />
+              </Route>
+          </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
+      </LocalizationProvider>
     </AuthProvider>
   </ApolloProvider>
 );

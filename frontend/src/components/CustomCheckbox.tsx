@@ -2,7 +2,7 @@ import { Checkbox, FormLabel } from "@mui/material";
 import React, { useState } from "react";
 import { CustomCheckboxProps } from "../interfaces";
 
-const CustomCheckbox = ({ disabled, onClick, initialChecked, name}: CustomCheckboxProps) => {
+const CustomCheckbox = ({ disabled, onClick, initialChecked, name, className}: CustomCheckboxProps) => {
   const [checked, setChecked] = useState(initialChecked); 
 
   const handleChange = () => {
@@ -10,7 +10,7 @@ const CustomCheckbox = ({ disabled, onClick, initialChecked, name}: CustomCheckb
   };
 
   return (
-    <div>
+    <div className={className}>
       <Checkbox disabled={disabled} onChange={handleChange} checked={checked} onClick={onClick} />
       <FormLabel>{name}</FormLabel>
     </div>

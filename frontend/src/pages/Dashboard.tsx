@@ -7,9 +7,31 @@ import LayersIcon from '@mui/icons-material/Layers';
 import { Button, Grid, Card } from "@mui/material";
 import CountUp from 'react-countup';
 import { GET_DASHBOARD_DATA } from '../gql/queries';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+  } from 'chart.js';
+  import { Line } from 'react-chartjs-2';
 
 import '../sass/pages/dashboard.scss'
 import { useQuery } from '@apollo/client';
+import { LineController } from 'chart.js';
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+  );
 
 
 const Dashboard = () => {
@@ -34,6 +56,74 @@ const Dashboard = () => {
     if (error) {
         return <p>Error...</p>;
     }
+    // DATES FOR THE CHART
+    const dates = [];
+
+    for (let i = 28; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        dates.push(date.toLocaleDateString());
+    }
+
+    // DATACOUNTS FOR THE CHART
+    const layerCounts = [];
+    const markerCounts = [];
+    const timestampCounts = [];
+
+    for (const date of dates) {
+        const currentDate = new Date(date).getTime();
+
+        const layerCount = data.layers.filter((layer: any) => new Date(layer.createdAt).getTime() < currentDate).length;
+        const markerCount = data.markers.filter((marker: any) => new Date(marker.createdAt).getTime() < currentDate).length;
+        const timestampCount = data.timestamps.filter((timestamp: any) => new Date(timestamp.createdAt).getTime() < currentDate).length;
+
+        layerCounts.push(layerCount);
+        markerCounts.push(markerCount);
+        timestampCounts.push(timestampCount);
+    }
+
+    // CHART DATA
+    const chartData = {
+        labels: dates,
+        datasets: [
+            {
+                label: 'Layers',
+                data: layerCounts,
+                fill: false,
+                borderColor: '#3f51b5',
+                tension: 0.4,
+            },
+            {
+                label: 'Markers',
+                data: markerCounts,
+                fill: false,
+                borderColor: '#ff9800',
+                tension: 0.4,
+            },
+            {
+                label: 'Timestamps',
+                data: timestampCounts,
+                fill: false,
+                borderColor: '#4caf50',
+                tension: 0.4,
+            },
+        ],
+    };
+
+    // CHART OPTIONS
+    const options = {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top' as const,
+          },
+          title: {
+            display: true,
+            text: 'Amount of entries each day',
+          },
+        },
+      };
+
     
   return (
     <div className='dashboard-container'>
@@ -142,6 +232,14 @@ const Dashboard = () => {
                         >
                             Go to Timestamps
                         </Button>
+                    </Card>
+                </Grid>
+                <Grid xs={11.97}>
+                    <Card 
+                    >
+                        <div className='graph-container'>
+                            <Line data={chartData} options={options} />
+                        </div>
                     </Card>
                 </Grid>
             </Grid>

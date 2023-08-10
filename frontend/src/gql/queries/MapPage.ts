@@ -11,6 +11,8 @@ query GetLayersData {
             name
             type
             layerId
+            author
+            createdAt
             coordinates {
                 latitude
                 longitude

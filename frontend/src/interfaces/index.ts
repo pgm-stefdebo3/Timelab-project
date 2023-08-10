@@ -34,7 +34,9 @@ interface MarkerInterface {
     id: number, 
     name: string, 
     type: string,
-    layerId: number, 
+    layerId: number,
+    createdAt: Date,
+    author: string,
     coordinates: [{latitude: number, longitude: number}]
 }
 
@@ -111,6 +113,7 @@ interface CustomCheckboxProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   initialChecked: boolean;
   name: string;
+  className?: string;
 }
 
 interface DashboardMainProps {

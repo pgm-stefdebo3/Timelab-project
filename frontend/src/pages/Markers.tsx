@@ -3,7 +3,7 @@ import { useAuth } from '../context/authContext';
 import { Navigate } from 'react-router-dom';
 
 import '../sass/pages/dashboard.scss'
-import GET_MARKERS_DATA from '../gql/queries/MarkersPage';
+import { GET_MARKERS_DATA } from '../gql/queries';
 import { useMutation, useQuery } from '@apollo/client';
 import { mutationRemoveMarker } from '../gql/mutations';
 import { Button, Grid, Card } from "@mui/material";
@@ -12,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const Markers = () => {
     const { authenticated, authLoading, user } = useAuth();
+    // needs optimizement using pagination (fetchMore, offset, limit)
     const { loading, error, data, refetch } = useQuery(GET_MARKERS_DATA);
     const [removeMarker] = useMutation(mutationRemoveMarker);
 
@@ -57,7 +58,6 @@ const Markers = () => {
         { field: "createdAt", headerName: "Created at", width: 250 },
         { field: "layer", headerName: "Layer", width: 150 },
         { field: "timestamps", headerName: "Timestamps", width: 150 },
-        { field: "coordinates", headerName: "Coordinates", width: 150 },
     ];
 
     const rows = data.markers.map((marker: any) => {
@@ -69,7 +69,6 @@ const Markers = () => {
             layer: marker.layer.name,
             createdAt: `${new Date(marker.createdAt).toLocaleDateString()}\n ${new Date(marker.createdAt).toLocaleTimeString()}`,
             timestamps: timestamps,
-            coordinates: marker.coordinates.length,
         }
     });
     

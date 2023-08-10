@@ -8,9 +8,6 @@ query GetLayersData {
         description
         type
         createdAt
-        coordinates {
-            id
-        }
         layer {
             id
             name

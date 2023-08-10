@@ -8,6 +8,11 @@ import { useQuery } from '@apollo/client';
 import MarkerForm from '../components/MarkerForm';
 import bounds from "../utils/bounds"
 import classifyPoint from 'robust-point-in-polygon';
+import TimestampList from '../components/TimestampList';
+import { MarkerInterface, layer } from '../interfaces';
+import MapElement from '../components/MapElement';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 
 import FilterIcon from '@mui/icons-material/FilterList';
 import InfoIcon from '@mui/icons-material/Info';
@@ -20,9 +25,6 @@ import MarkerIconImage from '../assets/images/normal-marker.png';
 import LogoImage from '../assets/images/logo.png';
 
 import "leaflet/dist/leaflet.css";
-import TimestampList from '../components/TimestampList';
-import { MarkerInterface, layer } from '../interfaces';
-import MapElement from '../components/MapElement';
 
 
 const Home = () => {
@@ -31,7 +33,9 @@ const Home = () => {
   const [modal, setModal] = useState('');
   const [refetchDetail, setRefetchDetail] = useState<() => void>(() => {});
   const [inBounds, setInBounds] = useState(false);
+  const [onlyTimeLab, setOnlyTimeLab] = useState(false);
   const [layers, setLayers] = useState<string[]>([]);
+  const [dates, setDates] = useState<{start: any, end: any}>({ start: new Date(0), end: new Date() });
   const [formVisible, setFormVisible] = useState('');
   const [activeMarker, setActiveMarker] = useState<number>();
   const [refresh, setRefresh] = useState(new Date());
@@ -94,6 +98,22 @@ const Home = () => {
     }
   }
 
+  const filterMarkers = (markers: MarkerInterface[]) => {
+    let filteredMarkers = markers;
+    
+    if (dates.start) {
+      filteredMarkers = filteredMarkers.filter((marker: MarkerInterface) => new Date(marker.createdAt) >= new Date(dates.start))
+      
+    }
+    if (dates.end) {
+      filteredMarkers = filteredMarkers.filter((marker: MarkerInterface) => new Date(marker.createdAt) <= new Date(dates.end))
+    }
+    if (onlyTimeLab === true) {
+      filteredMarkers = filteredMarkers.filter((marker: MarkerInterface) => marker.author === 'ImportedByTimelab')
+    }
+    return filteredMarkers;
+  }
+
   const userIcon = new Icon({
     iconUrl: UserIconImage,
     iconSize: [32, 32]
@@ -135,7 +155,7 @@ const Home = () => {
           
           <ConditionalLoader condition={data}>
               {data.layers?.filter((layer: {name: string}) => layers.indexOf(layer.name) > -1).map((layer: layer) => {
-              return (layer.markers.map((marker: MarkerInterface) => (
+              return (filterMarkers(layer.markers).map((marker: MarkerInterface) => (
                 <MapElement 
                   marker={marker} 
                   onClick={() => {
@@ -167,11 +187,36 @@ const Home = () => {
           <MyLocationIcon color='secondary'/>
         </Button>
         <MassModal visible={modal === 'filters'} setVisible={(e : string) => setModal(e)}>
-          <h2>Filters</h2>
-          <div className='flex flex-col'>
-            {data.layers.map((layer: {id: number, name: string}) => (
-                <CustomCheckbox initialChecked={layers.indexOf(layer.name) > -1} onClick={() => toggleLayer(layer.name)} name={layer.name} />
-            ))}
+          <div className='filters-container'>
+            <h2>Filters</h2>
+            <div className='flex filter__options'>
+              <div className='flex flex-col filter__layers'>
+                {data.layers.map((layer: {id: number, name: string}) => (
+                    <CustomCheckbox initialChecked={layers.indexOf(layer.name) > -1} onClick={() => toggleLayer(layer.name)} name={layer.name} />
+                ))}
+              </div>
+              <div className='flex flex-col filter__second'>
+                <DatePicker 
+                  className='filter__datepicker'
+                  slotProps={{ textField: { helperText: 'Start Date' } }}
+                  value={dates.start? dayjs(dates.start) : dayjs(new Date())}
+                  onChange={(value: any) => {
+                    let newDates = dates;
+                    dates['start'] = value;
+                    setDates(newDates)
+                  }}/>
+                <DatePicker
+                  className='filter__datepicker'
+                  slotProps={{ textField: { helperText: 'End Date' } }}
+                  value={dates.end? dayjs(dates.end) : dayjs(new Date())}
+                  onChange={(value: any) => {
+                    let newDates = dates;
+                    dates['end'] = value;
+                    setDates(newDates)
+                  }}/>
+                <CustomCheckbox className='filter__imported' initialChecked={onlyTimeLab} onClick={() => setOnlyTimeLab(!onlyTimeLab)} name='Only show data imported by TimeLab'/>
+              </div>
+            </div>
           </div>
         </MassModal>
       </div>
