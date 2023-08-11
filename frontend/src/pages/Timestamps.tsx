@@ -63,7 +63,11 @@ const Timestamps = () => {
             sortable: false,
             filterable: false,
             renderCell: (params: any) => {
-              return <a target='blank' href={`http://localhost:3000/timestamp/timestamp-file/${params.row.fileName}`}><DownloadIcon sx={{fill: '#0000ff'}}/></a>;
+                if (params.row.fileName) {
+                    return <a target='blank' href={`http://localhost:3000/timestamp/timestamp-file/${params.row.fileName}`}><DownloadIcon sx={{fill: '#0000ff'}}/></a>;
+                }
+                
+              return 'No file';
             }
         },
     ];

@@ -73,9 +73,10 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
                 }
             
                 if (markerData['geometry.geometry.type'] === 'Point') {
-                    const coord = markerData['geo_point_2d'];
+                    const coord = markerData[field];
+                    
                     if (isValidCoordinate(coord)) {
-                        return [[parseFloat(coord.lat), parseFloat(coord.lon)]];
+                        return [[coord[1], coord[0]]];
                     }
                 } else if (markerData['geometry.geometry.type'] === 'LineString') {
                     const validCoords: [number, number][] = coordinates
@@ -105,13 +106,14 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
 
             selectedRows.forEach((markerData: any) => {
                 if (formData.coordinateField) {
-                    let coords = getCoordinatesArray(markerData, formData.coordinateField);;
+                    let coords = getCoordinatesArray(markerData, formData.coordinateField);
                     
                     if (coords) {
                         const input: MarkerInput = {
                             type: markerData['geometry.geometry.type'],
                             name: templateString(values.title, markerData),
                             coords,
+                            description: templateString(values.description, markerData),
                             layerId: formData.layerId,
                             author: 'ImportedByTimelab',
                             createdAt: new Date(),
@@ -121,6 +123,7 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
                     }
                 }
             });
+            
 
             const { data, errors } = await importMarkers({
                 variables: {

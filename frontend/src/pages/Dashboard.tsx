@@ -236,9 +236,12 @@ const Dashboard = () => {
                 </Grid>
                 <Grid xs={11.97}>
                     <Card 
+                        sx={{
+                            maxHeight: '40rem',
+                        }}
                     >
                         <div className='graph-container'>
-                            <Line data={chartData} options={options} />
+                            <Line data={chartData} options={options} style={{maxHeight: '40rem'}}/>
                         </div>
                     </Card>
                 </Grid>
