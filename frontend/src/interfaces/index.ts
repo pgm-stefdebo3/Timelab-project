@@ -106,6 +106,7 @@ interface CloseButtonProps {
 interface ConditionalLoaderProps {
     condition: boolean,
     children: React.ReactNode,
+    className?: string,
 }
 
 interface CustomCheckboxProps {

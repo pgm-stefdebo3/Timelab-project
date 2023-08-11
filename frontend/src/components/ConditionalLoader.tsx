@@ -4,7 +4,9 @@ import { ConditionalLoaderProps } from '../interfaces';
 const ConditionalLoader = (props: ConditionalLoaderProps) => {
     if (props.condition) {
         return (
-            <>{props.children}</>
+            <div className={props.className}>
+                {props.children}
+            </div>
         )
     } 
     return (

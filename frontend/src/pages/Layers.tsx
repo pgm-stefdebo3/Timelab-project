@@ -68,10 +68,6 @@ const Layers = () => {
         markers: obj.markers.length,
         createdAt: `${new Date(obj.createdAt).toLocaleDateString()}\n ${new Date(obj.createdAt).toLocaleTimeString()}`,
     }));
-
-    console.log(data.layers);
-    
-      
     
   return (
     <div className='dashboard-container dashboard-container--layers'>

@@ -31,7 +31,6 @@ const Home = () => {
   const [location, setLocation] = useState<null | [number, number]>(null);
   const [isLocationSet, setIsLocationSet] = useState(false);
   const [modal, setModal] = useState('');
-  const [refetchDetail, setRefetchDetail] = useState<() => void>(() => {});
   const [inBounds, setInBounds] = useState(false);
   const [onlyTimeLab, setOnlyTimeLab] = useState(false);
   const [layers, setLayers] = useState<string[]>([]);
@@ -119,11 +118,6 @@ const Home = () => {
     iconSize: [32, 32]
   })
 
-  const markerIcon = new Icon({
-    iconUrl: MarkerIconImage,
-    iconSize: [32, 32]
-  })
-
     return (
     <div className='app-container'>
       <ToastContainer
@@ -179,13 +173,14 @@ const Home = () => {
       {/* UI COMPONENTS */}
       
       <img className='title' src={LogoImage}/>
-      <div className='button-container button-container--bottom-left'>
-        <Button className='button button--filters' disabled={modal !== ''} type='button' onClick={() => setModal('filters')}>
-          <FilterIcon color='secondary'/>
-        </Button>
-        <Button className='button button--refresh' disabled={modal !== ''} type='button' onClick={onRefreshClick}>
-          <MyLocationIcon color='secondary'/>
-        </Button>
+        <ConditionalLoader className='button-container button-container--bottom-left' condition={formVisible === ''}>
+          <Button className='button button--filters' disabled={modal !== ''} type='button' onClick={() => setModal('filters')}>
+            <FilterIcon color='secondary'/>
+          </Button>
+          <Button className='button button--refresh' disabled={modal !== ''} type='button' onClick={onRefreshClick}>
+            <MyLocationIcon color='secondary'/>
+          </Button>
+        </ConditionalLoader>
         <MassModal visible={modal === 'filters'} setVisible={(e : string) => setModal(e)}>
           <div className='filters-container'>
             <h2>Filters</h2>
@@ -219,7 +214,6 @@ const Home = () => {
             </div>
           </div>
         </MassModal>
-      </div>
       <ConditionalLoader condition={!inBounds && formVisible === ''}>
         <Button className='button button--form' disabled={modal !== ''} type='button' onClick={() => setFormVisible('create-marker')}>
           <AddBoxIcon color='secondary'/>

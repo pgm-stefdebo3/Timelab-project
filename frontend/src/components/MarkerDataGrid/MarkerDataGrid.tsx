@@ -31,8 +31,6 @@ function deconstructObject(obj: any, parentKey: string = '', result: Deconstruct
 
 // deconstruct the json so the values can fit inside the data grid
 const deconstructedJson = json.map((obj: any) => deconstructObject(obj));
-console.log(deconstructedJson);
-
 
 // get the keys from the first object in the array
 const exampleObject = deconstructObject(json[0]);

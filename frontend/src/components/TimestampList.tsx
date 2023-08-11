@@ -63,9 +63,11 @@ return (
                     <div className='marker-info__timestamps'>
                         {data.marker.timestamps.map((timestamp: {author: string, description: string, createdAt: string, fileName: string,}, index: number) => (
                             <div className='marker-info__timestamp'>
-                                <div className="timestamp__image-container">
-                                    <img src={`http://localhost:3000/timestamp/timestamp-file/${timestamp.fileName}`} alt={`marker ${marker} timestamp ${index} `}/>
-                                </div>
+                                <ConditionalLoader condition={timestamp.fileName? true : false}>
+                                    <div className="timestamp__image-container">
+                                        <img src={`http://localhost:3000/timestamp/timestamp-file/${timestamp.fileName}`} alt={`marker ${marker} timestamp ${index} `}/>
+                                    </div>
+                                </ConditionalLoader>
                                 <div className='timestamp__header'>
                                     <h3>{timestamp.author}</h3>
                                     <p className="info-header__date">

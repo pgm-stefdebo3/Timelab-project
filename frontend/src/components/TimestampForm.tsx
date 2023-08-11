@@ -93,7 +93,7 @@ return (
                 <FormLabel sx={{px: '1rem'}} htmlFor='files'>Upload an attachment</FormLabel>
                 <ErrorMessage name="files" component="div" className='errorfield' />
                 <div className="input-field">
-                    <input name='files' required type="file" onChange={((event) => setFieldValue(`files.${0}`, event.target.files?.[0]))} />
+                    <input name='files' type="file" onChange={((event) => setFieldValue(`files.${0}`, event.target.files?.[0]))} />
                 </div>
                 <Button
                     variant="contained"
