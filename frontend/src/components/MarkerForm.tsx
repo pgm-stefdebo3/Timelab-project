@@ -17,6 +17,9 @@ const validationSchema = yup.object({
 const MarkerForm = ({coordinate, layers, visible, setFormVisible, refetch}: MarkerFormProps) => {
     const [importMarkers] = useMutation(mutationImportMarkers);
 
+const filteredLayers = layers?.filter((layer: {name: string, id: number, private: boolean}) => layer.private === false);
+    
+
 return (
     <>
         <div className='map-form-container__close'  style={{display: visible? 'block' : 'none'}} onClick={() => setFormVisible('')}>
@@ -89,7 +92,7 @@ return (
                         <MenuItem key={-1} value={undefined}>
                             ---
                         </MenuItem>
-                        {layers?.map((layer: {name: string, id: number}) => (
+                        {filteredLayers?.map((layer: {name: string, id: number}) => (
                             <MenuItem key={layer.id} value={layer.id}>
                                 {layer.name}
                             </MenuItem>
@@ -101,6 +104,7 @@ return (
                         name="title"
                         id="title"
                         value={values.title}
+                        defaultValue={values.title}
                         onChange={handleChange}
                         sx={{width: '100%', px: '1rem', mt: '1rem', mb: '2rem'}}
                     />
@@ -109,6 +113,7 @@ return (
                     <TextField
                         name="description"
                         id="description"
+                        defaultValue={values.description}
                         value={values.description}
                         onChange={handleChange}
                         multiline
@@ -121,6 +126,7 @@ return (
                         name="author"
                         id="author"
                         value={values.author}
+                        defaultValue={values.author}
                         onChange={handleChange}
                         sx={{width: '100%', px: '1rem', mt: '1rem', mb: '2rem'}}
                     />

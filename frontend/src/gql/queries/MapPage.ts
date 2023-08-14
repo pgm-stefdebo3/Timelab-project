@@ -5,6 +5,7 @@ query GetLayersData {
     layers {
         id
         name
+        private
         createdAt
         markers {
             id

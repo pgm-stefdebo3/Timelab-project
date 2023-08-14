@@ -5,6 +5,7 @@ interface DeconstructedObject {
 interface layer {
     id: number,
     name: string,
+    private: boolean,
     markers: MarkerInterface[],
 }
 
