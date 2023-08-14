@@ -37,7 +37,7 @@ interface MarkerInterface {
     layerId: number,
     createdAt: Date,
     author: string,
-    coordinates: [{latitude: number, longitude: number}]
+    coordinates: [{latitude: number, longitude: number, id: number}]
 }
 
 interface TimestampFormProps {

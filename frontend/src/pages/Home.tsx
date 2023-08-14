@@ -53,6 +53,8 @@ const Home = () => {
         progress: undefined,
         theme: "colored",
       });
+      console.log('test');
+      
       const crds = position.coords;
       if (location?.[0] !== crds.latitude && location?.[1] !== crds.longitude) {
         let tempLoc: [number, number] = [crds.latitude, crds.longitude];
@@ -133,10 +135,11 @@ const Home = () => {
         theme="colored"
       />
       <div className={formVisible !== ''? 'app-container-map--small': 'app-container-map'}>
-        <MapContainer center={center} zoom={20} scrollWheelZoom={true}>
+        <MapContainer center={center} zoom={18} maxZoom={23} scrollWheelZoom={true}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            maxZoom={23}
           />
 
           <ConditionalLoader condition={isLocationSet}>
@@ -171,8 +174,9 @@ const Home = () => {
       </div>
 
       {/* UI COMPONENTS */}
-      
-      <img className='title' src={LogoImage}/>
+        <ConditionalLoader condition={modal === '' && formVisible === ''}>
+          <img className='title' src={LogoImage}/>
+        </ConditionalLoader>
         <ConditionalLoader className='button-container button-container--bottom-left' condition={formVisible === ''}>
           <Button className='button button--filters' disabled={modal !== ''} type='button' onClick={() => setModal('filters')}>
             <FilterIcon color='secondary'/>
@@ -187,7 +191,7 @@ const Home = () => {
             <div className='flex filter__options'>
               <div className='flex flex-col filter__layers'>
                 {data.layers.map((layer: {id: number, name: string}) => (
-                    <CustomCheckbox initialChecked={layers.indexOf(layer.name) > -1} onClick={() => toggleLayer(layer.name)} name={layer.name} />
+                    <CustomCheckbox key={layer.name} initialChecked={layers.indexOf(layer.name) > -1} onClick={() => toggleLayer(layer.name)} name={layer.name} />
                 ))}
               </div>
               <div className='flex flex-col filter__second'>

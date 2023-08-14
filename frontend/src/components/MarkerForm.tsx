@@ -101,7 +101,6 @@ return (
                         name="title"
                         id="title"
                         value={values.title}
-                        defaultValue={values.title}
                         onChange={handleChange}
                         sx={{width: '100%', px: '1rem', mt: '1rem', mb: '2rem'}}
                     />
@@ -110,7 +109,6 @@ return (
                     <TextField
                         name="description"
                         id="description"
-                        defaultValue={values.description}
                         value={values.description}
                         onChange={handleChange}
                         multiline
@@ -123,7 +121,6 @@ return (
                         name="author"
                         id="author"
                         value={values.author}
-                        defaultValue={values.author}
                         onChange={handleChange}
                         sx={{width: '100%', px: '1rem', mt: '1rem', mb: '2rem'}}
                     />

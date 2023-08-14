@@ -60,6 +60,9 @@ const Markers = () => {
         { field: "timestamps", headerName: "Timestamps", width: 150 },
     ];
 
+    console.log(data.markers);
+    
+
     const rows = data.markers.map((marker: any) => {
         const timestamps = marker.timestamps? marker.timestamps.length : 0;
         return {

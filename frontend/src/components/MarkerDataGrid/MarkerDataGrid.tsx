@@ -45,8 +45,8 @@ const columns: GridColDef[] = deconstructedKeys.map((key: string) => ({
 
 // create the rows for the data grid
 const rows = deconstructedJson.map((obj: any, index: number) => ({
-  id: index,
   ...obj,
+  id: index,
 }));
 
   return (

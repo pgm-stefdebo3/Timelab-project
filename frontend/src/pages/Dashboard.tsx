@@ -61,8 +61,9 @@ const Dashboard = () => {
 
     for (let i = 28; i >= 0; i--) {
         const date = new Date();
-        date.setDate(date.getDate() - i);
-        dates.push(date.toLocaleDateString());
+        date.setTime(date.getTime() - (i * 24 * 60 * 60 * 1000));
+        
+        dates.push(date);
     }
 
     // DATACOUNTS FOR THE CHART
@@ -75,7 +76,8 @@ const Dashboard = () => {
 
         const layerCount = data.layers.filter((layer: any) => new Date(layer.createdAt).getTime() < currentDate).length;
         const markerCount = data.markers.filter((marker: any) => new Date(marker.createdAt).getTime() < currentDate).length;
-        const timestampCount = data.timestamps.filter((timestamp: any) => new Date(timestamp.createdAt).getTime() < currentDate).length;
+        const timestampCount = data.timestamps.filter((timestamp: any) => new Date(timestamp.createdAt).getTime() < currentDate).length
+        
 
         layerCounts.push(layerCount);
         markerCounts.push(markerCount);
@@ -84,7 +86,7 @@ const Dashboard = () => {
 
     // CHART DATA
     const chartData = {
-        labels: dates,
+        labels: dates.map((date: any) => date.toLocaleDateString()),
         datasets: [
             {
                 label: 'Layers',

@@ -15,7 +15,14 @@ const markerIcon = new Icon({
 
 //   disabled === modal !== ''
 const MapElement: React.FC<MapElementProps> = ({marker, onClick, disabled}: MapElementProps) => {
-    let coordinates: LatLngExpression[] = marker.coordinates.map((coordinate) => [coordinate.latitude, coordinate.longitude]);
+    const coordsForSort= [...marker.coordinates]
+
+    let sortedCoordinates = coordsForSort.sort((a, b) => {
+        return a.id - b.id;
+    });
+    
+    
+    let coordinates: LatLngExpression[] = sortedCoordinates.map((coordinate) => [coordinate.latitude, coordinate.longitude]);
     switch (marker.type) {
         case 'Point':
             return (

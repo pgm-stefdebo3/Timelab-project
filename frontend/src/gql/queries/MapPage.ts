@@ -14,6 +14,7 @@ query GetLayersData {
             author
             createdAt
             coordinates {
+                id
                 latitude
                 longitude
             }
