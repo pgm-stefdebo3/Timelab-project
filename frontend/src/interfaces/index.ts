@@ -71,6 +71,17 @@ interface TimestampFormInput {
     markerId: number,
 }
 
+interface IconFormInput {
+    name: string,
+    fileName?: string,
+}
+
+interface IconFormUpdate {
+    id: number,
+    name: string,
+    fileName?: string,
+}
+
 interface ButtonProps {
     type: "submit" | "button" | "reset" | undefined;
     disabled?: boolean;
@@ -151,6 +162,8 @@ export type {
     MarkerInterface,
     MarkerInput,
     TimestampFormInput,
+    IconFormInput,
+    IconFormUpdate,
     Coordinate,
     ButtonProps,
     CloseButtonProps,

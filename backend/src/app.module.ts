@@ -13,6 +13,7 @@ import { MarkerModule } from './marker/marker.module';
 import { CoordinateModule } from './coordinate/coordinate.module';
 import { TimestampModule } from './timestamp/timestamp.module';
 import { DateScalar } from './scalar-date/scalar-date';
+import { IconModule } from './icon/icon.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { DateScalar } from './scalar-date/scalar-date';
     MarkerModule,
     CoordinateModule,
     TimestampModule,
+    IconModule,
   ],
   controllers: [AppController],
   providers: [AppService, DateScalar],

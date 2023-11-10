@@ -3,8 +3,10 @@ import { MarkerService } from './marker.service';
 import { Marker } from './entities/marker.entity';
 import { CreateMarkerInput } from './dto/create-marker.input';
 import { UpdateMarkerInput } from './dto/update-marker.input';
+import { PaginateQuery } from './dto/paginate-query';
 import { Layer } from 'src/layer/entities/layer.entity';
 import { CreateMarkerWithCoordsInput } from './dto/create-marker-with-coords';
+import { Paginate, Paginated } from 'nestjs-paginate'
 
 @Resolver(() => Marker)
 export class MarkerResolver {
@@ -28,6 +30,14 @@ export class MarkerResolver {
   @Query(() => [Marker], { name: 'markers' })
   findAll() {
     return this.markerService.findAll();
+  }
+
+  @Query(() => [Marker], { name: 'paginatedMarkers' })
+  async findPaginatedMarkers(
+    @Args('query', { type: () => PaginateQuery }) query: PaginateQuery,
+  ): Promise<Marker[]> {
+    const { page, limit, sortBy, sortDirection, name, author, description, type, id } = query;
+    return this.markerService.findPaginatedMarkers(page, limit, sortBy, sortDirection, name, author, description, type, id);
   }
 
   @Query(() => Marker, { name: 'marker' })

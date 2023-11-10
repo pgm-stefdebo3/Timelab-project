@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import theme from './utils/theme';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import Icons from './pages/Icons';
 
 const client = new ApolloClient({
   uri: 'http://localhost:3000/graphql',
@@ -36,6 +37,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                 <Route path='/markers' element={<Markers/>} />
                 <Route path='/import-export' element={<ImportExport/>} />
                 <Route path='/timestamps' element={<Timestamps/>} />
+                <Route path='/icons' element={<Icons/>} />
                 <Route path='*' element={<Home/>} />
               </Route>
           </Routes>

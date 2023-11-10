@@ -5,12 +5,68 @@ import HomeIcon from '@mui/icons-material/Home';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import MarkerIcon from '@mui/icons-material/Room';
 import TimestampIcon from '@mui/icons-material/AccessTimeFilled';
+import PaletteIcon from '@mui/icons-material/Palette';
 import ConditionalLoader from "./ConditionalLoader";
 import { DashboardMainProps } from "../interfaces";
 
 const DashboardMain = ({ children, active }: DashboardMainProps) => {
     
-    const pages = ['dashboard', 'layers', 'markers', 'timestamps', 'import-export']
+    const pages = ['dashboard', 'layers', 'markers', 'timestamps', 'icons', 'import-export']
+
+    const getIcon = (name: string) => {
+        switch (name) {
+            case 'dashboard':
+                return (
+                    <HomeIcon 
+                        sx={{
+                            fill: active === name? '#000000': '',
+                        }}
+                    />
+                );
+            case 'layers':
+                return (
+                    <LayersIcon 
+                        sx={{
+                            fill: active === name? '#000000': '',
+                        }}
+                    />
+                );
+            case 'markers':
+                return (
+                    <MarkerIcon 
+                        sx={{
+                            fill: active === name? '#000000': '',
+                        }}
+                    />
+                );
+            case 'import-export':
+                return (
+                    <ImportExportIcon 
+                        sx={{
+                            fill: active === name? '#000000': '',
+                        }}
+                    />
+                );
+            case 'timestamps':
+                return (
+                    <TimestampIcon 
+                        sx={{
+                            fill: active === name? '#000000': '',
+                        }}
+                    />
+                );
+            case 'icons':
+                return (
+                    <PaletteIcon 
+                        sx={{
+                            fill: active === name? '#000000': '',
+                        }}
+                    />
+                );
+            default:
+                return null;
+        }
+    };
 
   return (
     <div className="dashboard-main-container">
@@ -46,41 +102,7 @@ const DashboardMain = ({ children, active }: DashboardMainProps) => {
                                 justifyContent: 'center',
                             }}
                             >
-                                <ConditionalLoader condition={'dashboard' === name} >
-                                    <HomeIcon 
-                                        sx={{
-                                            fill: active === name? '#000000': '',
-                                        }}
-                                    />
-                                </ConditionalLoader>
-                                <ConditionalLoader condition={'layers' === name} >
-                                    <LayersIcon 
-                                        sx={{
-                                            fill: active === name? '#000000': '',
-                                        }}
-                                    />
-                                </ConditionalLoader>
-                                <ConditionalLoader condition={'markers' === name} >
-                                    <MarkerIcon 
-                                        sx={{
-                                            fill: active === name? '#000000': '',
-                                        }}
-                                    />
-                                </ConditionalLoader>
-                                <ConditionalLoader condition={'import-export' === name} >
-                                    <ImportExportIcon 
-                                        sx={{
-                                            fill: active === name? '#000000': '',
-                                        }}
-                                    />
-                                </ConditionalLoader>
-                                <ConditionalLoader condition={'timestamps' === name} >
-                                    <TimestampIcon 
-                                        sx={{
-                                            fill: active === name? '#000000': '',
-                                        }}
-                                    />
-                                </ConditionalLoader>
+                                {getIcon(name)}
                             </ListItemIcon>
                         </ListItemButton>
                     </ListItem>

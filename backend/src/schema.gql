@@ -48,6 +48,12 @@ type Layer {
   markers: [Marker!]
 }
 
+type Icon {
+  id: Int!
+  name: String!
+  fileName: String!
+}
+
 input UserInput {
   id: Int!
   email: String!
@@ -94,6 +100,12 @@ input LayerInput {
   markers: [MarkerInput!]
 }
 
+input IconInput {
+  id: Int!
+  name: String!
+  fileName: String!
+}
+
 """Date custom scalar type"""
 scalar Date
 
@@ -103,11 +115,26 @@ type Query {
   layers: [Layer!]!
   layer(id: Int!): Layer!
   markers: [Marker!]!
+  paginatedMarkers(query: PaginateQuery!): [Marker!]!
   marker(id: Int!): Marker!
   timestamps: [Timestamp!]!
   timestamp(id: Int!): Timestamp!
   coordinates: [Coordinate!]!
   coordinate(id: Int!): Coordinate!
+  icons: [Icon!]!
+  icon(id: Int!): Icon!
+}
+
+input PaginateQuery {
+  page: Int!
+  limit: Int!
+  sortBy: String! = "createdAt"
+  sortDirection: String! = "DESC"
+  name: String
+  author: String
+  description: String
+  type: String
+  id: String
 }
 
 type Mutation {
@@ -127,6 +154,9 @@ type Mutation {
   createCoordinate(createCoordinateInput: CreateCoordinateInput!): Coordinate!
   updateCoordinate(updateCoordinateInput: UpdateCoordinateInput!): Coordinate!
   removeCoordinate(id: Int!): Coordinate!
+  createIcon(createIconInput: CreateIconInput!): Icon!
+  updateIcon(updateIconInput: UpdateIconInput!): Icon!
+  removeIcon(id: Int!): Icon!
 }
 
 input CreateUserInput {
@@ -209,4 +239,15 @@ input UpdateCoordinateInput {
   latitude: Float
   markerId: Int
   id: Int!
+}
+
+input CreateIconInput {
+  name: String!
+  fileName: String!
+}
+
+input UpdateIconInput {
+  id: Int!
+  name: String
+  fileName: String
 }

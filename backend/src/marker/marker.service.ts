@@ -6,11 +6,12 @@ import { UpdateMarkerInput } from './dto/update-marker.input';
 import { CreateMarkerWithCoordsInput } from './dto/create-marker-with-coords';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Marker } from './entities/marker.entity';
-import { Repository } from 'typeorm';
+import { Equal, ILike, Like, Repository } from 'typeorm';
 import { LayerService } from 'src/layer/layer.service';
 import { Layer } from 'src/layer/entities/layer.entity';
 import { Coordinate } from 'src/coordinate/entities/coordinate.entity';
 import { TimestampService } from 'src/timestamp/timestamp.service';
+import { FilterOperator, FilterSuffix, paginate, PaginateQuery, Paginated } from 'nestjs-paginate'
 import bounds from './bounds';
 var classifyPoint = require("robust-point-in-polygon");
 
@@ -65,6 +66,51 @@ export class MarkerService {
 
   findAllWithLayerId(layerId: number): Promise<Marker[]> {
     return this.markerRepository.find({ relations: ['layer', 'coordinates',  'timestamps'], where: {layerId} });
+  }
+
+  async findPaginatedMarkers(
+    page: number,
+    limit: number,
+    sortBy: string,
+    sortDirection: 'ASC' | 'DESC',
+    name?: string,
+    author?: string,
+    description?: string,
+    type?: string,
+    id?: string,
+  ): Promise<Marker[]> {
+    const skip = (page - 1) * limit;
+    
+    const filter: any = {};
+
+    if (name) {
+      filter.name = ILike(`%${name}%`);
+    }
+
+    if (author) {
+      filter.author = ILike(`%${author}%`);
+    }
+
+    if (description) {
+      filter.description = ILike(`%${description}%`);
+    }
+
+    if (type) {
+      filter.type = ILike(`%${type}%`);
+    }
+
+    if (id) {
+      filter.id = Equal(id);
+    }
+
+    return this.markerRepository.find({
+      skip,
+      take: limit,
+      order: {
+        [sortBy]: sortDirection,
+      },
+      where: filter,
+    });
   }
 
   findOne(id: number): Promise<Marker> {

@@ -73,3 +73,10 @@
     bottom: 1rem;
     right: 1rem;
 }
+
+.marker-form-button--delete {
+    background-color: #d5212a !important;
+    &:hover {
+        background-color: #e2646a !important;
+    }
+}

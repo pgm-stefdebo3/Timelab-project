@@ -5,6 +5,8 @@ import GET_MARKER_DETAIL from "./MarkerDetail";
 import GET_DASHBOARD_DATA from "./DashboardPage";
 import GET_TIMESTAMPS_DATA from "./TimestampPage";
 import GET_MARKERS_DATA from "./MarkersPage";
+import GET_PAGINATED_MARKERS from "./PaginatedMarkers";
+import GET_ICONS_PAGE from "./IconsPage";
 
 export {
     GET_LAYERS_DATA,
@@ -14,4 +16,6 @@ export {
     GET_DASHBOARD_DATA,
     GET_TIMESTAMPS_DATA,
     GET_MARKERS_DATA,
+    GET_PAGINATED_MARKERS,
+    GET_ICONS_PAGE,
 }
