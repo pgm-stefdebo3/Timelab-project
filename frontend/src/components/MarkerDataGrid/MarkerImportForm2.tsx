@@ -1,9 +1,8 @@
 import React, { useRef } from 'react'
-import { MarkerImportFormProps, MarkerInput, layer } from '../../interfaces'
+import { MarkerImportFormProps, MarkerInput } from '../../interfaces'
 import { ErrorMessage, Form, Formik } from 'formik'
 import * as yup from 'yup';
-import { Button, FormLabel, MenuItem, TextField  } from '@mui/material';
-import ConditionalLoader from '../ConditionalLoader';
+import { Button, FormLabel, TextField  } from '@mui/material';
 import { useMutation } from '@apollo/client';
 import { mutationImportMarkers } from '../../gql/mutations';
 
@@ -12,27 +11,13 @@ const validationSchema = yup.object({
     description: yup.string().required(),
 });
 
-function flattenCoordinates(coordinates: number[][] | number[][][]): number[][] {
-    if (!Array.isArray(coordinates[0])) {
-        // Input is already in the desired format
-        return coordinates as number[][];
-    }
-
-    // Input is an array of [[number, number]], flatten it
-    const flattenedCoordinates: number[][] = [];
-    (coordinates as number[][][]).forEach(coord => {
-        flattenedCoordinates.push(...coord);
-    });
-    return flattenedCoordinates;
-}
-
 const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModal, refetch}: MarkerImportFormProps) => {
     const [focus, setFocus] = React.useState<'' | 'title' | 'description'>('');
     const [importMarkers] = useMutation(mutationImportMarkers);
     const titleField = useRef<HTMLInputElement>(null);
     const descriptionField = useRef<HTMLInputElement>(null);
 
-    // Asked on ChatGPT for a function that would replace {key} with the value of key in the object, out of my league because i have no idea how .replace() regexxes works.
+
     function templateString(template: string, object: Record<string, number>): string {
         return template.replace(/{([^}]+)}/g, (match: string, key: string) => {
             const value = object[key.trim()];
@@ -60,7 +45,6 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
         onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
 
-            // Asked ChatGPT for a function to filter out faulty coordinates, hard problem to solve because of the different formats of coordinates.
             function isValidCoordinate(coord: any): boolean {
                 return Array.isArray(coord) && coord.length === 2 && !isNaN(coord[0]) && !isNaN(coord[1]);
             }
@@ -86,6 +70,14 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
                     if (validCoords.length > 0) {
                         return validCoords;
                     }
+                } else if (markerData['geometry.geometry.type'] === 'MultiLineString') {
+                    const validCoords: [number, number][] = coordinates
+                    .filter(isValidCoordinate)
+                    .map((coord: any) => [parseFloat(coord[1]), parseFloat(coord[0])]); // Swap positions
+        
+                    if (validCoords.length > 0) {
+                        return validCoords;
+                    }
                 } else if (markerData['geometry.geometry.type'] === 'Polygon') {
                     const polygonCoordinates = coordinates[0]; // Assuming it's an array of arrays
                     if (polygonCoordinates && polygonCoordinates.length > 0) {
@@ -99,8 +91,6 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
             
                 return null;
             }
-            // End of ChatGPT function
-
             
             let validInputs: any[] = [];
 
@@ -114,7 +104,9 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
                             name: templateString(values.title, markerData),
                             coords,
                             description: templateString(values.description, markerData),
+                            color: formData.color,
                             layerId: formData.layerId,
+                            iconId: formData.iconId,
                             author: 'ImportedByTimelab',
                             createdAt: new Date(),
                         };
@@ -136,8 +128,6 @@ const MarkerImportForm2 = ({selectedRows, layers, formData, setFormData, setModa
                 setModal('');
                 refetch();
             }
-
-            
 
             setTimeout(() => {
                 setSubmitting(false);

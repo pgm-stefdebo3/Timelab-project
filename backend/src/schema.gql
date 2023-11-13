@@ -16,6 +16,13 @@ type Coordinate {
   marker: Marker!
 }
 
+type Icon {
+  id: Int!
+  name: String!
+  fileName: String!
+  markers: [Marker!]
+}
+
 type Timestamp {
   id: Int!
   createdAt: Date!
@@ -33,9 +40,11 @@ type Marker {
   author: String
   description: String
   type: String
-  icon: String
+  color: String
   layerId: Int!
   layer: Layer!
+  iconId: Int!
+  icon: Icon!
   coordinates: [Coordinate!]
   timestamps: [Timestamp!]
 }
@@ -46,12 +55,6 @@ type Layer {
   createdAt: Date!
   private: Boolean!
   markers: [Marker!]
-}
-
-type Icon {
-  id: Int!
-  name: String!
-  fileName: String!
 }
 
 input UserInput {
@@ -66,6 +69,13 @@ input CoordinateInput {
   latitude: Float!
   markerId: Int!
   marker: MarkerInput!
+}
+
+input IconInput {
+  id: Int!
+  name: String!
+  fileName: String!
+  markers: [MarkerInput!]
 }
 
 input TimestampInput {
@@ -85,9 +95,11 @@ input MarkerInput {
   author: String
   description: String
   type: String
-  icon: String
+  color: String
   layerId: Int!
   layer: LayerInput!
+  iconId: Int!
+  icon: IconInput!
   coordinates: [CoordinateInput!]
   timestamps: [TimestampInput!]
 }
@@ -98,12 +110,6 @@ input LayerInput {
   createdAt: Date!
   private: Boolean!
   markers: [MarkerInput!]
-}
-
-input IconInput {
-  id: Int!
-  name: String!
-  fileName: String!
 }
 
 """Date custom scalar type"""
@@ -181,9 +187,8 @@ input CreateMarkerInput {
   createdAt: Date!
   author: String
   description: String
-  attribution: String
-  draggable: Boolean
-  icon: String
+  color: String
+  iconId: Float
   layerId: Int!
 }
 
@@ -194,9 +199,8 @@ input CreateMarkerWithCoordsInput {
   createdAt: Date!
   author: String
   description: String
-  attribution: String
-  draggable: Boolean
-  icon: String
+  color: String
+  iconId: Float
   layerId: Int!
 }
 
@@ -206,9 +210,8 @@ input UpdateMarkerInput {
   createdAt: Date
   author: String
   description: String
-  attribution: String
-  draggable: Boolean
-  icon: String
+  color: String
+  iconId: Float
   layerId: Int
   id: Int!
 }

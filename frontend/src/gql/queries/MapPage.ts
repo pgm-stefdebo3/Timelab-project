@@ -11,9 +11,14 @@ query GetLayersData {
             id
             name
             type
+            color
             layerId
             author
             createdAt
+            icon {
+                id
+                fileName
+            }
             coordinates {
                 id
                 latitude

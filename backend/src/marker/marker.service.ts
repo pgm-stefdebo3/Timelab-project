@@ -1,18 +1,17 @@
-
-import { CoordinateService } from './../coordinate/coordinate.service';
-import { HttpException, HttpStatus, Inject, Injectable, forwardRef } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { CreateMarkerInput } from './dto/create-marker.input';
 import { UpdateMarkerInput } from './dto/update-marker.input';
 import { CreateMarkerWithCoordsInput } from './dto/create-marker-with-coords';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Marker } from './entities/marker.entity';
-import { Equal, ILike, Like, Repository } from 'typeorm';
+import { Equal, ILike, Repository } from 'typeorm';
 import { LayerService } from 'src/layer/layer.service';
+import { IconService } from './../icon/icon.service';
+import { CoordinateService } from './../coordinate/coordinate.service';
 import { Layer } from 'src/layer/entities/layer.entity';
-import { Coordinate } from 'src/coordinate/entities/coordinate.entity';
-import { TimestampService } from 'src/timestamp/timestamp.service';
 import { FilterOperator, FilterSuffix, paginate, PaginateQuery, Paginated } from 'nestjs-paginate'
 import bounds from './bounds';
+import { Icon } from 'src/icon/entities/icon.entity';
 var classifyPoint = require("robust-point-in-polygon");
 
 @Injectable()
@@ -20,6 +19,8 @@ export class MarkerService {
   constructor(
     @InjectRepository(Marker)
     private markerRepository: Repository<Marker>,
+    @Inject(forwardRef(() => IconService))
+    private iconService: IconService,
     @Inject(forwardRef(() => LayerService))
     private layerService: LayerService,
     @Inject(forwardRef(() => CoordinateService))
@@ -61,11 +62,11 @@ export class MarkerService {
   //   READ
 
   findAll(): Promise<Marker[]> {
-    return this.markerRepository.find({ relations: ['layer', 'coordinates', 'timestamps'] });
+    return this.markerRepository.find({ relations: ['layer', 'coordinates', 'timestamps', 'icon'] });
   }
 
   findAllWithLayerId(layerId: number): Promise<Marker[]> {
-    return this.markerRepository.find({ relations: ['layer', 'coordinates',  'timestamps'], where: {layerId} });
+    return this.markerRepository.find({ relations: ['layer', 'coordinates',  'timestamps', 'icon'], where: {layerId} });
   }
 
   async findPaginatedMarkers(
@@ -122,6 +123,10 @@ export class MarkerService {
 
   getLayer(layerId: number): Promise<Layer> {
     return this.layerService.findOne(layerId);
+  }
+
+  getIcon(iconId: number): Promise<Icon> {
+    return this.iconService.findOne(iconId);
   }
 
   //   UPDATE

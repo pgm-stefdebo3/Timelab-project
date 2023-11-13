@@ -17,9 +17,18 @@ interface MarkerDataGridProps {
 
 interface FormData {
     layerId?: number | null,
+    iconId?: number | null,
     coordinateField?: string,
     title?: string,
     description?: string,
+    color?: string,
+    colorValue?: number,
+}
+
+interface Icon {
+    id: number,
+    name: string,
+    fileName: string,
 }
 
 interface MarkerFormProps {
@@ -36,9 +45,11 @@ interface MarkerInterface {
     name: string, 
     type: string,
     layerId: number,
+    color: string,
     createdAt: Date,
     author: string,
-    coordinates: [{latitude: number, longitude: number, id: number}]
+    icon: Icon,
+    coordinates: [{latitude: number, longitude: number, id: number}],
 }
 
 interface TimestampFormProps {
@@ -58,6 +69,8 @@ interface MarkerInput {
     type: string,
     name: string,
     coords: Coordinate[] | [number, number][],
+    color?: string,
+    iconId?: number | null,
     layerId?: number | null,
     description?: string,
     author?: string,
@@ -159,6 +172,7 @@ export type {
     MarkerDataGridProps,
     MarkerImportFormProps,
     layer,
+    Icon,
     MarkerInterface,
     MarkerInput,
     TimestampFormInput,

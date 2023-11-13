@@ -1,19 +1,33 @@
 import React from 'react'
-import { MarkerImportFormProps, layer } from '../../interfaces'
+import { Icon, MarkerImportFormProps } from '../../interfaces'
 import { ErrorMessage, Form, Formik } from 'formik'
 import * as yup from 'yup';
 import { Button, FormLabel, MenuItem, StepButton, TextField } from '@mui/material';
-import ConditionalLoader from '../ConditionalLoader';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { mutationImportMarkers } from '../../gql/mutations';
+import { GET_ICONS_PAGE } from '../../gql/queries';
+import { ColorBox } from "material-ui-color";
 
 const validationSchema = yup.object({
     layerId: yup.number().required(),
     coordinateField: yup.string().required(),
+    iconId: yup.number().required(),
+    color: yup.number().required(),
 });
 
 const MarkerImportForm1 = ({selectedRows, layers, setModal, formData, setFormData}: MarkerImportFormProps) => {
     const [importMarkers] = useMutation(mutationImportMarkers);
+    const [colorValue, setColorValue] = React.useState<number>(0);
+
+    const { loading, error, data, refetch } = useQuery(GET_ICONS_PAGE);
+
+    if (loading) return <p>Loading...</p>;
+    
+    if (error) {
+        return <p>Error...</p>;
+    }
+    
+    let icons = data.icons;
 
     let rowKeys: string[] = Object.keys(selectedRows[0]);
 
@@ -21,7 +35,9 @@ const MarkerImportForm1 = ({selectedRows, layers, setModal, formData, setFormDat
         <Formik
         initialValues={{
             layerId: formData.layerId || null,
+            iconId: formData.iconId || null,
             coordinateField: formData.coordinateField || '',
+            color: formData.color ? parseInt(formData.color.substring(1), 16) : 0,
         }}
         validationSchema={validationSchema}
         validate={(values) => {
@@ -36,8 +52,12 @@ const MarkerImportForm1 = ({selectedRows, layers, setModal, formData, setFormDat
         }}
         onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
-        
-            setFormData({...formData, ...values});
+
+            let {color, ...newValues} = values;
+            let newColor = '#' + values.color.toString(16);
+            
+            setFormData({...formData, ...newValues, color: newColor});
+            
             setModal('import-2');
 
             setTimeout(() => {
@@ -48,7 +68,7 @@ const MarkerImportForm1 = ({selectedRows, layers, setModal, formData, setFormDat
         {({ values, handleChange, setFieldValue, isSubmitting, errors, touched }) => (
             <Form className='card-form' style={{paddingTop: '2rem'}}>
                 <FormLabel sx={{px: '1rem'}} htmlFor='layerId'>Choose the layer you want to import to</FormLabel>
-                <ErrorMessage name="layerId" component="div" className='errorfield' />
+                <ErrorMessage name="layerId" component="div" className='errorfield'/>
                 <TextField
                     variant="outlined"
                     name="layerId"
@@ -72,7 +92,7 @@ const MarkerImportForm1 = ({selectedRows, layers, setModal, formData, setFormDat
                     ))}
                 </TextField>
                 <FormLabel sx={{px: '1rem'}} htmlFor='coordinateField'>Choose what field represents the coordinates</FormLabel>
-                <ErrorMessage name="coordinateField" component="div" className='errorfield' />
+                <ErrorMessage name="coordinateField" component="div" className='errorfield'/>
                 <TextField
                 variant="outlined"
                 name="coordinateField"
@@ -94,6 +114,38 @@ const MarkerImportForm1 = ({selectedRows, layers, setModal, formData, setFormDat
                     </MenuItem>
                 ))}
                 </TextField>
+                <FormLabel sx={{px: '1rem'}} htmlFor='iconId'>Choose an icon that fits the marker</FormLabel>
+                <ErrorMessage name="iconId" component="div" className='errorfield'/>
+                <TextField
+                variant="outlined"
+                name="iconId"
+                id="iconId"
+                sx={{
+                    width: '100%',
+                    px: '1rem'
+                }}
+                select
+                value={values.iconId}
+                onChange={handleChange}
+                >
+                <MenuItem key={-1} value={undefined}>
+                    ---
+                </MenuItem>
+                {icons?.map((icon: Icon) => (
+                    <MenuItem key={icon.id} value={icon.id}>
+                        {icon.name}
+                    </MenuItem>
+                ))}
+                </TextField>
+                <FormLabel sx={{px: '1rem'}} htmlFor='color'>Choose a color that fits the marker</FormLabel>
+                <ErrorMessage name="color" component="p" className='errorfield' />
+                <ColorBox
+                    value={colorValue}
+                    onChange={(arg) => {
+                        values.color = arg.value;
+                        setColorValue(arg.value);
+                    }}
+                />
                 <Button
                     variant='contained'
                     className='card-form-button'

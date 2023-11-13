@@ -15,13 +15,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 
 import FilterIcon from '@mui/icons-material/FilterList';
-import InfoIcon from '@mui/icons-material/Info';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import UserIconImage from '../assets/images/user-marker.png';
-import TreeIconImage from '../assets/images/tree-marker.png';
-import MarkerIconImage from '../assets/images/normal-marker.png';
 import LogoImage from '../assets/images/logo.png';
 
 import "leaflet/dist/leaflet.css";
@@ -154,7 +150,7 @@ const Home = () => {
               {data.layers?.filter((layer: {name: string}) => layers.indexOf(layer.name) > -1).map((layer: layer) => {
               return (filterMarkers(layer.markers).map((marker: MarkerInterface) => (
                 <MapElement 
-                  marker={marker} 
+                  marker={marker}
                   onClick={() => {
                     setActiveMarker(marker.id)
                     setFormVisible('timestamp-list')

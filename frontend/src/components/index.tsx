@@ -1,4 +1,4 @@
-import Button from "./button";
+import Button from "./Button";
 import SVGButton from "./SVGButton";
 import CloseButton from "./CloseButton";
 import ConditionalLoader from "./ConditionalLoader";

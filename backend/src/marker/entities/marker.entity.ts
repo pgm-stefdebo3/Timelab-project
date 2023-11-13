@@ -6,6 +6,7 @@ import {
   Float,
 } from '@nestjs/graphql';
 import { Coordinate } from 'src/coordinate/entities/coordinate.entity';
+import { Icon } from 'src/icon/entities/icon.entity';
 import { Layer } from 'src/layer/entities/layer.entity';
 import { Timestamp } from 'src/timestamp/entities/timestamp.entity';
 import {
@@ -49,7 +50,7 @@ export class Marker {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  icon?: string;
+  color?: string;
 
  //   Layer M-1
 
@@ -62,6 +63,18 @@ export class Marker {
   })
   @Field(() => Layer)
   layer: Layer;
+
+  //   Icon M-1
+ 
+   @Column()
+   @Field(() => Int)
+   iconId: number;
+ 
+   @ManyToOne(() => Icon, (icon) => icon.markers, {
+     onDelete: 'CASCADE',
+   })
+   @Field(() => Icon)
+   icon: Icon;
 
  //   Coordinates 1-M
   @OneToMany(() => Coordinate, (coordinate) => coordinate.marker)

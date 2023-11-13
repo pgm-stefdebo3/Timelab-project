@@ -6,6 +6,7 @@ import { MarkerResolver } from './marker.resolver';
 import { LayerModule } from 'src/layer/layer.module';
 import { TimestampModule } from 'src/timestamp/timestamp.module';
 import { CoordinateModule } from 'src/coordinate/coordinate.module';
+import { IconModule } from 'src/icon/icon.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { CoordinateModule } from 'src/coordinate/coordinate.module';
     LayerModule,
     forwardRef(() => TimestampModule),
     forwardRef(() => CoordinateModule),
+    forwardRef(() => IconModule),
   ],
   exports: [MarkerService],
   providers: [MarkerResolver, MarkerService],

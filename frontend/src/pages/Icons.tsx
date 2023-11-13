@@ -151,69 +151,68 @@ const Icons = () => {
                 </Grid>
                 <Grid xs={11.95} item>
                     <Card 
+                        sx={{
+                            pt: '1rem',
+                            pb: '1rem',
+                            px: '1rem',
+                            maxWidth: '100%',
+                            minHeight: '39rem',
+                        }}
+                    >
+                        <FormLabel sx={{px: '1rem'}} htmlFor='search'>Search</FormLabel>
+                        <TextField
+                            name="search"
+                            id="search"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            rows={5}
+                            sx={{width: '100%', py: '0', px: '1rem', mt: '1rem', mb: '2rem'}}
+                        />
+                        <ImageList
                             sx={{
-                                pt: '1rem',
-                                pb: '1rem',
-                                px: '1rem',
-                                maxWidth: '100%',
-                                minHeight: '39rem',
+                                width: '100%',
+                                height: '24rem',
+                                transform: 'translateZ(0)',
                             }}
+                            gap={1}
+                            rowHeight={240}
+                            cols={6}
                         >
-                            <FormLabel sx={{px: '1rem'}} htmlFor='search'>Search</FormLabel>
-                            <TextField
-                                name="search"
-                                id="search"
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                rows={5}
-                                sx={{width: '100%', py: '0', px: '1rem', mt: '1rem', mb: '2rem'}}
-                            />
-                            <ImageList
-                                sx={{
-                                    width: '100%',
-                                    height: '24rem',
-                                    transform: 'translateZ(0)',
-                                }}
-                                gap={1}
-                                rowHeight={240}
-                                cols={6}
-                            >
-                                {icons.filter((icon: any) => icon.name.includes(search)).map((icon: any) => {
-                                    return (
-                                    <ImageListItem key={icon.id} cols={1} rows={1} sx={{position: 'relative'}}>
-                                        <img
-                                        srcSet={`http://localhost:3000/icon/icon-file/${icon.fileName}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                                        src={`http://localhost:3000/icon/icon-file/${icon.fileName}?w=248&fit=crop&auto=format`}
-                                        alt={icon.name}
-                                        loading="lazy"
-                                        style={{width: '10rem', height: '10rem', objectFit: 'contain', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', maxWidth: '100%', maxHeight: '100'}}
-                                        />
-                                        <ImageListItemBar
-                                          title={icon.name}
-                                          sx={{
-                                            position: 'absolute',
-                                            bottom: '0',
-                                            top: 'auto',
-                                            left: '20'
-                                          }}
-                                          actionIcon={
-                                            <IconButton
-                                              sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                                              aria-label={`info about ${icon.name}`}
-                                              onClick={() => {
-                                                setActiveIcon(icon.id)
-                                                setModalVisible('open')
-                                            }}
-                                            >
-                                                <EditIcon/>
-                                            </IconButton>
-                                          }
-                                        />
-                                    </ImageListItem>
-                                    );
-                                })}
-
-                            </ImageList>
+                            {icons.filter((icon: any) => icon.name.includes(search)).map((icon: any) => {
+                                return (
+                                <ImageListItem key={icon.id} cols={1} rows={1} sx={{position: 'relative'}}>
+                                    <img
+                                    srcSet={`http://localhost:3000/icon/icon-file/${icon.fileName}`}
+                                    src={`http://localhost:3000/icon/icon-file/${icon.fileName}`}
+                                    alt={icon.name}
+                                    loading="lazy"
+                                    style={{width: '10rem', height: '10rem', objectFit: 'contain', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', maxWidth: '100%', maxHeight: '100'}}
+                                    />
+                                    <ImageListItemBar
+                                        title={icon.name}
+                                        sx={{
+                                        position: 'absolute',
+                                        bottom: '0',
+                                        top: 'auto',
+                                        left: '20'
+                                        }}
+                                        actionIcon={
+                                        <IconButton
+                                            sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                                            aria-label={`info about ${icon.name}`}
+                                            onClick={() => {
+                                            setActiveIcon(icon.id)
+                                            setModalVisible('open')
+                                        }}
+                                        >
+                                            <EditIcon/>
+                                        </IconButton>
+                                        }
+                                    />
+                                </ImageListItem>
+                                );
+                            })}
+                        </ImageList>
                     </Card>
                 </Grid>
             </Grid>
@@ -323,36 +322,36 @@ const Icons = () => {
         <MassModal visible={modalVisible === 'deleteConfirmation'} setVisible={setModalVisible}>
             <h2 style={{paddingTop: '2rem', paddingLeft: '2rem', paddingRight: '2rem'}}>Are you sure you want to delete this icon?</h2>
             <div className='flex flex-row' style={{ justifyContent: 'space-between' }}>
-                            <Button
-                                variant="contained"
-                                type="button"
-                                color='primary'
-                                className="marker-form-button"
-                                sx={{width: 'max-content', px: '1rem', ml: '1rem', mt: '2rem'}}
-                                onClick={() => {setModalVisible('open')}}
-                            >
-                                Go back
-                            </Button>
-                            <Button
-                                variant="contained"
-                                type="button"
-                                className="marker-form-button marker-form-button--delete"
-                                color='error'
-                                sx={{width: 'max-content', px: '1rem', ml: '1rem', mt: '2rem'}}
-                                onClick={() => {
-                                    setModalVisible('')
-                                    removeIcon({
-                                        variables: {
-                                            id: icons.filter((icon: any) => icon.id === activeIcon)[0]?.id
-                                        }
-                                    });
-                                    setActiveIcon(null);
-                                    refetch();
-                                }}
-                            >
-                                Delete
-                            </Button>
-                        </div>
+                <Button
+                    variant="contained"
+                    type="button"
+                    color='primary'
+                    className="marker-form-button"
+                    sx={{width: 'max-content', px: '1rem', ml: '1rem', mt: '2rem'}}
+                    onClick={() => {setModalVisible('open')}}
+                >
+                    Go back
+                </Button>
+                <Button
+                    variant="contained"
+                    type="button"
+                    className="marker-form-button marker-form-button--delete"
+                    color='error'
+                    sx={{width: 'max-content', px: '1rem', ml: '1rem', mt: '2rem'}}
+                    onClick={() => {
+                        setModalVisible('')
+                        removeIcon({
+                            variables: {
+                                id: icons.filter((icon: any) => icon.id === activeIcon)[0]?.id
+                            }
+                        });
+                        setActiveIcon(null);
+                        refetch();
+                    }}
+                >
+                    Delete
+                </Button>
+            </div>
         </MassModal>
     </div>
   )

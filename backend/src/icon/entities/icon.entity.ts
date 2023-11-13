@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int, InputType } from '@nestjs/graphql';
 import { Marker } from 'src/marker/entities/marker.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 
 @Entity()
@@ -18,4 +18,10 @@ export class Icon {
   @Column()
   @Field()
   fileName: string;
+
+  //   Marker 1-M
+
+  @OneToMany(() => Marker, (marker) => marker.icon)
+  @Field(() => [Marker], { nullable: true })
+  markers?: Marker[];
 }

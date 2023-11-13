@@ -12,5 +12,6 @@ import { Icon } from './entities/icon.entity';
 ],
   providers: [IconResolver, IconService],
   controllers: [IconController],
+  exports: [IconService],
 })
 export class IconModule {}

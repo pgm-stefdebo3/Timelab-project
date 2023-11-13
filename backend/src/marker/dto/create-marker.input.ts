@@ -22,13 +22,12 @@ export class CreateMarkerInput {
   description?: string;
 
   @Field({ nullable: true })
-  attribution?: string;
+  color?: string;
 
-  @Field(() => Boolean, { nullable: true })
-  draggable?: Boolean;
+  // //   Icon M-1
 
   @Field({ nullable: true })
-  icon?: string;
+  iconId?: number;
 
   // //   Layer M-1
 
