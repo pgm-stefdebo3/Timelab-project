@@ -20,6 +20,7 @@ type Icon {
   id: Int!
   name: String!
   fileName: String!
+  url: String!
   markers: [Marker!]
 }
 
@@ -29,6 +30,7 @@ type Timestamp {
   author: String
   description: String
   fileName: String
+  url: String
   markerId: Int!
   marker: Marker!
 }
@@ -43,8 +45,8 @@ type Marker {
   color: String
   layerId: Int!
   layer: Layer!
-  iconId: Int!
-  icon: Icon!
+  iconId: Int
+  icon: Icon
   coordinates: [Coordinate!]
   timestamps: [Timestamp!]
 }
@@ -75,6 +77,7 @@ input IconInput {
   id: Int!
   name: String!
   fileName: String!
+  url: String!
   markers: [MarkerInput!]
 }
 
@@ -84,6 +87,7 @@ input TimestampInput {
   author: String
   description: String
   fileName: String
+  url: String
   markerId: Int!
   marker: MarkerInput!
 }
@@ -98,8 +102,8 @@ input MarkerInput {
   color: String
   layerId: Int!
   layer: LayerInput!
-  iconId: Int!
-  icon: IconInput!
+  iconId: Int
+  icon: IconInput
   coordinates: [CoordinateInput!]
   timestamps: [TimestampInput!]
 }
@@ -152,7 +156,6 @@ type Mutation {
   createMarker(createMarkerInput: CreateMarkerInput!): Marker!
   createMarkers(createMarkerInputs: [CreateMarkerInput!]!): [Marker!]!
   createMarkersWithCoords(createMarkerWithCoordsInputs: [CreateMarkerWithCoordsInput!]!): [Marker!]!
-  updateMarker(updateMarkerInput: UpdateMarkerInput!): Marker!
   removeMarker(id: Int!): Marker!
   createTimestamp(createTimestampInput: CreateTimestampInput!): Timestamp!
   updateTimestamp(updateTimestampInput: UpdateTimestampInput!): Timestamp!
@@ -204,22 +207,11 @@ input CreateMarkerWithCoordsInput {
   layerId: Int!
 }
 
-input UpdateMarkerInput {
-  type: String
-  name: String
-  createdAt: Date
-  author: String
-  description: String
-  color: String
-  iconId: Float
-  layerId: Int
-  id: Int!
-}
-
 input CreateTimestampInput {
   description: String
   author: String
   fileName: String
+  url: String
   markerId: Int!
 }
 
@@ -227,6 +219,7 @@ input UpdateTimestampInput {
   description: String
   author: String
   fileName: String
+  url: String
   markerId: Int
   id: Int!
 }
@@ -247,10 +240,12 @@ input UpdateCoordinateInput {
 input CreateIconInput {
   name: String!
   fileName: String!
+  url: String!
 }
 
 input UpdateIconInput {
   id: Int!
   name: String
   fileName: String
+  url: String
 }

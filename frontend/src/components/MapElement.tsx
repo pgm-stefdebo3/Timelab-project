@@ -7,6 +7,8 @@ import { Icon, LatLngExpression } from 'leaflet';
 import MarkerIconImage from '../assets/images/normal-marker.png';
 import InfoIcon from '@mui/icons-material/Info';
 
+import BackupMarkerIconImage from '../assets/svg/BS_backup_icon.svg';
+
 const markerIcon = new Icon({
     iconUrl: MarkerIconImage,
     iconSize: [32, 32]
@@ -26,67 +28,56 @@ const MapElement: React.FC<MapElementProps> = ({marker, onClick, disabled}: MapE
             return (
                 <Marker  
                     icon={ new Icon({
-                        iconUrl: `http://localhost:3000/icon/icon-file/${marker.icon.fileName}`,
+                        iconUrl: marker.icon? `http://localhost:3000/icon/icon-file/${marker.icon.fileName}` : BackupMarkerIconImage,
                         iconSize: [32, 32]
                       })
                     }
                     position={[marker.coordinates[0].latitude , marker.coordinates[0].longitude]}
+                    eventHandlers={{
+                        click: () => {
+                            onClick();
+                        }
+                    }}
                 >
-                  <Popup>
-                    <Button 
-                      className='button button--form' 
-                      disabled={disabled} 
-                      type='button' 
-                      onClick={onClick}
-                    >
-                      <InfoIcon color='secondary'/>
-                    </Button>
-                  </Popup>
                 </Marker>
             );
         case 'LineString':
             return (
-                <Polyline positions={coordinates} color={marker.color}>
-                    <Popup>
-                    <Button 
-                        className='button button--form' 
-                        disabled={disabled} 
-                        type='button'
-                        onClick={onClick}
-                    >
-                        <InfoIcon color='secondary'/>
-                    </Button>
-                    </Popup>
+                <Polyline 
+                    positions={coordinates} 
+                    color={marker.color}
+                    eventHandlers={{
+                        click: () => {
+                            onClick();
+                        }
+                    }}
+                >
                 </Polyline>
             );
         case 'MultiLineString':
             return (
-                <Polyline positions={coordinates} color={marker.color}>
-                    <Popup>
-                    <Button 
-                        className='button button--form' 
-                        disabled={disabled} 
-                        type='button'
-                        onClick={onClick}
-                    >
-                        <InfoIcon color='secondary'/>
-                    </Button>
-                    </Popup>
+                <Polyline 
+                    positions={coordinates} 
+                    color={marker.color}
+                    eventHandlers={{
+                        click: () => {
+                            onClick();
+                        }
+                    }}
+                >
                 </Polyline>
             );
         case 'Polygon':
             return (
-                <Polygon positions={coordinates} color={marker.color}>
-                    <Popup>
-                    <Button 
-                        className='button button--form' 
-                        disabled={disabled} 
-                        type='button'
-                        onClick={onClick}
-                    >
-                        <InfoIcon color='secondary'/>
-                    </Button>
-                    </Popup>
+                <Polygon 
+                    positions={coordinates} 
+                    color={marker.color}
+                    eventHandlers={{
+                        click: () => {
+                            onClick();
+                        }
+                    }}
+                >
                 </Polygon>
             );
         default:

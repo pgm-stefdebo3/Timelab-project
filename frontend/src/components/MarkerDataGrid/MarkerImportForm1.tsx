@@ -11,7 +11,7 @@ import { ColorBox } from "material-ui-color";
 const validationSchema = yup.object({
     layerId: yup.number().required(),
     coordinateField: yup.string().required(),
-    iconId: yup.number().required(),
+    iconId: yup.number(),
     color: yup.number().required(),
 });
 
@@ -55,7 +55,7 @@ const MarkerImportForm1 = ({selectedRows, layers, setModal, formData, setFormDat
 
             let {color, ...newValues} = values;
             let newColor = '#' + values.color.toString(16);
-            
+
             setFormData({...formData, ...newValues, color: newColor});
             
             setModal('import-2');
